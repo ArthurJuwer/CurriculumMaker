@@ -4,6 +4,9 @@ import { BrowserRouter, createBrowserRouter, RouterProvider } from 'react-router
 import './index.css'
 import App from './App.jsx'
 import Models from './components/Models/Models.jsx'
+import HeaderCV from './components/Steps/Header/HeaderCV.jsx'
+import PresentationCV from './components/Steps/Presentation/PresentationCV.jsx'
+import FormationCV from './components/Steps/Formation/FormationCV.jsx'
 
 const router = createBrowserRouter([
   {
@@ -13,6 +16,18 @@ const router = createBrowserRouter([
   {
     path: '/models',
     element: <Models />
+  },
+  {
+    path: '/steps/headerCV',
+    element: <HeaderCV />
+  },
+  {
+    path: '/steps/presentationCV',
+    element: <PresentationCV />
+  },
+  {
+    path: '/steps/formationCV',
+    element: <FormationCV />
   }
 ])
 

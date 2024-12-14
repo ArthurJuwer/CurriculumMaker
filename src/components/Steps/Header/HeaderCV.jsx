@@ -1,15 +1,30 @@
+import { useState } from "react";
 import ButtonNext from "../StepsGlobalComponents/ButtonNext";
 import Curriculum from "../StepsGlobalComponents/Curriculum";
 import Input from "../StepsGlobalComponents/Input";
 import Score from "../StepsGlobalComponents/Score";
 import Title from "../StepsGlobalComponents/Title";
 import TopMarker from "../StepsGlobalComponents/TopMarker";
+import { useLocation } from 'react-router-dom';
+
 
 export default function HeaderCV(){
+    const location = useLocation();
+    
+    const params = new URLSearchParams(location.search)
+    const [name, setName] = useState('Nome Completo');
+    const [email, setEmail] = useState('Email');
+    const color = params.get('color');  
+
+    
+   
+
+    const valuesCurriculum = { color, name, email };
+    
 
     const inputsArray = [
-        {label: 'Nome Completo'},
-        {label: 'Email'},
+        {label: 'Nome Completo', setVariable: setName},
+        {label: 'Email' , setVariable: setEmail},
         {label: 'Bairro'},
         {label: 'Cidade'},
         {label: 'Estado'},
@@ -20,7 +35,6 @@ export default function HeaderCV(){
     return(
         <div className="h-screen w-full bg-DefaultGray">
             <TopMarker stepsAtual={3} />
-            {/* 7 rem == tamanho do topMarker */}
             <div className="px-32 py-16  h-[calc(100vh-7rem)] flex justify-between gap-x-32">
                 <div className="h-full w-8/12 flex flex-col gap-y-8">
                     <Score />
@@ -38,13 +52,14 @@ export default function HeaderCV(){
                             label={item.label} 
                             isLast={true} 
                             width={'w-[calc(50%-0.5rem)]'}
+                            onChange={(e) => item.setVariable(e.target.value)}
                         />
                     ))}
                     
                 </div>
                 <ButtonNext link={'/steps/presentationCV'} />
                 </div>
-                <Curriculum />
+                <Curriculum valuesCurriculum={valuesCurriculum} />
             </div>
         </div>
     )

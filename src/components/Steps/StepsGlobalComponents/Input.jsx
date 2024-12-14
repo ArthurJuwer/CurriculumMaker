@@ -1,4 +1,4 @@
-export default function Input({ id, label, width , isLast, isSelect}) {
+export default function Input({ id, label, width, isLast, isSelect, onChange}) {
     return (
         <div
             className={`relative ${width} ${isLast ? 'last:w-full' : ''}`}
@@ -14,6 +14,7 @@ export default function Input({ id, label, width , isLast, isSelect}) {
                 type="text"
                 id={`input-${id}`}
                 className="border w-full border-BorderInputGray bg-transparent p-4 rounded-xl z-10 "
+                onChange={onChange}
             />
         
             {isSelect == true 

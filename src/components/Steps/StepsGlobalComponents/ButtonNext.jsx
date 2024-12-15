@@ -1,7 +1,14 @@
-export default function ButtonNext({link}){
+import { Link } from "react-router-dom";
+
+export default function ButtonNext({link, onClick}){
     return(
-        <a href={link}><button className="w-full p-4 rounded-xl bg-DefaultOrange text-white">
+        <Link to={link}>
+            <button 
+                className="w-full p-4 rounded-xl bg-DefaultOrange text-white"
+                onClick={onClick}
+            >
             Proxima Etapa
-        </button></a>
+            </button>
+        </Link>
     )
 }

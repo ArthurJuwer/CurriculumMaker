@@ -6,7 +6,7 @@ import { useState } from "react"
 export default function Models(){
 
     const colors = [
-        {color: 'A5A5A5'},
+        {color: 'A1A1A1'},
         {color: 'AF9B94'},
         {color: '1E1E1E'},
         {color: '4F1213'},

@@ -1,12 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import Models from './components/Models/Models.jsx'
 import HeaderCV from './components/Steps/Header/HeaderCV.jsx'
 import PresentationCV from './components/Steps/Presentation/PresentationCV.jsx'
 import FormationCV from './components/Steps/Formation/FormationCV.jsx'
+import { CurriculumProvider } from './context/CurriculumContext.jsx'
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <CurriculumProvider>
+      <RouterProvider router={router} />
+    </CurriculumProvider>
   </StrictMode>,
 )

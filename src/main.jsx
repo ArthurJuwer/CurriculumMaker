@@ -8,6 +8,7 @@ import HeaderCV from './components/Steps/Header/HeaderCV.jsx'
 import PresentationCV from './components/Steps/Presentation/PresentationCV.jsx'
 import FormationCV from './components/Steps/Formation/FormationCV.jsx'
 import { CurriculumProvider } from './context/CurriculumContext.jsx'
+import FinalizationCV from './components/Steps/Finalization/FinalizationCV.jsx'
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: '/steps/formationCV',
     element: <FormationCV />
+  },
+  {
+    path: '/steps/finalizationCV',
+    element: <FinalizationCV />
   }
 ])
 

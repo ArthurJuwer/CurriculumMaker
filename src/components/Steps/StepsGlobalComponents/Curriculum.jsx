@@ -4,7 +4,7 @@ import CurriculumModel3 from "../Curriculums/CurriculumModel3";
 import { CurriculumContext } from "../../../context/CurriculumContext";
 import { useContext } from "react";
 
-export default function Curriculum({models,valuesCurriculum}){
+export default function Curriculum({valuesCurriculum}){
 
     const { values } = useContext(CurriculumContext)
 
@@ -13,10 +13,10 @@ export default function Curriculum({models,valuesCurriculum}){
     return(
         <div className="h-full w-4/12 border-2 border-WeakGray p-10">
         {
-            models == 1 
+            valuesCurriculum?.model == 1 
             ? <CurriculumModel1 valuesCurriculum={valuesCurriculum} />
             : 
-            models == 2 
+            valuesCurriculum?.model == 2 
             ? <CurriculumModel2 valuesCurriculum={valuesCurriculum} /> 
             : <CurriculumModel3 valuesCurriculum={valuesCurriculum} /> 
         }

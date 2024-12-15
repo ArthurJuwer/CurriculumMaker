@@ -36,7 +36,7 @@ export default function HeaderCV() {
     ];
 
     const handleSubmit = () => {
-        const valuesCurriculum = { color, name, email, bairro, cidade, estado, telefone, linkedin };
+        const valuesCurriculum = { model, color, name, email, bairro, cidade, estado, telefone, linkedin };
         
         setValues(valuesCurriculum);
     };
@@ -44,7 +44,7 @@ export default function HeaderCV() {
     return (
         <div className="h-screen w-full bg-DefaultGray">
             <TopMarker stepsAtual={3} />
-            <div className="px-32 py-16 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
+            <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
                 <div className="h-full w-8/12 flex flex-col gap-y-8">
                     <Score />
 
@@ -67,7 +67,7 @@ export default function HeaderCV() {
                     </div>
                     <ButtonNext onClick={handleSubmit} link={'/steps/presentationCV'}/>
                 </div>
-                <Curriculum models={model} valuesCurriculum={{ color, name, email, bairro, cidade, estado, telefone, linkedin }} />
+                <Curriculum valuesCurriculum={{ color, name, email, bairro, cidade, estado, telefone, linkedin }} />
             </div>
         </div>
     );

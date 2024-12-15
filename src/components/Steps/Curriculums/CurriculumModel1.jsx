@@ -75,7 +75,7 @@ export default function CurriculumModel1({ valuesCurriculum }) {
                     </ul>
                 </div>
                 )}
-
+                
                 {/* CERTIFICAÇÕES */}
 
                 {valuesCurriculum?.certifications && (

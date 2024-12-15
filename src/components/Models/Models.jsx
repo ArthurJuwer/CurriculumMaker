@@ -106,7 +106,7 @@ export default function Models(){
             
                 
                 
-                {/* <ModelsThemes key={1} id={1} color={colorPass}/> */}
+                <ModelsThemes key={1} id={1} color={colorPass}/>
                 {/* <ModelsThemes key={2} id={2} color={colorPass}/>
                 <ModelsThemes key={3} id={3} color={colorPass}/> */}
             </div>

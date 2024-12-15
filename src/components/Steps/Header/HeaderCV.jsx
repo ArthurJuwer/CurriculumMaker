@@ -67,7 +67,7 @@ export default function HeaderCV() {
                     </div>
                     <ButtonNext onClick={handleSubmit} link={'/steps/presentationCV'}/>
                 </div>
-                <Curriculum valuesCurriculum={{ color, name, email, bairro, cidade, estado, telefone, linkedin }} />
+                <Curriculum valuesCurriculum={{ model, color, name, email, bairro, cidade, estado, telefone, linkedin }}/>
             </div>
         </div>
     );

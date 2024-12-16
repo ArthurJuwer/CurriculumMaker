@@ -124,7 +124,14 @@ export default function FormationCV() {
                                                 key={item.category}
                                                 id={item.category}
                                                 label={item.label}
-                                                value={formation[item.category]}
+                                                value={
+                                                    formation[item.category] === 'escola' ||
+                                                    formation[item.category] === 'titulo' ||
+                                                    formation[item.category] === 'ano entrada' ||
+                                                    formation[item.category] === 'ano saida'
+                                                    ? ''
+                                                    : formation[item.category]
+                                                  }
                                                 width={inputsFormation.indexOf(item) % 2 === 0 ? 'w-[calc(65%)]' : 'w-[calc(35%-1rem)]'}
                                                 onChange={(e) => handleFormationChange(e, idx, item.category)}
                                                 placeholder={item.category}
@@ -171,7 +178,7 @@ export default function FormationCV() {
                                 id={index}
                                 label="Idioma"
                                 width="w-[calc(33.3%-1rem)]"
-                                value={item?.language}
+                                value={item?.language === 'lingua' ? '' : item?.language}
                                 isSelect={true}
                                 onChange={(e) => {
                                     const field = e.target.tagName === 'INPUT' ? 'language' : 'level';
@@ -195,9 +202,9 @@ export default function FormationCV() {
             {/* Modal for adding certifications */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-8 rounded-xl w-96">
-                        <h2 className="text-xl font-bold mb-4">Adicionar Certificação</h2>
-                        <div className="flex flex-col gap-y-4">
+                    <div className="bg-white p-8 rounded-xl w-4/12 flex flex-col gap-y-8">
+                        <h2 className="text-xl font-bold">Adicionar Certificação</h2>
+                        <div className="flex flex-col gap-y-8">
                             <Input
                                 label="Nome da Certificação"
                                 value={certificationInputs.name}
@@ -215,7 +222,7 @@ export default function FormationCV() {
                                 type="number"
                             />
                         </div>
-                        <div className="flex justify-between mt-4">
+                        <div className="flex justify-between">
                             <button
                                 onClick={hideModal}
                                 className="px-4 py-2 bg-gray-400 text-white rounded-lg"

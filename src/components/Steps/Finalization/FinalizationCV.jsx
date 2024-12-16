@@ -1,14 +1,34 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import ModelsColors from "../../Models/ModelsColors";
 import Curriculum from "../StepsGlobalComponents/Curriculum";
 import Title from "../StepsGlobalComponents/Title";
 import TopMarker from "../StepsGlobalComponents/TopMarker";
 import FinalizationInput from "./FinalizationInput";
 import { CurriculumContext } from "../../../context/CurriculumContext";
+import FinalizationSelect from "./FinalizationSelect";
 
 export default function FinalizationCV(){
 
     const {values, setValues} = useContext(CurriculumContext);
+
+
+    const [color, setColor] = useState(values?.color)
+    const [model, setModel] = useState(values?.model)
+    const [language, setLanguages] = useState('BR')
+    const [textTitle, setTextTitle] = useState('28px')
+    const [textSubTitle, setTextSubTitle] = useState('20px')
+    const [textCorp, setTextCorp] = useState('12px')
+
+    useEffect(() => {
+        setValues(prevValues => ({
+            ...prevValues,
+            model: model,
+            color: color,
+            textTitle: textTitle,
+            textSubTitle: textSubTitle,
+            textCorp: textCorp,
+        }));
+    }, [color, model,textTitle, textSubTitle, textCorp, setValues]);
 
     const colors = [
         {color: 'A1A1A1'},
@@ -19,22 +39,22 @@ export default function FinalizationCV(){
         {color: '124F2B'},
         {color: 'A8890D'},
     ]
-    const labelsInputs = 
-        {
-            left: [
-                { label: 'Modelo' },
-                { label: 'Fonte Titulos' },
-                { label: 'Fonte Corpo' },
-                { label: 'Idioma do Currículo' },
-            ],
-            right: [
-                { label: 'Nome do Arquivo' },
-                { label: 'Formato do Arquivo' },
-                { label: 'Tamanho do Arquivo' },
-            ]
-        }
-    ;
 
+    const labelsSelects = [
+        { label: 'Modelo', options: ['1', '2'], defaultValue: `${model}`, setVariable: setModel },
+        { label: 'Idioma do Currículo', options: ['Português - BR', 'Inglês - UK'], defaultValue: 'Português - BR', setVariable: setLanguages },
+        { label: 'Fonte Titulos', options: ['16px', '20px', '24px', '28px', '32px', '36px'], defaultValue: '28px', setVariable: setTextTitle },
+        { label: 'Fonte SubTitulos', options: ['12px', '16px', '20px', '24px', '28px', '32px'], defaultValue: '20px', setVariable: setTextSubTitle },
+        { label: 'Fonte Corpo', options: ['8px', '12px', '16px', '20px', '24px', '28px'], defaultValue: '12px', setVariable: setTextCorp },
+    ];
+    
+    const labelsInputs = 
+        [
+            { label: 'Nome do Arquivo' },
+            { label: 'Formato do Arquivo' },
+            { label: 'Tamanho do Arquivo' },
+        ]
+    ;
     return(
         <div className="h-screen w-full bg-DefaultGray">
             <TopMarker stepsAtual={0} />
@@ -47,22 +67,30 @@ export default function FinalizationCV(){
                         <div className="flex flex-col gap-y-4">
                             <h2 className="uppercase text-TitleGray font-semibold">Cor de Destaque</h2>
                             <div className="flex gap-x-5">
+
                                 {colors.map((item, index)=>(
-                                    <ModelsColors key={index} backgroundColor={item.color} isRounded={'rounded-full'} />
+                                    <ModelsColors 
+                                        key={index} 
+                                        backgroundColor={item.color} 
+                                        isRounded={'rounded-full'}
+                                        onClick={() => setColor(item.color)}
+                                        isSelected={item.color === color}
+                                    />
                                 ))}
+
                             </div>
                         </div>
-                        {labelsInputs?.left?.map((item,index)=>(
-                            <FinalizationInput id={index} key={index} label={item.label}/>
+                        {labelsSelects?.map((item, index) => (
+                            <FinalizationSelect 
+                                id={index} 
+                                key={index} 
+                                label={item?.label}
+                                options={item?.options}
+                                defaultValue={item?.defaultValue} 
+                                onChange={(e) => item.setVariable(e.target.value)}
+                            />
                         ))}
-                        <div className="flex flex-col gap-y-4">
-                            <label htmlFor='' className="uppercase text-TitleGray font-semibold">Voltar Para Alguma Etapa?</label>
-                            <div type="text" id='' className="border w-full border-BorderInputGray bg-transparent p-4 rounded-xl flex items-center justify-center">
-                                <button className="text-TitleGray font-semibold w-1/3">1</button>
-                                <button className="text-TitleGray font-semibold w-1/3 border-x border-BorderInputGray px-16">2</button>
-                                <button className="text-TitleGray font-semibold w-1/3">3</button>
-                            </div>
-                        </div>
+
 
                     </div>
                 </div>
@@ -72,8 +100,8 @@ export default function FinalizationCV(){
                 <div className="flex flex-col gap-y-4">
                     <Title title={'Opções Pra Baixar'} />
                     <div className="flex flex-col gap-y-4">
-                        {labelsInputs?.right?.map((item, index)=>(
-                            <FinalizationInput id={index} key={index} label={item.label}/>
+                        {labelsInputs?.map((item, index)=>(
+                            <FinalizationInput id={index} key={index} label={item?.label}/>
                         ))}
                         
                         <button className="w-full p-4 rounded-xl bg-DefaultOrange text-white uppercase text-sm tracking-wider font-medium">

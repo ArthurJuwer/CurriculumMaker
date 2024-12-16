@@ -93,21 +93,21 @@ export default function PresentationCV() {
                                     width="w-5/12"
                                     label="Titulo do Projeto"
                                     onChange={(e) => handleProjectChange(selectedProject, 'title', e.target.value)}
-                                    value={projects[selectedProject].title}
+                                    value={projects[selectedProject].title === `Projeto ${selectedProject+1}` ? '' : projects[selectedProject].title}
                                 />
                                 <Input
                                     id={`category-${selectedProject}`}
                                     width="w-5/12"
                                     label="Categoria"
                                     onChange={(e) => handleProjectChange(selectedProject, 'category', e.target.value)}
-                                    value={projects[selectedProject].category}
+                                    value={projects[selectedProject].category === 'Selecione a Categoria' ? '' : projects[selectedProject].category}
                                 />
                                 <Input
                                     id={`year-${selectedProject}`}
                                     width="w-2/12"
                                     label="Ano"
                                     onChange={(e) => handleProjectChange(selectedProject, 'year', e.target.value)}
-                                    value={projects[selectedProject].year}
+                                    value={projects[selectedProject].year === 'ANO' ? '' : projects[selectedProject].year}
                                 />
                             </div>
                             <TextArea
@@ -115,7 +115,7 @@ export default function PresentationCV() {
                                 isLast={true}
                                 label="Descrição"
                                 onChange={(e) => handleProjectChange(selectedProject, 'description', e.target.value)}
-                                value={projects[selectedProject].description}
+                                value={projects[selectedProject].description === 'descreva seu projeto aqui' ? '' : projects[selectedProject].description}
                             />
                         </div>
                     </div>

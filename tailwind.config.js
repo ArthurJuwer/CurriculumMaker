@@ -21,15 +21,14 @@ export default {
         sans: ['Inter', 'sans-serif']
       },
       fontSize: {        
-        title1920: '1.75rem',
-        titleDescript1920: '0.75rem',
-        subtitle1920: '1.25rem',
-        p1920: '0.8rem',
+        title1920: '28px',
+        titleDescript1920: '11px',
+        subtitle1920: '20px',
+        p1920: '12px',
 
-
-        titleDescript1920Model: '0.6rem',
+        title1920Model: '1.5rem',  
         subtitle1920Model: '1rem',
-        title1920Model: '1.5rem',      
+        titleDescript1920Model: '0.6rem',
         p1920Model: '0.7rem',
       }
     },

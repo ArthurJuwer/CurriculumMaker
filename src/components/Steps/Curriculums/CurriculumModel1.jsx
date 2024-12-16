@@ -3,10 +3,14 @@ export default function CurriculumModel1({ valuesCurriculum }) {
         <div className="flex flex-col gap-y-5">
             {/* Informações Pessoais */}
             <div>
-                <h1 className="uppercase text-StrongGray text-[28px] font-bold pb-1">
+                <h1 className="uppercase text-StrongGray text-[calc(28px)] font-bold pb-1"
+                    style={{fontSize: valuesCurriculum?.textTitle}}>
                     {valuesCurriculum?.name}
                 </h1>
-                <ol className="text-xs flex flex-wrap gap-y-2 gap-x-2" style={{ color: `#${valuesCurriculum?.color}` }}>
+                <ol 
+                    className="text-xs flex flex-wrap gap-y-2 gap-x-2" 
+                    style={{ color: `#${valuesCurriculum?.color}`}}
+                >
                     <div className="flex gap-x-1">
                         <li className="after:content-['_|']">{valuesCurriculum?.bairro}</li>
                         <li className="after:content-[',']">{valuesCurriculum?.cidade}</li>
@@ -24,8 +28,20 @@ export default function CurriculumModel1({ valuesCurriculum }) {
 
                 {valuesCurriculum?.objective && (
                     <div>
-                        <h1 className="uppercase text-StrongGray text-xl font-bold pb-2">Objetivo</h1>
-                        <p className="text-[0.8rem] text-TitleGray">{valuesCurriculum?.objective}</p>
+                        <h1 
+                            className="uppercase text-StrongGray text-xl font-bold pb-2"
+                            style={{fontSize: valuesCurriculum?.textSubTitle}}
+                        >
+                            Objetivo
+                        </h1>
+                        <p 
+                            className="text-[0.8rem] text-TitleGray"
+                            style={{fontSize: valuesCurriculum?.textCorp}}
+                        >
+                            {valuesCurriculum?.objective}
+                        </p>
+                        
+
                     </div>
                 
                 )}
@@ -33,17 +49,34 @@ export default function CurriculumModel1({ valuesCurriculum }) {
                 {/* Experiências */}
                 {valuesCurriculum?.projects?.length > 0 && (
                     <div>
-                        <h1 className="uppercase text-StrongGray text-xl font-bold pb-2">Experiências</h1>
+                        <h1 
+                            className="uppercase text-StrongGray text-xl font-bold pb-2"
+                            style={{fontSize: valuesCurriculum?.textSubTitle}}
+                        >
+                            Experiências
+                        </h1>
+
                         <div className="flex flex-col gap-y-2">
                             {valuesCurriculum?.projects?.map((item, index) => (
                                 <div key={`project-${index}`}>
-                                    <p style={{ color: `#${valuesCurriculum?.color}` }} className="text-[0.8rem]">
+                                    <p 
+                                        style={{ color: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textCorp }} 
+                                        className="text-[0.8rem]"
+                                    >
                                         {item?.year}
                                     </p>
-                                    <p className="text-TitleGray text-[0.8rem]">
+                                    <p 
+                                        style={{fontSize: valuesCurriculum?.textCorp}}
+                                        className="text-TitleGray text-[0.8rem]"
+                                    >
                                         {item?.title} | {item?.category}
                                     </p>
-                                    <p className="text-WeakGray text-[0.8rem]">{item?.description}</p>
+                                    <p
+                                        style={{fontSize: valuesCurriculum?.textCorp}}
+                                        className="text-WeakGray text-[0.8rem]"
+                                    >
+                                        {item?.description}
+                                    </p>
                                 </div>
                             ))}
                         </div>
@@ -53,11 +86,30 @@ export default function CurriculumModel1({ valuesCurriculum }) {
                 {/* Formação */}
                 {valuesCurriculum?.formations && (
                 <div>
-                    <h1 className="uppercase text-StrongGray text-xl font-bold pb-2">Formação</h1>
+                    <h1 
+                        className="uppercase text-StrongGray text-xl font-bold pb-2"
+                        style={{fontSize: valuesCurriculum?.textSubTitle}}
+                    >
+                        Formação
+                    </h1>
+                    
                     {valuesCurriculum?.formations?.map((item, index) => (
-                        <ul key={`formation-${index}`} className="pb-2 list-disc pl-4">
-                            <li className="text-TitleGray text-sm">{item?.school}</li>
-                            <li className="text-TitleGray text-sm">{item?.title} | {item?.yearEntry} - {item?.yearLeave}</li>
+                        <ul 
+                            key={`formation-${index}`} 
+                            className="pb-2 list-disc pl-4"
+                        >
+                            <li 
+                                style={{fontSize: valuesCurriculum?.textCorp}}
+                                className="text-TitleGray text-[0.8rem]"
+                            >
+                                {item?.school}
+                            </li>
+                            <li 
+                                style={{fontSize: valuesCurriculum?.textCorp}}
+                                className="text-TitleGray text-[0.8rem]"
+                            >
+                                {item?.title} | {item?.yearEntry} - {item?.yearLeave}
+                            </li>
                         </ul>
                     ))}
                 </div>
@@ -66,10 +118,24 @@ export default function CurriculumModel1({ valuesCurriculum }) {
                 {/* IDIOMAS */}
                 {valuesCurriculum?.languages && (
                 <div>
-                    <h1 className="uppercase text-StrongGray text-xl font-bold pb-2">Idiomas</h1>
-                    <ul className="pb-2 list-disc pl-4">
+                    <h1 
+                        className="uppercase text-StrongGray text-xl font-bold pb-2"
+                        style={{fontSize: valuesCurriculum?.textSubTitle}}
+                    >
+                        Idiomas
+                    </h1>
+
+                    <ul 
+                        className="pb-2 list-disc pl-4"
+                    > 
                         {valuesCurriculum?.languages?.map((item, index)=>(
-                            <li key={index} className="text-TitleGray text-sm">{item?.language} ({item?.level})</li>
+                            <li 
+                                style={{fontSize: valuesCurriculum?.textCorp}}
+                                key={index} 
+                                className="text-TitleGray text-[0.8rem]"
+                            >
+                                {item?.language} ({item?.level})
+                            </li>
                         ))}
                         
                     </ul>
@@ -80,18 +146,29 @@ export default function CurriculumModel1({ valuesCurriculum }) {
 
                 {valuesCurriculum?.certifications && (
                 <div>
-                    <h1 className="uppercase text-StrongGray text-xl font-bold pb-2">Certificações</h1>
-                    <ul className="pb-2 list-disc pl-4">
+                    <h1 
+                        className="uppercase text-StrongGray text-xl font-bold pb-2"
+                        style={{fontSize: valuesCurriculum?.textSubTitle}}
+                    >
+                        Certificações
+                    </h1>
+
+                    <ul 
+                        className="pb-2 list-disc pl-4"
+                    >
                         {valuesCurriculum?.certifications?.map((item,index)=>(
-                            <li key={index} className="text-TitleGray text-sm">{item?.name} <br />
-                            Carga horária {item?.workload}h. (Conclusão {item?.conclusion})</li>
+                            <li 
+                                style={{fontSize: valuesCurriculum?.textCorp}}
+                                key={index} 
+                                className="text-TitleGray text-sm"
+                            >
+                                {item?.name} <br />
+                                Carga horária {item?.workload}h. (Conclusão {item?.conclusion})
+                            </li>
                         ))}
-                        
                     </ul>
                 </div>
                 )}
-
-                
             </div>
         </div>
     );

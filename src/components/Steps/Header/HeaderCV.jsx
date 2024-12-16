@@ -35,8 +35,10 @@ export default function HeaderCV() {
         { label: 'Linkedin', setVariable: setLinkedin },
     ];
 
+    const valuesCurriculum = { model, color, name, email, bairro, cidade, estado, telefone, linkedin };
+
     const handleSubmit = () => {
-        const valuesCurriculum = { model, color, name, email, bairro, cidade, estado, telefone, linkedin };
+        
         
         setValues(valuesCurriculum);
     };
@@ -67,7 +69,7 @@ export default function HeaderCV() {
                     </div>
                     <ButtonNext onClick={handleSubmit} link={'/steps/presentationCV'}/>
                 </div>
-                <Curriculum valuesCurriculum={{ model, color, name, email, bairro, cidade, estado, telefone, linkedin }}/>
+                <Curriculum valuesCurriculum={valuesCurriculum}/>
             </div>
         </div>
     );

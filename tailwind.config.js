@@ -20,6 +20,18 @@ export default {
       fontFamily: {
         sans: ['Inter', 'sans-serif']
       },
+      fontSize: {        
+        title1920: '1.75rem',
+        titleDescript1920: '0.75rem',
+        subtitle1920: '1.25rem',
+        p1920: '0.8rem',
+
+
+        titleDescript1920Model: '0.6rem',
+        subtitle1920Model: '1rem',
+        title1920Model: '1.5rem',      
+        p1920Model: '0.7rem',
+      }
     },
   },
   plugins: [],

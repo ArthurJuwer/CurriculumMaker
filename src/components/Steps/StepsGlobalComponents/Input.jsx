@@ -1,4 +1,4 @@
-export default function Input({ id, label, width, value, isLast, isSelect, onChange }) {
+export default function Input({ id, label, width, value, isLast, isSelect, onChange, placeholder }) {
     return (
         <div className={`relative ${width} ${isLast ? 'last:w-full' : ''}`}>
             <label
@@ -13,7 +13,7 @@ export default function Input({ id, label, width, value, isLast, isSelect, onCha
                 className="border w-full border-BorderInputGray bg-transparent p-4 rounded-xl z-10"
                 onChange={onChange}
                 value={value}
-                placeholder="Digite aqui"
+                placeholder={placeholder}
             />
 
             {isSelect && (

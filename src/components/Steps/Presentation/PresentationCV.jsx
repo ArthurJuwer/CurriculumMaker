@@ -13,12 +13,11 @@ export default function PresentationCV() {
 
     const [objective, setObjective] = useState('texto do objetivo.');
     const [projects, setProjects] = useState([
-        { title: 'Projeto 1', category: 'Selecione a Categoria', year: 'ANO', description: 'descreva seu projeto aqui'},
-        { title: 'Projeto 2', category: 'Selecione a Categoria', year: 'ANO', description: 'descreva seu projeto aqui'},
+        { title: 'Projeto 1', category: 'Categoria', year: 'ANO', description: 'descreva seu projeto aqui'},
+        { title: 'Projeto 2', category: 'Categoria', year: 'ANO', description: 'descreva seu projeto aqui'},
     ]);
     const [selectedProject, setSelectedProject] = useState(0);
 
-    // Atualiza os valores no contexto sempre que os projetos ou objetivo mudarem
     useEffect(() => {
         setValues(prevValues => ({
             ...prevValues,
@@ -51,7 +50,7 @@ export default function PresentationCV() {
             <TopMarker stepsAtual={'2'} />
             <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
                 <div className="h-full w-8/12 flex flex-col gap-y-8">
-                    <Score />
+                    <Score scoreValue={values?.score}/>
                     <Title
                         title={'Apresentação Pessoal'}
                         description={'Essa seção permite mostrar suas metas profissionais e sua trajetória de experiências relevantes.'}
@@ -63,6 +62,7 @@ export default function PresentationCV() {
                             label={'Objetivo'}
                             width={'w-7/12'}
                             onChange={(e) => setObjective(e.target.value)}
+                            placeholder={'ex: Conseguir uma posição como assistente administrativo, contribuindo com minhas habilidades de gestão e atendimento para a empresa.'}
                         />
                         <div className="bg-TitleGray p-5 text-white rounded-2xl w-5/12 flex flex-col gap-y-3">
                             <h1 className="text-xl font-medium">Experimente estas dicas:</h1>
@@ -94,13 +94,15 @@ export default function PresentationCV() {
                                     label="Titulo do Projeto"
                                     onChange={(e) => handleProjectChange(selectedProject, 'title', e.target.value)}
                                     value={projects[selectedProject].title === `Projeto ${selectedProject+1}` ? '' : projects[selectedProject].title}
+                                    placeholder={`ex: Documentação Administrativa ${selectedProject+1}`}
                                 />
                                 <Input
                                     id={`category-${selectedProject}`}
                                     width="w-5/12"
                                     label="Categoria"
                                     onChange={(e) => handleProjectChange(selectedProject, 'category', e.target.value)}
-                                    value={projects[selectedProject].category === 'Selecione a Categoria' ? '' : projects[selectedProject].category}
+                                    value={projects[selectedProject].category === 'Categoria' ? '' : projects[selectedProject].category}
+                                    placeholder={'ex: Administração'}
                                 />
                                 <Input
                                     id={`year-${selectedProject}`}
@@ -108,6 +110,7 @@ export default function PresentationCV() {
                                     label="Ano"
                                     onChange={(e) => handleProjectChange(selectedProject, 'year', e.target.value)}
                                     value={projects[selectedProject].year === 'ANO' ? '' : projects[selectedProject].year}
+                                    placeholder={'ex: 2022'}
                                 />
                             </div>
                             <TextArea
@@ -116,6 +119,7 @@ export default function PresentationCV() {
                                 label="Descrição"
                                 onChange={(e) => handleProjectChange(selectedProject, 'description', e.target.value)}
                                 value={projects[selectedProject].description === 'descreva seu projeto aqui' ? '' : projects[selectedProject].description}
+                                placeholder={'ex: Este documento tem como objetivo, organizar e padronizar os processos administrativos, garantindo eficiência e conformidade nas operações diárias.'}
                             />
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-export default function TextArea({ id, label, value, width, isLast, onChange}){
+export default function TextArea({ id, label, value, width, isLast, onChange, placeholder}){
     return(
         <div
             className={`relative ${width} h-40 ${isLast ? 'last:w-full' : ''}`}
@@ -17,6 +17,7 @@ export default function TextArea({ id, label, value, width, isLast, onChange}){
                 className="border w-full h-full border-BorderInputGray bg-transparent p-4 rounded-xl z-10 resize-none"
                 onChange={onChange}
                 value={value}
+                placeholder={placeholder}
             />
         </div>
     )

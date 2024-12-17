@@ -1,4 +1,4 @@
-export default function FinalizationInput({label, id, onChange, value}){
+export default function FinalizationInput({label, id, onChange, value, placeholder}){
     return(
         <div className="flex flex-col gap-y-4">
             <label htmlFor={id} className="uppercase text-TitleGray font-semibold">{label}</label>
@@ -7,7 +7,8 @@ export default function FinalizationInput({label, id, onChange, value}){
                 id={id} 
                 className="border w-full border-BorderInputGray bg-transparent p-4 rounded-xl"
                 onChange={onChange}
-                value={value}    
+                value={value}  
+                placeholder={placeholder}  
             />
         </div>
     )

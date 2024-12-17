@@ -1,15 +1,14 @@
 export default function CurriculumModel1({ valuesCurriculum }) {
     return (
         <div className="flex flex-col gap-y-5">
-            {/* Informações Pessoais */}
             <div>
-                <h1 className="uppercase text-StrongGray text-[calc(28px)] font-bold pb-1"
+                <h1 className="uppercase text-StrongGray text-title1920 font-bold pb-1"
                     style={{fontSize: valuesCurriculum?.textTitle}}>
                     {valuesCurriculum?.name}
                 </h1>
                 <ol 
-                    className="text-xs flex flex-wrap gap-y-2 gap-x-2" 
-                    style={{ color: `#${valuesCurriculum?.color}`}}
+                    className="text-p1920 flex flex-wrap gap-y-2 gap-x-2" 
+                    style={{ color: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textCorp}}
                 >
                     <div className="flex gap-x-1">
                         <li className="after:content-['_|']">{valuesCurriculum?.bairro}</li>
@@ -24,18 +23,17 @@ export default function CurriculumModel1({ valuesCurriculum }) {
 
             
                 <div className="flex flex-col gap-y-2">
-                {/* Objetivo */}
 
                 {valuesCurriculum?.objective && (
                     <div>
                         <h1 
-                            className="uppercase text-StrongGray text-xl font-bold pb-2"
+                            className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                             style={{fontSize: valuesCurriculum?.textSubTitle}}
                         >
                             Objetivo
                         </h1>
                         <p 
-                            className="text-[0.8rem] text-TitleGray"
+                            className="text-p1920  text-TitleGray"
                             style={{fontSize: valuesCurriculum?.textCorp}}
                         >
                             {valuesCurriculum?.objective}
@@ -45,12 +43,10 @@ export default function CurriculumModel1({ valuesCurriculum }) {
                     </div>
                 
                 )}
-
-                {/* Experiências */}
                 {valuesCurriculum?.projects?.length > 0 && (
                     <div>
                         <h1 
-                            className="uppercase text-StrongGray text-xl font-bold pb-2"
+                            className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                             style={{fontSize: valuesCurriculum?.textSubTitle}}
                         >
                             Experiências
@@ -61,19 +57,19 @@ export default function CurriculumModel1({ valuesCurriculum }) {
                                 <div key={`project-${index}`}>
                                     <p 
                                         style={{ color: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textCorp }} 
-                                        className="text-[0.8rem]"
+                                        className="text-p1920"
                                     >
                                         {item?.year}
                                     </p>
                                     <p 
                                         style={{fontSize: valuesCurriculum?.textCorp}}
-                                        className="text-TitleGray text-[0.8rem]"
+                                        className="text-TitleGray text-p1920"
                                     >
                                         {item?.title} | {item?.category}
                                     </p>
                                     <p
                                         style={{fontSize: valuesCurriculum?.textCorp}}
-                                        className="text-WeakGray text-[0.8rem]"
+                                        className="text-WeakGray text-p1920"
                                     >
                                         {item?.description}
                                     </p>
@@ -83,11 +79,10 @@ export default function CurriculumModel1({ valuesCurriculum }) {
                     </div>
                 )}
 
-                {/* Formação */}
                 {valuesCurriculum?.formations && (
                 <div>
                     <h1 
-                        className="uppercase text-StrongGray text-xl font-bold pb-2"
+                        className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                         style={{fontSize: valuesCurriculum?.textSubTitle}}
                     >
                         Formação
@@ -100,13 +95,13 @@ export default function CurriculumModel1({ valuesCurriculum }) {
                         >
                             <li 
                                 style={{fontSize: valuesCurriculum?.textCorp}}
-                                className="text-TitleGray text-[0.8rem]"
+                                className="text-TitleGray text-p1920"
                             >
                                 {item?.school}
                             </li>
                             <li 
                                 style={{fontSize: valuesCurriculum?.textCorp}}
-                                className="text-TitleGray text-[0.8rem]"
+                                className="text-TitleGray text-p1920"
                             >
                                 {item?.title} | {item?.yearEntry} - {item?.yearLeave}
                             </li>
@@ -114,12 +109,10 @@ export default function CurriculumModel1({ valuesCurriculum }) {
                     ))}
                 </div>
                 )}
-
-                {/* IDIOMAS */}
                 {valuesCurriculum?.languages && (
                 <div>
                     <h1 
-                        className="uppercase text-StrongGray text-xl font-bold pb-2"
+                        className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                         style={{fontSize: valuesCurriculum?.textSubTitle}}
                     >
                         Idiomas
@@ -132,7 +125,7 @@ export default function CurriculumModel1({ valuesCurriculum }) {
                             <li 
                                 style={{fontSize: valuesCurriculum?.textCorp}}
                                 key={index} 
-                                className="text-TitleGray text-[0.8rem]"
+                                className="text-TitleGray text-p1920"
                             >
                                 {item?.language} ({item?.level})
                             </li>
@@ -141,13 +134,10 @@ export default function CurriculumModel1({ valuesCurriculum }) {
                     </ul>
                 </div>
                 )}
-                
-                {/* CERTIFICAÇÕES */}
-
                 {valuesCurriculum?.certifications && (
                 <div>
                     <h1 
-                        className="uppercase text-StrongGray text-xl font-bold pb-2"
+                        className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                         style={{fontSize: valuesCurriculum?.textSubTitle}}
                     >
                         Certificações
@@ -160,7 +150,7 @@ export default function CurriculumModel1({ valuesCurriculum }) {
                             <li 
                                 style={{fontSize: valuesCurriculum?.textCorp}}
                                 key={index} 
-                                className="text-TitleGray text-sm"
+                                className="text-TitleGray text-p1920"
                             >
                                 {item?.name} <br />
                                 Carga horária {item?.workload}h. (Conclusão {item?.conclusion})

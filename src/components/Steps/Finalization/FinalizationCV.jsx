@@ -9,15 +9,24 @@ import FinalizationSelect from "./FinalizationSelect";
 
 export default function FinalizationCV(){
 
+    // CASO PASSAR O TAMANHO DO CURRICULO PRINCIPAL CRIAR UMA NOVA FOLHA COM OS OUTROS
+
     const {values, setValues} = useContext(CurriculumContext);
 
 
     const [color, setColor] = useState(values?.color)
     const [model, setModel] = useState(values?.model)
+
     const [language, setLanguages] = useState('BR')
+    // API
+
     const [textTitle, setTextTitle] = useState('28px')
     const [textSubTitle, setTextSubTitle] = useState('20px')
     const [textCorp, setTextCorp] = useState('12px')
+
+
+    const [sizeFile, setSizeFile] = useState('JPG')
+
 
     useEffect(() => {
         setValues(prevValues => ({
@@ -27,8 +36,9 @@ export default function FinalizationCV(){
             textTitle: textTitle,
             textSubTitle: textSubTitle,
             textCorp: textCorp,
+            sizeFile: sizeFile,
         }));
-    }, [color, model,textTitle, textSubTitle, textCorp, setValues]);
+    }, [color, model,textTitle, textSubTitle, textCorp, sizeFile, setValues]);
 
     const colors = [
         {color: 'A1A1A1'},
@@ -40,21 +50,14 @@ export default function FinalizationCV(){
         {color: 'A8890D'},
     ]
 
-    const labelsSelects = [
+    const labelsLeftSelects = [
         { label: 'Modelo', options: ['1', '2'], defaultValue: `${model}`, setVariable: setModel },
-        { label: 'Idioma do Currículo', options: ['Português - BR', 'Inglês - UK'], defaultValue: 'Português - BR', setVariable: setLanguages },
-        { label: 'Fonte Titulos', options: ['16px', '20px', '24px', '28px', '32px', '36px'], defaultValue: '28px', setVariable: setTextTitle },
-        { label: 'Fonte SubTitulos', options: ['12px', '16px', '20px', '24px', '28px', '32px'], defaultValue: '20px', setVariable: setTextSubTitle },
-        { label: 'Fonte Corpo', options: ['8px', '12px', '16px', '20px', '24px', '28px'], defaultValue: '12px', setVariable: setTextCorp },
+        { label: 'Idioma do Currículo', options: ['Português (BR)', 'Inglês', 'Italiano'], defaultValue: 'Português (BR)', setVariable: setLanguages },
+        { label: 'Fonte Titulos', options: ['22px', '24px', '26px', '28px', '30px', '32px', '34px'], defaultValue: '28px', setVariable: setTextTitle },
+        { label: 'Fonte SubTitulos', options: ['14px', '16px', '18px', '20px', '22px', '24px', '26px'], defaultValue: '20px', setVariable: setTextSubTitle },
+        { label: 'Fonte Corpo', options: ['6px','8px', '10px', '12px', '14px', '16px', '18px'], defaultValue: '12px', setVariable: setTextCorp },
     ];
-    
-    const labelsInputs = 
-        [
-            { label: 'Nome do Arquivo' },
-            { label: 'Formato do Arquivo' },
-            { label: 'Tamanho do Arquivo' },
-        ]
-    ;
+
     return(
         <div className="h-screen w-full bg-DefaultGray">
             <TopMarker stepsAtual={0} />
@@ -80,7 +83,8 @@ export default function FinalizationCV(){
 
                             </div>
                         </div>
-                        {labelsSelects?.map((item, index) => (
+
+                        {labelsLeftSelects?.map((item, index) => (
                             <FinalizationSelect 
                                 id={index} 
                                 key={index} 
@@ -100,10 +104,22 @@ export default function FinalizationCV(){
                 <div className="flex flex-col gap-y-4">
                     <Title title={'Opções Pra Baixar'} />
                     <div className="flex flex-col gap-y-4">
-                        {labelsInputs?.map((item, index)=>(
-                            <FinalizationInput id={index} key={index} label={item?.label}/>
-                        ))}
+                        <FinalizationInput 
+                            key={34}
+                            id={Math.random()}
+                            label={'Nome do Arquivo'}
+                            placeholder={'ex: meu-curriculo'}
+                        />
                         
+                        <FinalizationSelect 
+                            id={35} 
+                            key={Math.random()}
+                            label={'Formato do Arquivo'}
+                            options={['JPG', 'PNG', 'PDF', 'SVG', 'WEBP']}
+                            defaultValue={'PDF'}
+                            onChange={(e) => setSizeFile(e.target.value)}   
+                        />
+
                         <button className="w-full p-4 rounded-xl bg-DefaultOrange text-white uppercase text-sm tracking-wider font-medium">
                             Baixar Arquivo
                         </button>

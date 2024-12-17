@@ -17,7 +17,7 @@ export default function FormationCV() {
         { school: 'escola', title: 'titulo', yearEntry: 'ano entrada', yearLeave: 'ano saida' },
     ]);
     const [languages, setLanguages] = useState([
-        { language: 'lingua', level: 'NATIVO' },
+        { language: 'Língua', level: 'NATIVO' },
     ]);
     const [certifications, setCertifications] = useState([]); 
     const [isModalOpen, setIsModalOpen] = useState(false); 
@@ -97,18 +97,26 @@ export default function FormationCV() {
     };
 
     const inputsFormation = [
-        { label: 'Escola', category: 'school' },
-        { label: 'Ano Entrada', category: 'yearEntry' },
-        { label: 'Título', category: 'title' },
-        { label: 'Ano Saída', category: 'yearLeave' },
+        { label: 'Escola', placeholder: 'ex: Universidade Unisinos Porto Alegre',category: 'school' },
+        { label: 'Ano Entrada', placeholder: 'ex: 2020', category: 'yearEntry' },
+        { label: 'Título', placeholder: 'ex: Graduação Administração',category: 'title' },
+        { label: 'Ano Saída', placeholder: 'ex: 2024', category: 'yearLeave' },
     ];
 
     return (
         <div className="h-screen w-full bg-DefaultGray">
             <TopMarker stepsAtual={1} />
             <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
-                <div className="h-full w-8/12 flex flex-col gap-y-8 overflow-y-auto max-h-full">
-                    <Score />
+                <div className="h-full w-8/12 flex flex-col gap-y-8 max-h-full overflow-y-auto overflow-x-hidden 
+                [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar-track]:bg-gray-transparent
+                [&::-webkit-scrollbar-track]:rounded-full
+                [&::-webkit-scrollbar-thumb]:rounded-full
+                [&::-webkit-scrollbar-thumb]:bg-TitleGray
+                dark:[&::-webkit-scrollbar-track]:bg-TitleGray
+                dark:[&::-webkit-scrollbar-thumb]:bg-TitleGray 
+                ">
+                    <Score scoreValue={values?.score}/>
                     <Title
                         title="Formação e Competências"
                         description="Esta seção destaca sua formação acadêmica, idiomas e certificações similares ao cargo desejado."
@@ -134,7 +142,7 @@ export default function FormationCV() {
                                                   }
                                                 width={inputsFormation.indexOf(item) % 2 === 0 ? 'w-[calc(65%)]' : 'w-[calc(35%-1rem)]'}
                                                 onChange={(e) => handleFormationChange(e, idx, item.category)}
-                                                placeholder={item.category}
+                                                placeholder={item.placeholder}
                                             />
                                         ))}
                                     </div>
@@ -150,7 +158,7 @@ export default function FormationCV() {
                                 </button>
                             </div>
                         </div>
-                        <div className="w-4/12 pl-8 -mb-14 mt-10">
+                        <div className="w-4/12 px-4 -mb-14 mt-10">
                             <div className="h-full relative">
                                 <h1 className="text-2xl font-bold text-TitleGray absolute -top-4 left-[23%] bg-DefaultGray px-2">Certificações</h1>
                                 <div className="border border-BorderInputGray h-full w-full rounded-2xl p-4 pt-6 flex flex-col justify-between items-end gap-y-2">
@@ -178,12 +186,13 @@ export default function FormationCV() {
                                 id={index}
                                 label="Idioma"
                                 width="w-[calc(33.3%-1rem)]"
-                                value={item?.language === 'lingua' ? '' : item?.language}
+                                value={item?.language === 'Língua' ? '' : item?.language}
                                 isSelect={true}
                                 onChange={(e) => {
                                     const field = e.target.tagName === 'INPUT' ? 'language' : 'level';
                                     handleLanguagesChange(e, index, field);
                                 }}
+                                placeholder={'ex: Língua Inglesa'}
                             />
                         ))}
                         <button
@@ -193,13 +202,15 @@ export default function FormationCV() {
                             <Plus className="h-8 w-8" />
                         </button>
                     </div>
+                    <div className="w-full pr-1">
                         <ButtonNext link={'/steps/finalizationCV'} />
+                    </div>
+                        
                     </div>
                 </div>
                 <Curriculum valuesCurriculum={values} />
             </div>
 
-            {/* Modal for adding certifications */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-8 rounded-xl w-4/12 flex flex-col gap-y-8">
@@ -209,17 +220,20 @@ export default function FormationCV() {
                                 label="Nome da Certificação"
                                 value={certificationInputs.name}
                                 onChange={(e) => handleCertificationChange(e, 'name')}
+                                placeholder={'ex: Curso de Administração Empresarial'}
                             />
                             <Input
                                 label="Carga Horária"
                                 value={certificationInputs.workload}
                                 onChange={(e) => handleCertificationChange(e, 'workload')}
+                                placeholder={'ex: 120'}
                             />
                             <Input
                                 label="Data"
                                 value={certificationInputs.conclusion}
                                 onChange={(e) => handleCertificationChange(e, 'conclusion')}
                                 type="number"
+                                placeholder={'ex: 15/03/2021'}
                             />
                         </div>
                         <div className="flex justify-between">

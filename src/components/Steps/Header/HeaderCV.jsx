@@ -14,7 +14,7 @@ export default function HeaderCV() {
     const params = new URLSearchParams(location.search);
     const color = params.get('color');
     const model = params.get('model');
-
+    const [score, setScore] = useState('0')
     const [name, setName] = useState('Nome Completo');
     const [bairro, setBairro] = useState('Bairro');
     const [cidade, setCidade] = useState('Cidade');
@@ -26,29 +26,36 @@ export default function HeaderCV() {
     const { setValues } = useContext(CurriculumContext);
 
     const inputsArray = [
-        { label: 'Nome Completo', setVariable: setName },
-        { label: 'Bairro', setVariable: setBairro },
-        { label: 'Cidade', setVariable: setCidade },
-        { label: 'Estado', setVariable: setEstado },
-        { label: 'Telefone', setVariable: setTelefone },
-        { label: 'Email', setVariable: setEmail },
-        { label: 'Linkedin', setVariable: setLinkedin },
+        { label: 'Nome Completo', placeholder: 'ex: João Carlos', setVariable: setName },
+        { label: 'Bairro', placeholder: 'ex: Farroupilha', setVariable: setBairro },
+        { label: 'Cidade', placeholder: 'ex: Porto Alegre', setVariable: setCidade },
+        { label: 'Estado', placeholder: 'ex: RS', setVariable: setEstado },
+        { label: 'Telefone', placeholder: 'ex: (51) 00000-0000', setVariable: setTelefone },
+        { label: 'Email', placeholder: 'ex: joaocarlos@gmail.com', setVariable: setEmail },
+        { label: 'Linkedin', placeholder: 'ex: https://www.linkedin.com/in/joaocarlos/', setVariable: setLinkedin },
     ];
 
-    const valuesCurriculum = { model, color, name, email, bairro, cidade, estado, telefone, linkedin };
+    const valuesCurriculum = { score, model, color, name, email, bairro, cidade, estado, telefone, linkedin };
 
     const handleSubmit = () => {
         
         
         setValues(valuesCurriculum);
     };
+    useEffect(() => {
+        if (linkedin) {
+            setScore(10); 
+        } else {
+            setScore(0);  
+        }
+    }, [linkedin]);
 
     return (
         <div className="h-screen w-full bg-DefaultGray">
             <TopMarker stepsAtual={3} />
             <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
                 <div className="h-full w-8/12 flex flex-col gap-y-8">
-                    <Score />
+                    <Score key={123} scoreValue={score} />
 
                     <Title
                         title='Cabeçalho'
@@ -61,9 +68,10 @@ export default function HeaderCV() {
                                 key={index}
                                 id={index}
                                 label={item.label}
-                                isLast={index === inputsArray.length - 1} // Definir isLast dinamicamente
+                                isLast={index === inputsArray.length - 1} 
                                 width={'w-[calc(50%-0.5rem)]'}
                                 onChange={(e) => item.setVariable(e.target.value)}
+                                placeholder={item.placeholder}
                             />
                         ))}
                     </div>

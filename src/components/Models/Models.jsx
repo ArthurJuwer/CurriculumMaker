@@ -89,7 +89,7 @@ export default function Models() {
                     />
                 ))}
             </div>
-            <div className="flex justify-center gap-x-12 w-full h-screen">
+            <div className="flex justify-center items-center gap-x-12 w-full h-screen">
                 <ModelsThemes 
                     valuesCurriculum={valuesModel}
                  />

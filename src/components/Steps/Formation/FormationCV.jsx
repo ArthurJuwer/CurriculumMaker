@@ -13,6 +13,8 @@ import { CurriculumContext } from "../../../context/CurriculumContext";
 export default function FormationCV() {
     const { values, setValues } = useContext(CurriculumContext);
 
+    const [score, setScore] = useState(values?.score);
+
     const [formations, setFormations] = useState([
         { school: 'escola', title: 'titulo', yearEntry: 'ano entrada', yearLeave: 'ano saida' },
     ]);
@@ -30,11 +32,12 @@ export default function FormationCV() {
     useEffect(() => {
         setValues(prevValues => ({
             ...prevValues,
-            formations: formations,
-            languages: languages,
-            certifications: certifications, 
+            formations,
+            languages, 
+            certifications, 
+            score,
         }));
-    }, [formations, languages, certifications, setValues]);
+    }, [score, formations, languages, certifications, setValues]);
 
     const addFormation = () => {
         setFormations([
@@ -107,105 +110,108 @@ export default function FormationCV() {
         <div className="h-screen w-full bg-DefaultGray">
             <TopMarker stepsAtual={1} />
             <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
-                <div className="h-full w-8/12 flex flex-col gap-y-8 max-h-full overflow-y-auto overflow-x-hidden 
-                [&::-webkit-scrollbar]:w-2
-                [&::-webkit-scrollbar-track]:bg-gray-transparent
-                [&::-webkit-scrollbar-track]:rounded-full
-                [&::-webkit-scrollbar-thumb]:rounded-full
-                [&::-webkit-scrollbar-thumb]:bg-TitleGray
-                dark:[&::-webkit-scrollbar-track]:bg-TitleGray
-                dark:[&::-webkit-scrollbar-thumb]:bg-TitleGray 
-                ">
-                    <Score scoreValue={values?.score}/>
-                    <Title
-                        title="Formação e Competências"
-                        description="Esta seção destaca sua formação acadêmica, idiomas e certificações similares ao cargo desejado."
-                    />
-                    <div className="flex">
-                        <div className="flex flex-col gap-y-4 w-8/12 -mt-6">
-                            <FormationSubTitle subtitle={'Formação'} />
-                            {formations?.map((formation, idx) => (
-                                <div key={idx} className="border border-BorderInputGray rounded-xl px-2 py-7 flex flex-wrap w-full gap-x-4 gap-y-6">
-                                    <div className="flex gap-x-4 gap-y-6 w-full flex-wrap">
-                                        {inputsFormation?.map((item) => (
-                                            <Input
-                                                key={item.category}
-                                                id={item.category}
-                                                label={item.label}
-                                                value={
-                                                    formation[item.category] === 'escola' ||
-                                                    formation[item.category] === 'titulo' ||
-                                                    formation[item.category] === 'ano entrada' ||
-                                                    formation[item.category] === 'ano saida'
-                                                    ? ''
-                                                    : formation[item.category]
-                                                  }
-                                                width={inputsFormation.indexOf(item) % 2 === 0 ? 'w-[calc(65%)]' : 'w-[calc(35%-1rem)]'}
-                                                onChange={(e) => handleFormationChange(e, idx, item.category)}
-                                                placeholder={item.placeholder}
-                                            />
-                                        ))}
+            <div className="flex flex-col gap-y-8 w-8/12 h-full">
+                <Score values={values} page={3} backValue={(newScore) => setScore(newScore)}/>
+                    <div className="flex flex-col gap-y-8 overflow-y-auto overflow-x-visible 
+                    [&::-webkit-scrollbar]:w-2
+                    [&::-webkit-scrollbar-track]:bg-gray-transparent
+                    [&::-webkit-scrollbar-track]:rounded-full
+                    [&::-webkit-scrollbar-thumb]:rounded-full
+                    [&::-webkit-scrollbar-thumb]:bg-TitleGray
+                    dark:[&::-webkit-scrollbar-track]:bg-TitleGray
+                    dark:[&::-webkit-scrollbar-thumb]:bg-TitleGray 
+                    ">
+                        
+                        <Title
+                            title="Formação e Competências"
+                            description="Esta seção destaca sua formação acadêmica, idiomas e certificações similares ao cargo desejado."
+                        />
+                        <div className="flex">
+                            <div className="flex flex-col gap-y-4 w-8/12 -mt-6">
+                                <FormationSubTitle subtitle={'Formação'} />
+                                {formations?.map((formation, idx) => (
+                                    <div key={idx} className="border border-BorderInputGray rounded-xl px-2 py-7 flex flex-wrap w-full gap-x-4 gap-y-6">
+                                        <div className="flex gap-x-4 gap-y-6 w-full flex-wrap">
+                                            {inputsFormation?.map((item) => (
+                                                <Input
+                                                    key={item.category}
+                                                    id={item.category}
+                                                    label={item.label}
+                                                    value={
+                                                        formation[item.category] === 'escola' ||
+                                                        formation[item.category] === 'titulo' ||
+                                                        formation[item.category] === 'ano entrada' ||
+                                                        formation[item.category] === 'ano saida'
+                                                        ? ''
+                                                        : formation[item.category]
+                                                    }
+                                                    width={inputsFormation.indexOf(item) % 2 === 0 ? 'w-[calc(65%)]' : 'w-[calc(35%-1rem)]'}
+                                                    onChange={(e) => handleFormationChange(e, idx, item.category)}
+                                                    placeholder={item.placeholder}
+                                                />
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                            <div className="w-full">
-                                <button
-                                    onClick={addFormation}
-                                    className="border-b border-t border-BorderInputGray border-dashed w-full py-3 flex items-center gap-x-4"
-                                >
-                                    <Plus className="p-1 w-10 h-10 bg-TitleGray text-white rounded-full" />
-                                    <h1 className="uppercase text-TitleGray font-semibold">Adicionar Formação</h1>
-                                </button>
-                            </div>
-                        </div>
-                        <div className="w-4/12 px-4 -mb-14 mt-10">
-                            <div className="h-full relative">
-                                <h1 className="text-2xl font-bold text-TitleGray absolute -top-4 left-[23%] bg-DefaultGray px-2">Certificações</h1>
-                                <div className="border border-BorderInputGray h-full w-full rounded-2xl p-4 pt-6 flex flex-col justify-between items-end gap-y-2">
-                                    <div className="w-full flex flex-col gap-y-2">
-                                        {certifications?.map((item,index)=>(
-                                            <FormationCertifications key={index} title={item?.name}/>
-                                        ))}
-                                        
-                                    </div>
+                                ))}
+                                <div className="w-full">
                                     <button
-                                        className="uppercase bg-TitleGray w-full py-2 text-white rounded-2xl text-sm"
-                                        onClick={showModal}>
-                                            Adicionar
+                                        onClick={addFormation}
+                                        className="border-b border-t border-BorderInputGray border-dashed w-full py-3 flex items-center gap-x-4"
+                                    >
+                                        <Plus className="p-1 w-10 h-10 bg-TitleGray text-white rounded-full" />
+                                        <h1 className="uppercase text-TitleGray font-semibold">Adicionar Formação</h1>
                                     </button>
                                 </div>
                             </div>
+                            <div className="w-4/12 px-4 -mb-14 mt-10">
+                                <div className="h-full relative">
+                                    <h1 className="text-2xl font-bold text-TitleGray absolute -top-4 left-[23%] bg-DefaultGray px-2">Certificações</h1>
+                                    <div className="border border-BorderInputGray h-full w-full rounded-2xl p-4 pt-6 flex flex-col justify-between items-end gap-y-2">
+                                        <div className="w-full flex flex-col gap-y-2">
+                                            {certifications?.map((item,index)=>(
+                                                <FormationCertifications key={index} title={item?.name}/>
+                                            ))}
+                                            
+                                        </div>
+                                        <button
+                                            className="uppercase bg-TitleGray w-full py-2 text-white rounded-2xl text-sm"
+                                            onClick={showModal}>
+                                                Adicionar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex flex-col gap-y-4 w-full -mt-6">
-                        <FormationSubTitle subtitle={'Idiomas'} />
-                        <div className="flex gap-x-4 gap-y-6 w-full flex-wrap">
-                        {languages?.map((item, index) => (
-                            <Input
-                                key={index}
-                                id={index}
-                                label="Idioma"
-                                width="w-[calc(33.3%-1rem)]"
-                                value={item?.language === 'Língua' ? '' : item?.language}
-                                isSelect={true}
-                                onChange={(e) => {
-                                    const field = e.target.tagName === 'INPUT' ? 'language' : 'level';
-                                    handleLanguagesChange(e, index, field);
-                                }}
-                                placeholder={'ex: Língua Inglesa'}
-                            />
-                        ))}
-                        <button
-                            className="bg-TitleGray h-14 w-14 rounded-xl text-white flex justify-center items-center"
-                            onClick={addLanguage}
-                        >
-                            <Plus className="h-8 w-8" />
-                        </button>
-                    </div>
-                    <div className="w-full pr-1">
-                        <ButtonNext link={'/steps/finalizationCV'} />
-                    </div>
-                        
+                        <div className="flex flex-col gap-y-4 w-full -mt-6">
+                            <FormationSubTitle subtitle={'Idiomas'} />
+                            <div className="flex gap-x-4 gap-y-6 w-full flex-wrap">
+                            {languages?.map((item, index) => (
+                                <Input
+                                    key={index}
+                                    id={index}
+                                    label="Idioma"
+                                    width="w-[calc(33.3%-1rem)]"
+                                    value={item?.language === 'Língua' ? '' : item?.language}
+                                    isSelect={true}
+                                    onChange={(e) => {
+                                        const field = e.target.tagName === 'INPUT' ? 'language' : 'level';
+                                        handleLanguagesChange(e, index, field);
+                                    }}
+                                    placeholder={'ex: Língua Inglesa'}
+                                />
+                            ))}
+                            <button
+                                className="bg-TitleGray h-14 w-14 rounded-xl text-white flex justify-center items-center"
+                                onClick={addLanguage}
+                            >
+                                <Plus className="h-8 w-8" />
+                            </button>
+                        </div>
+                        <div className="w-full pr-1">
+                            <ButtonNext link={'/steps/finalizationCV'} />
+                        </div>
+                            
+                        </div>
                     </div>
                 </div>
                 <Curriculum valuesCurriculum={values} />

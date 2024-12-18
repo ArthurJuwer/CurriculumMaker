@@ -6,13 +6,16 @@ import TopMarker from "../StepsGlobalComponents/TopMarker";
 import FinalizationInput from "./FinalizationInput";
 import { CurriculumContext } from "../../../context/CurriculumContext";
 import FinalizationSelect from "./FinalizationSelect";
+import Score from "../StepsGlobalComponents/Score";
 
 export default function FinalizationCV(){
 
     // CASO PASSAR O TAMANHO DO CURRICULO PRINCIPAL CRIAR UMA NOVA FOLHA COM OS OUTROS
+    
 
     const {values, setValues} = useContext(CurriculumContext);
-
+    
+    const [score, setScore] = useState(values?.score);
 
     const [color, setColor] = useState(values?.color)
     const [model, setModel] = useState(values?.model)
@@ -26,19 +29,22 @@ export default function FinalizationCV(){
 
 
     const [sizeFile, setSizeFile] = useState('JPG')
+    const [nameCurriculum, setNameCurriculum] = useState('')
 
 
     useEffect(() => {
         setValues(prevValues => ({
             ...prevValues,
-            model: model,
-            color: color,
-            textTitle: textTitle,
-            textSubTitle: textSubTitle,
-            textCorp: textCorp,
-            sizeFile: sizeFile,
+            model,
+            color,
+            textTitle,
+            textSubTitle,
+            textCorp,
+            sizeFile,
+            nameCurriculum,
+            score,
         }));
-    }, [color, model,textTitle, textSubTitle, textCorp, sizeFile, setValues]);
+    }, [model, color, textTitle, textSubTitle, textCorp, sizeFile, nameCurriculum, score, setValues]);
 
     const colors = [
         {color: 'A1A1A1'},
@@ -109,6 +115,7 @@ export default function FinalizationCV(){
                             id={Math.random()}
                             label={'Nome do Arquivo'}
                             placeholder={'ex: meu-curriculo'}
+                            onChange={(e) => setNameCurriculum(e.target.value)}   
                         />
                         
                         <FinalizationSelect 
@@ -123,15 +130,8 @@ export default function FinalizationCV(){
                         <button className="w-full p-4 rounded-xl bg-DefaultOrange text-white uppercase text-sm tracking-wider font-medium">
                             Baixar Arquivo
                         </button>
-                        <div className="flex justify-between items-center w-full">
-                            <div className="flex gap-x-2 items-center">
-                                <span className="h-9 w-20 bg-scoreColors-red text-white flex items-center justify-center rounded-3xl font-semibold">15%</span>
-                                <p className="text-WeakGray text-base font-semibold">Pontuação Final</p>
-                            </div>
-                            <div className="w-9 h-9 rounded-full bg-TitleGray text-xl text-white flex items-center justify-center">
-                                !
-                            </div>
-                            
+                        <div className="">
+                            <Score values={values} page={4} backValue={(newScore) => setScore(newScore)} isLast={true}/>
                         </div>
                         
                     </div>

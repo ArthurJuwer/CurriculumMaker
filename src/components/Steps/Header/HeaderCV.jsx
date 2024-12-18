@@ -14,7 +14,7 @@ export default function HeaderCV() {
     const params = new URLSearchParams(location.search);
     const color = params.get('color');
     const model = params.get('model');
-    const [score, setScore] = useState('0')
+    const [score, setScore] = useState('');
     const [name, setName] = useState('Nome Completo');
     const [bairro, setBairro] = useState('Bairro');
     const [cidade, setCidade] = useState('Cidade');
@@ -35,49 +35,41 @@ export default function HeaderCV() {
         { label: 'Linkedin', placeholder: 'ex: https://www.linkedin.com/in/joaocarlos/', setVariable: setLinkedin },
     ];
 
-    const valuesCurriculum = { score, model, color, name, email, bairro, cidade, estado, telefone, linkedin };
+    const values = { score, model, color, name, email, bairro, cidade, estado, telefone, linkedin };
 
     const handleSubmit = () => {
-        
-        
-        setValues(valuesCurriculum);
+        setValues(values);
     };
-    useEffect(() => {
-        if (linkedin) {
-            setScore(10); 
-        } else {
-            setScore(0);  
-        }
-    }, [linkedin]);
 
     return (
         <div className="h-screen w-full bg-DefaultGray">
             <TopMarker stepsAtual={3} />
             <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
-                <div className="h-full w-8/12 flex flex-col gap-y-8">
-                    <Score key={123} scoreValue={score} />
+                <div className="flex flex-col gap-y-8 w-8/12 h-full">
+                    <Score values={values} page={1} backValue={(newScore) => setScore(newScore)}/>
+                    <div className="h-full flex flex-col gap-y-8">
+                        <Title
+                            title='Cabeçalho'
+                            description='Eles permitem que os empregadores vejam como podem entrar em contato com você.'
+                        />
 
-                    <Title
-                        title='Cabeçalho'
-                        description='Eles permitem que os empregadores vejam como podem entrar em contato com você.'
-                    />
-
-                    <div className="pt-5 w-full flex flex-wrap gap-x-4 gap-y-10">
-                        {inputsArray.map((item, index) => (
-                            <Input
-                                key={index}
-                                id={index}
-                                label={item.label}
-                                isLast={index === inputsArray.length - 1} 
-                                width={'w-[calc(50%-0.5rem)]'}
-                                onChange={(e) => item.setVariable(e.target.value)}
-                                placeholder={item.placeholder}
-                            />
-                        ))}
+                        <div className="pt-5 w-full flex flex-wrap gap-x-4 gap-y-10">
+                            {inputsArray.map((item, index) => (
+                                <Input
+                                    key={index}
+                                    id={index}
+                                    label={item.label}
+                                    isLast={index === inputsArray.length - 1} 
+                                    width={'w-[calc(50%-0.5rem)]'}
+                                    onChange={(e) => item.setVariable(e.target.value)}
+                                    placeholder={item.placeholder}
+                                />
+                            ))}
+                        </div>
+                        <ButtonNext onClick={handleSubmit} link={'/steps/presentationCV'}/>
                     </div>
-                    <ButtonNext onClick={handleSubmit} link={'/steps/presentationCV'}/>
                 </div>
-                <Curriculum valuesCurriculum={valuesCurriculum}/>
+                <Curriculum valuesCurriculum={values}/>
             </div>
         </div>
     );

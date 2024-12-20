@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { CurriculumContext } from "../../../context/CurriculumContext";
 
-export default function CurriculumModel1({ valuesCurriculum, isLast }) {
+export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages }) {
   const [isNewPage, setIsNewPage] = useState(false); // Para controlar se uma nova página é necessária
   const curriculumRef = useRef(null); // Referência para o contêiner do currículo
   const borderRef = useRef(null); // Referência para o contêiner das bordas
@@ -51,14 +51,21 @@ export default function CurriculumModel1({ valuesCurriculum, isLast }) {
       }));
     }
   }, [elementsMoved, setValues]);
-  
+  useEffect(()=>{
+    setValues((prevValues) => ({
+      ...prevValues,
+      currentPage,
+    }));
+  }, [currentPage])
+
+
   return (
     <>
     
 
       {currentPage === 1 && (
         <div
-          className={`h-full ${isLast ? "w-full" : "w-4/12 border-2 border-WeakGray"} flex flex-col flex-wrap p-5 relative`}
+          className={`page-1 h-full ${isLast ? "w-full" : "w-4/12 border-2 border-WeakGray"} flex flex-col flex-wrap p-5 relative`}
           ref={borderRef}
         >
 
@@ -72,7 +79,7 @@ export default function CurriculumModel1({ valuesCurriculum, isLast }) {
                 1
             </button>
             {
-                isNewPage == true || isLast 
+                isNewPage == true || twoPages == true 
                 ?
                     <button
                     onClick={() => setCurrentPage(2)}
@@ -245,7 +252,7 @@ export default function CurriculumModel1({ valuesCurriculum, isLast }) {
       {isNewPage && currentPage === 2 && (
           <div
             ref={borderRef}
-            className={`h-full ${isLast ? "w-full" : "w-4/12 border-2 border-WeakGray"} p-10 relative`}
+            className={`page-2 h-full ${isLast ? "w-full" : "w-4/12 border-2 border-WeakGray"} p-10 relative`}
             // MUDANÇA p-10 para p-5 e div de baixo p-5
           >
             <div

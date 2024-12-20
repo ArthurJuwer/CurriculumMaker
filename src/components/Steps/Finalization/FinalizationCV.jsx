@@ -22,6 +22,8 @@ export default function FinalizationCV() {
     const [textCorp, setTextCorp] = useState("12px");
     const [sizeFile, setSizeFile] = useState("PDF");
     const [nameCurriculum, setNameCurriculum] = useState("");
+    const [currentPage, setCurrentPage] = useState(1); // Estado para controlar a página atual
+    const [imgData2, setImgData2] = useState(null); // Estado para armazenar a imagem da segunda página
 
     const curriculumRef = useRef(); // Ref para o componente Curriculum
 
@@ -57,37 +59,48 @@ export default function FinalizationCV() {
         { label: "Fonte Corpo", options: ["6px", "8px", "10px", "12px", "14px", "16px", "18px"], defaultValue: "12px", setVariable: setTextCorp },
     ];
 
+    // Função para gerar o PDF
     const gerarPDF = () => {
-
         html2canvas(curriculumRef.current, { scale: 3 }).then((canvas) => {
-
-            const imgData = canvas.toDataURL('image/png');
-    
+            const imgData1 = canvas.toDataURL('image/png');
+            
             const doc = new jsPDF();
     
-            const imgWidth = canvas.width / 3;
-            const imgHeight = canvas.height / 3;
-    
-            console.log("Largura da imagem:", imgWidth);
-            console.log("Altura da imagem:", imgHeight);
-    
-            const pdfWidth = 210;
-            const pdfHeight = 297;
-    
-            const aspectRatio = canvas.width / canvas.height;
-            let newWidth = pdfWidth / aspectRatio;
-            let newHeight = newWidth / aspectRatio;
-            
-            if (newHeight > pdfHeight) {
-                newHeight = pdfHeight;
-                newWidth = newHeight * aspectRatio;
-            }
-    
-            doc.addImage(imgData, 'PNG', 0, 0, newWidth, newHeight);
+            const pdfWidth = 210; // A4 width in mm
+            const pdfHeight = 297; // A4 height in mm
 
-            doc.save(`${nameCurriculum || "curriculum"}.pdf`);
+            // Adiciona a primeira página
+            doc.addImage(imgData1, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+            // Verifica se é necessário adicionar uma segunda página
+            if (values?.elementsMoved > 0) { // Verifica se a segunda página deve ser adicionada
+                // Adiciona uma nova página ao PDF com a imagem da segunda página armazenada
+                doc.addPage();
+                if(imgData2 == null){
+                    alert("VISUALIZE A SEGUNDA PAGINA")
+                } else {
+                    doc.addImage(imgData2, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    doc.save(`${nameCurriculum || "curriculum"}.pdf`);
+                }
+                
+            } else {
+                doc.save(`${nameCurriculum || "curriculum"}.pdf`);
+            } 
+
+            // Salva o PDF
+            
         });
     };
+
+    // Função para capturar a segunda página quando o currentPage for 2
+    useEffect(() => {
+        if (values?.currentPage === 2) {
+            html2canvas(curriculumRef.current, { scale: 3 }).then((canvas) => {
+                const imgData = canvas.toDataURL('image/png');
+                setImgData2(imgData); // Armazena a imagem da segunda página
+            });
+        }
+    }, [values?.currentPage]); // Executa sempre que o currentPage mudar para 2
 
     return (
         <div className="h-screen w-full bg-DefaultGray">
@@ -128,7 +141,7 @@ export default function FinalizationCV() {
                 <div className="h-full w-4/12 border-2 border-WeakGray">
                     <div ref={curriculumRef} className="flex items-center justify-center h-full w-full">
                         {values ? (
-                            <Curriculum valuesCurriculum={values} isLast={true} />
+                            <Curriculum valuesCurriculum={values} isLast={true} twoPages={values?.elementsMoved > 0 ? true : false} />
                         ) : (
                             <p>Loading...</p>
                         )}
@@ -149,7 +162,7 @@ export default function FinalizationCV() {
                         {/* Botão para gerar PDF */}
                         <button
                             className="w-full p-4 rounded-xl bg-DefaultOrange text-white uppercase text-sm tracking-wider font-medium"
-                            onClick={gerarPDF} // Usa a função de gerar PDF
+                            onClick={gerarPDF} 
                         >
                             Gerar PDF
                         </button>

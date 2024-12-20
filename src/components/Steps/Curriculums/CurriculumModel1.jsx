@@ -1,165 +1,394 @@
-export default function CurriculumModel1({ valuesCurriculum }) {
-    return (
-        <div className="flex flex-col gap-y-5">
-            <div>
-                <h1 className="uppercase text-StrongGray text-title1920 font-bold pb-1"
-                    style={{fontSize: valuesCurriculum?.textTitle}}>
-                    {valuesCurriculum?.name}
-                </h1>
-                <ol 
-                    className="text-p1920 flex flex-wrap gap-y-2 gap-x-2" 
-                    style={{ color: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textCorp}}
-                >
-                    <div className="flex gap-x-1">
-                        <li className="after:content-['_|']">{valuesCurriculum?.bairro}</li>
-                        <li className="after:content-[',']">{valuesCurriculum?.cidade}</li>
-                        <li className="after:content-['_|']">{valuesCurriculum?.estado}</li>
-                        <li className="after:content-['_|']">{valuesCurriculum?.telefone}</li>
-                    </div>
-                    <li>{valuesCurriculum?.email}</li>
-                    <li>{valuesCurriculum?.linkedin}</li>
-                </ol>
-            </div>
+import { useContext, useEffect, useRef, useState } from "react";
+import { CurriculumContext } from "../../../context/CurriculumContext";
 
+export default function CurriculumModel1({ valuesCurriculum, isLast }) {
+  const [isNewPage, setIsNewPage] = useState(false); // Para controlar se uma nova página é necessária
+  const curriculumRef = useRef(null); // Referência para o contêiner do currículo
+  const borderRef = useRef(null); // Referência para o contêiner das bordas
+  const [currentPage, setCurrentPage] = useState(1);
+  const [elementsMoved, setElementsMoved] = useState(0);
+  const {setValues} = useContext(CurriculumContext)
+  
+
+
+  useEffect(() => {
+    if (curriculumRef.current && borderRef.current) {
+        let curriculumHeight = curriculumRef.current.offsetHeight;
+        let borderHeight = borderRef.current.offsetHeight;
+
+      
+
+      if (curriculumHeight > borderHeight) {
+        setIsNewPage(true);
+        setElementsMoved(prevState => prevState + 1)
+        
+      } 
+      // else {
+      //   setIsNewPage(false);
+      // }
+    }
+  }, [valuesCurriculum]);
+    
+  
+    useEffect(()=>{
+        
+    if (curriculumRef.current && borderRef.current) {
+        let curriculumHeight = curriculumRef.current.offsetHeight;
+        let borderHeight = borderRef.current.offsetHeight;
+        if (curriculumHeight > borderHeight) {
+            setIsNewPage(true);
+            setElementsMoved((prevState) => prevState + 1);
             
-                <div className="flex flex-col gap-y-2">
+        }
+    }
 
-                {valuesCurriculum?.objective && (
-                    <div>
-                        <h1 
-                            className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                            style={{fontSize: valuesCurriculum?.textSubTitle}}
-                        >
-                            Objetivo
-                        </h1>
-                        <p 
-                            className="text-p1920  text-TitleGray"
-                            style={{fontSize: valuesCurriculum?.textCorp}}
-                        >
-                            {valuesCurriculum?.objective}
-                        </p>
-                        
+  }, [elementsMoved])
+  useEffect(() => {
+    if (elementsMoved > 0) {
+      setValues((prevValues) => ({
+        ...prevValues,
+        elementsMoved,
+      }));
+    }
+  }, [elementsMoved, setValues]);
+  
+  return (
+    <>
+    
 
-                    </div>
-                
-                )}
-                {valuesCurriculum?.projects?.length > 0 && (
-                    <div>
-                        <h1 
-                            className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                            style={{fontSize: valuesCurriculum?.textSubTitle}}
-                        >
-                            Experiências
-                        </h1>
+      {currentPage === 1 && (
+        <div
+          className={`h-full ${isLast ? "w-full" : "w-4/12 border-2 border-WeakGray"} flex flex-col flex-wrap p-5 relative`}
+          ref={borderRef}
+        >
 
-                        <div className="flex flex-col gap-y-2">
-                            {valuesCurriculum?.projects?.map((item, index) => (
-                                <div key={`project-${index}`}>
-                                    <p 
-                                        style={{ color: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textCorp }} 
-                                        className="text-p1920"
-                                    >
-                                        {item?.year}
-                                    </p>
-                                    <p 
-                                        style={{fontSize: valuesCurriculum?.textCorp}}
-                                        className="text-TitleGray text-p1920"
-                                    >
-                                        {item?.title} | {item?.category}
-                                    </p>
-                                    <p
-                                        style={{fontSize: valuesCurriculum?.textCorp}}
-                                        className="text-WeakGray text-p1920"
-                                    >
-                                        {item?.description}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                {valuesCurriculum?.formations && (
-                <div>
-                    <h1 
-                        className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                        style={{fontSize: valuesCurriculum?.textSubTitle}}
+        <div
+            className={`bg-TitleGray px-12 py-1 absolute left-1/2 -translate-x-1/2 -top-12 rounded-xl flex gap-x-12 text-xl`}
+        >
+            <button
+                onClick={() => setCurrentPage(1)}
+                className={`text-WeakGray ${currentPage === 1 ? 'text-white' : ''}`}
+            >
+                1
+            </button>
+            {
+                isNewPage == true || isLast 
+                ?
+                    <button
+                    onClick={() => setCurrentPage(2)}
+                    className={`text-WeakGray ${currentPage === 2 ? 'text-white' : ''}`}
                     >
-                        Formação
-                    </h1>
-                    
-                    {valuesCurriculum?.formations?.map((item, index) => (
-                        <ul 
-                            key={`formation-${index}`} 
-                            className="pb-2 list-disc pl-4"
-                        >
-                            <li 
-                                style={{fontSize: valuesCurriculum?.textCorp}}
-                                className="text-TitleGray text-p1920"
-                            >
-                                {item?.school}
-                            </li>
-                            <li 
-                                style={{fontSize: valuesCurriculum?.textCorp}}
-                                className="text-TitleGray text-p1920"
-                            >
-                                {item?.title} | {item?.yearEntry} - {item?.yearLeave}
-                            </li>
-                        </ul>
-                    ))}
-                </div>
-                )}
-                {valuesCurriculum?.languages && (
-                <div>
-                    <h1 
-                        className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                        style={{fontSize: valuesCurriculum?.textSubTitle}}
-                    >
-                        Idiomas
-                    </h1>
-
-                    <ul 
-                        className="pb-2 list-disc pl-4"
-                    > 
-                        {valuesCurriculum?.languages?.map((item, index)=>(
-                            <li 
-                                style={{fontSize: valuesCurriculum?.textCorp}}
-                                key={index} 
-                                className="text-TitleGray text-p1920"
-                            >
-                                {item?.language} ({item?.level})
-                            </li>
-                        ))}
-                        
-                    </ul>
-                </div>
-                )}
-                {valuesCurriculum?.certifications && (
-                <div>
-                    <h1 
-                        className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                        style={{fontSize: valuesCurriculum?.textSubTitle}}
-                    >
-                        Certificações
-                    </h1>
-
-                    <ul 
-                        className="pb-2 list-disc pl-4"
-                    >
-                        {valuesCurriculum?.certifications?.map((item,index)=>(
-                            <li 
-                                style={{fontSize: valuesCurriculum?.textCorp}}
-                                key={index} 
-                                className="text-TitleGray text-p1920"
-                            >
-                                {item?.name} <br />
-                                Carga horária {item?.workload}h. (Conclusão {item?.conclusion})
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                )}
-            </div>
+                        2
+                    </button>
+                :
+                    ''
+            }
         </div>
-    );
+        
+          <div className="flex flex-col flex-wrap gap-y-5 p-5" ref={curriculumRef} >
+            <div>
+              
+              <h1
+                className="uppercase text-StrongGray text-title1920 font-bold pb-1"
+                style={{ fontSize: valuesCurriculum?.textTitle || "19pt" }}
+              >
+                {valuesCurriculum?.name}
+              </h1>
+              <ol
+                className="text-p1920 flex flex-wrap gap-y-2 gap-x-2"
+                style={{ color: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textCorp }}
+              >
+                <div className="flex gap-x-1">
+                  <li>{valuesCurriculum?.bairro} |</li>
+                  <li>{valuesCurriculum?.cidade},</li>
+                  <li>{valuesCurriculum?.estado} |</li>
+                  <li>{valuesCurriculum?.telefone} |</li>
+                </div>
+                <li>{valuesCurriculum?.email}</li>
+                <li>{valuesCurriculum?.linkedin}</li>
+              </ol>
+            </div>
+
+            <div className="flex flex-col gap-y-2">
+              {valuesCurriculum?.objective && !(elementsMoved >= 5) && (
+                <div>
+                  <h1
+                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                  >
+                    Objetivo
+                  </h1>
+                  <p
+                    className="text-p1920 text-TitleGray"
+                    style={{ fontSize: valuesCurriculum?.textCorp }}
+                  >
+                    {valuesCurriculum?.objective}
+                  </p>
+                </div>
+              )}
+
+              {valuesCurriculum?.projects?.length > 0 && !(elementsMoved >= 4) && (
+                <div>
+                  <h1
+                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                  >
+                    Experiências
+                  </h1>
+                  <div className="flex flex-col gap-y-2">
+                    {valuesCurriculum?.projects?.map((item, index) => (
+                      <div key={`project-${index}`}>
+                        <p
+                          style={{ color: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textCorp }}
+                          className="text-p1920"
+                        >
+                          {item?.year}
+                        </p>
+                        <p
+                          style={{ fontSize: valuesCurriculum?.textCorp }}
+                          className="text-TitleGray text-p1920"
+                        >
+                          {item?.title} | {item?.category}
+                        </p>
+                        <p
+                          style={{ fontSize: valuesCurriculum?.textCorp }}
+                          className="text-WeakGray text-p1920"
+                        >
+                          {item?.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {valuesCurriculum?.formations && !(elementsMoved >= 3) && (
+                <div>
+                  <h1
+                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                  >
+                    Formação
+                  </h1>
+                  {valuesCurriculum?.formations?.map((item, index) => (
+                    <ul key={`formation-${index}`} className="pb-2">
+                      <div className="flex items-center gap-x-4">
+                        <li
+                          style={{ fontSize: valuesCurriculum?.textCorp }}
+                          className="text-TitleGray text-p1920 flex items-center"
+                        >
+                          • {item?.school}
+                        </li>
+                      </div>
+
+                      <li
+                        style={{ fontSize: valuesCurriculum?.textCorp }}
+                        className="text-TitleGray text-p1920"
+                      >
+                        • {item?.title} | {item?.yearEntry} - {item?.yearLeave}
+                      </li>
+                    </ul>
+                  ))}
+                </div>
+              )}
+
+              {valuesCurriculum?.languages && !(elementsMoved >= 2) && (
+                <div>
+                  <h1
+                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                  >
+                    Idiomas
+                  </h1>
+                  <ul className="pb-2">
+                    {valuesCurriculum?.languages?.map((item, index) => (
+                      <li
+                        style={{ fontSize: valuesCurriculum?.textCorp }}
+                        key={index}
+                        className="text-TitleGray text-p1920"
+                      >
+                        • {item?.language} ({item?.level})
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {valuesCurriculum?.certifications && !(elementsMoved >= 1) && (
+                <div>
+                  <h1
+                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                  >
+                    Certificações
+                  </h1>
+                  <ul className="pb-2 list-disc pl-4">
+                    {valuesCurriculum?.certifications?.map((item, index) => (
+                      <li
+                        style={{ fontSize: valuesCurriculum?.textCorp }}
+                        key={index}
+                        className="text-TitleGray text-p1920"
+                      >
+                        {item?.name} <br />
+                        Carga horária {item?.workload}h. (Conclusão {item?.conclusion})
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Renderiza a segunda página, se necessário */}
+      {isNewPage && currentPage === 2 && (
+          <div
+            ref={borderRef}
+            className={`h-full ${isLast ? "w-full" : "w-4/12 border-2 border-WeakGray"} p-10 relative`}
+            // MUDANÇA p-10 para p-5 e div de baixo p-5
+          >
+            <div
+            className={`bg-TitleGray px-12 py-1 absolute left-1/2 -translate-x-1/2 -top-12 rounded-xl flex gap-x-12 text-xl`}
+            >
+                <button
+                    onClick={() => setCurrentPage(1)}
+                    className={`text-WeakGray ${currentPage === 1 ? 'text-white' : ''}`}
+                >
+                    1
+                </button>
+                <button
+                onClick={() => setCurrentPage(2)}
+                className={`text-WeakGray ${currentPage === 2 ? 'text-white' : ''}`}
+                >
+                    2
+                </button>
+            </div>
+            {valuesCurriculum?.objective && elementsMoved >= 5 && (
+                <div>
+                  <h1
+                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                  >
+                    Objetivo
+                  </h1>
+                  <p
+                    className="text-p1920 text-TitleGray"
+                    style={{ fontSize: valuesCurriculum?.textCorp }}
+                  >
+                    {valuesCurriculum?.objective}
+                  </p>
+                </div>
+              )}
+            {valuesCurriculum?.projects?.length > 0 && elementsMoved >= 4 && (
+                <div>
+                  <h1
+                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                  >
+                    Experiências
+                  </h1>
+                  <div className="flex flex-col gap-y-2">
+                    {valuesCurriculum?.projects?.map((item, index) => (
+                      <div key={`project-${index}`}>
+                        <p
+                          style={{ color: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textCorp }}
+                          className="text-p1920"
+                        >
+                          {item?.year}
+                        </p>
+                        <p
+                          style={{ fontSize: valuesCurriculum?.textCorp }}
+                          className="text-TitleGray text-p1920"
+                        >
+                          {item?.title} | {item?.category}
+                        </p>
+                        <p
+                          style={{ fontSize: valuesCurriculum?.textCorp }}
+                          className="text-WeakGray text-p1920"
+                        >
+                          {item?.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+            {valuesCurriculum?.formations && elementsMoved >= 3 && (
+                <div>
+                  <h1
+                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                  >
+                    Formação
+                  </h1>
+                  {valuesCurriculum?.formations?.map((item, index) => (
+                    <ul key={`formation-${index}`} className="pb-2">
+                      <div className="flex items-center gap-x-4">
+                        <li
+                          style={{ fontSize: valuesCurriculum?.textCorp }}
+                          className="text-TitleGray text-p1920 flex items-center"
+                        >
+                          • {item?.school}
+                        </li>
+                      </div>
+
+                      <li
+                        style={{ fontSize: valuesCurriculum?.textCorp }}
+                        className="text-TitleGray text-p1920"
+                      >
+                        • {item?.title} | {item?.yearEntry} - {item?.yearLeave}
+                      </li>
+                    </ul>
+                  ))}
+                </div>
+              )}
+            {valuesCurriculum?.languages && elementsMoved >= 2 && (
+                <div>
+                  <h1
+                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                  >
+                    Idiomas
+                  </h1>
+                  <ul className="pb-2">
+                    {valuesCurriculum?.languages?.map((item, index) => (
+                      <li
+                        style={{ fontSize: valuesCurriculum?.textCorp }}
+                        key={index}
+                        className="text-TitleGray text-p1920"
+                      >
+                        • {item?.language} ({item?.level})
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            {valuesCurriculum?.certifications && elementsMoved >= 1 &&(
+              <div>
+                <h1
+                  className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                  style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                >
+                  Certificações
+                </h1>
+                <ul className="pb-2 list-disc pl-4">
+                  {valuesCurriculum?.certifications?.map((item, index) => (
+                    <li
+                      style={{ fontSize: valuesCurriculum?.textCorp }}
+                      key={index}
+                      className="text-TitleGray text-p1920"
+                    >
+                      {item?.name} <br />
+                      Carga horária {item?.workload}h. (Conclusão {item?.conclusion})
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+      )}
+    </>
+  );
 }

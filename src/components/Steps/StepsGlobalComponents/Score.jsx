@@ -63,7 +63,7 @@ export default function Score({ values, backValue, page, isLast }) {
         language?.language !== "Língua" && language?.language !== ""
     )
   )
-  const verificationNameCurriculum = (values?.nameCurriculum !== "" && values?.nameCurriculum !== undefined)
+  const verificationNameCurriculum = (values?.nameCurriculum?.trim() !== "" && values?.nameCurriculum !== undefined)
 
   console.log(verificationNameCurriculum)
 

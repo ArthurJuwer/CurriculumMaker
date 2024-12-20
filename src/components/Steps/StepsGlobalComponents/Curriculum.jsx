@@ -4,22 +4,26 @@ import CurriculumModel3 from "../Curriculums/CurriculumModel3";
 import { CurriculumContext } from "../../../context/CurriculumContext";
 import { useContext } from "react";
 
-export default function Curriculum({valuesCurriculum}){
+export default function Curriculum({ valuesCurriculum, isLast }) {
+    const { values } = useContext(CurriculumContext);
 
-    const { values } = useContext(CurriculumContext)
-
+    // Com base no valor de `values.model`, renderiza o modelo correspondente
     console.log(values)
+    let curriculumModel;
+    switch (values?.model) {
+        case "1":
+            curriculumModel = <CurriculumModel1 valuesCurriculum={valuesCurriculum} isLast={isLast} />;
+            break;
+        case "2":
+            curriculumModel = <CurriculumModel2 valuesCurriculum={valuesCurriculum} isLast={isLast} />;
+            break;
+        case "3":
+            curriculumModel = <CurriculumModel3 valuesCurriculum={valuesCurriculum} isLast={isLast} />;
+            break;
+        default:
+            curriculumModel = <CurriculumModel1 valuesCurriculum={valuesCurriculum} isLast={isLast} />;
+            break;
+    }
 
-    return(
-        <div className="h-full w-4/12 border-2 border-WeakGray p-10">
-        {
-            valuesCurriculum?.model == 1 
-            ? <CurriculumModel1 valuesCurriculum={valuesCurriculum} />
-            : 
-            valuesCurriculum?.model == 2 
-            ? <CurriculumModel2 valuesCurriculum={valuesCurriculum} /> 
-            : <CurriculumModel3 valuesCurriculum={valuesCurriculum} /> 
-        }
-        </div>
-    )
+    return curriculumModel;
 }

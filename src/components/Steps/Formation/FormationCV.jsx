@@ -210,7 +210,7 @@ export default function FormationCV() {
                                     onChange={(e) => handleLanguagesChange(e, index, 'language')}
                                     placeholder="ex: Inglês"
                                     isSelect={true}
-                                    onDelete={(id) => deleteLanguage(id)} // Passar a função para deletar
+                                    onDelete={index != 0 ? (id) => deleteLanguage(id) : ''} // Passar a função para deletar
                                 />
                                 
                                 ))}

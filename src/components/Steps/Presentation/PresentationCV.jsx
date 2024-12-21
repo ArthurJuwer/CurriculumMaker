@@ -65,6 +65,7 @@ export default function PresentationCV() {
                                 id={0}
                                 label={'Objetivo'}
                                 width={'w-7/12'}
+                                value={objective != 'texto do objetivo.' ? objective : ''}
                                 onChange={(e) => setObjective(e.target.value)}
                                 placeholder={'ex: Conseguir uma posição como assistente administrativo, contribuindo com minhas habilidades de gestão e atendimento para a empresa.'}
                             />

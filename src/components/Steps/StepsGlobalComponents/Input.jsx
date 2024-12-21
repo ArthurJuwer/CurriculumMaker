@@ -1,14 +1,15 @@
+import { useState } from "react";
 import { Trash } from "lucide-react";
 
 export default function Input({
-    id, 
-    label, 
-    width, 
-    value, 
-    isLast, 
-    isSelect, 
-    onChange, 
-    placeholder, 
+    id,
+    label,
+    width,
+    value,
+    isLast,
+    isSelect,
+    onChange,
+    placeholder,
     number,
     email,
     onDelete,
@@ -26,31 +27,59 @@ export default function Input({
         '@protonmail.com',
     ];
 
-    // Função para validar o input de acordo com o tipo
+    const [isValid, setIsValid] = useState(false);
+    const [isInvalidEmail, setIsInvalidEmail] = useState(false);
+    const [isInvalidNumber, setIsInvalidNumber] = useState(false);
+
     const validateInput = (value, type) => {
-        if (!value || value === label || value === undefined) return false;
+        if (!value || value === label) return false;
+
         if (type === 'email') {
-            return validDomains.some(domain => value.includes(domain));
+            const isValidEmail =
+                validDomains.some(domain => value.includes(domain)) &&
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+            setIsInvalidEmail(!isValidEmail);
+            return isValidEmail;
         }
+
         if (type === 'number') {
-            return /^[0-9]{10,15}$/.test(value);
+            const isValidNumber = /^[0-9]{10,15}$/.test(value);
+            setIsInvalidNumber(!isValidNumber);
+            return isValidNumber;
         }
+
+        setIsInvalidEmail(false);
+        setIsInvalidNumber(false);
         return true;
     };
 
-    // Função para formatar o número de telefone
     const formatPhoneNumber = (phone) => {
-        return phone.replace(/\D/g, '').replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        const onlyNumbers = phone.replace(/\D/g, '');
+        if (onlyNumbers.length === 11) {
+            return onlyNumbers.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        }
+        return phone; // Retorna o valor original se não for possível formatar
     };
 
-    const verificationInput = number
-        ? validateInput(value, 'number')
-        : email
-        ? validateInput(value, 'email')
-        : validateInput(value);
-    
-    const formattedValue = number ? formatPhoneNumber(value) : value;
+    const handleValidation = (value) => {
+        let valid = true;
 
+        if (number) {
+            valid = validateInput(value, 'number');
+        } else if (email) {
+            valid = validateInput(value, 'email');
+        }
+
+        setIsValid(valid);
+    };
+
+    const handleChange = (e) => {
+        onChange(e);
+        handleValidation(e.target.value);
+    };
+
+    const formattedValue = number ? formatPhoneNumber(value) : value;
 
     return (
         <div className={`relative ${width} ${isLast ? 'last:w-full' : ''}`}>
@@ -61,21 +90,47 @@ export default function Input({
                 {label}
             </label>
 
-            {/* Input field with dynamic border color */}
-            
             <input
                 type="text"
                 id={`input-${id}`}
-                className={`border w-full ${verificationInput ? 'border-green-600 outline-green-600' : 'border-BorderInputGray'} bg-transparent p-4 rounded-xl z-10`}
-                onChange={onChange}
+                className={`border w-full ${
+                    isValid
+                    ? 'border-green-600 outline-green-600' 
+                    : isInvalidEmail || isInvalidNumber
+                    ? 'border-red-600' 
+                    : 'border-BorderInputGray'
+                } bg-transparent p-4 rounded-xl z-10`}
+                onChange={handleChange}
                 value={formattedValue}
                 placeholder={placeholder}
                 email={email}
                 number={number}
             />
-            {isLast ? <a href="https://www.linkedin.com/in/" target="_blank" className="absolute -bottom-6 right-0 text-sm underline text-DefaultOrange">acessar sua conta</a> : ''}
 
-            {/* Delete button (if provided) */}
+            {isLast && (
+                <a
+                    href="https://www.linkedin.com/in/"
+                    target="_blank"
+                    className="absolute -bottom-6 right-0 text-sm underline text-DefaultOrange"
+                >
+                    acessar sua conta
+                </a>
+            )}
+            {isInvalidEmail && (
+                <p 
+                    className="absolute -bottom-6 right-50 text-sm text-red-600"
+                >
+                    O e-mail informado não corresponde ao esperado.
+                </p>
+            )}
+            {isInvalidNumber && (
+                <p 
+                    className="absolute -bottom-6 right-50 text-sm text-red-600"
+                >
+                    O número informado não corresponde ao esperado.
+                </p>
+            )}
+
             {onDelete && (
                 <button
                     onClick={() => onDelete(id)}
@@ -85,7 +140,6 @@ export default function Input({
                 </button>
             )}
 
-            {/* Select option handling */}
             {isSelect && (
                 id === 0 ? (
                     <h1 className="absolute right-4 bottom-3 px-5 rounded-xl py-1 bg-transparent border border-BorderInputGray text-TitleGray font-semibold">
@@ -96,14 +150,11 @@ export default function Input({
                         id={`select-${id}`}
                         className="absolute right-4 bottom-3 px-5 rounded-xl py-1 bg-transparent border border-BorderInputGray text-TitleGray font-semibold"
                         onChange={(e) => onChange(e, id, 'level')}
-                        value={value?.level} // Ensure the `value` has a `level` property
+                        value={value?.level || ''}
                     >
-                        <option value="A1">A1</option>
-                        <option value="A2">A2</option>
-                        <option value="B1">B1</option>
-                        <option value="B2">B2</option>
-                        <option value="C1">C1</option>
-                        <option value="C2">C2</option>
+                        {['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map(level => (
+                            <option key={level} value={level}>{level}</option>
+                        ))}
                     </select>
                 )
             )}

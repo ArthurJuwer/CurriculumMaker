@@ -14,7 +14,7 @@ export default function TextArea({ id, label, value, width, isLast, onChange, pl
             <textarea
                 type="text"
                 id={`input-${id}`}
-                className="border w-full h-full border-BorderInputGray bg-transparent p-4 rounded-xl z-10 resize-none"
+                className={`border w-full h-full ${value != undefined && value != '' ? 'border-green-600 outline-green-600' : 'border-BorderInputGray'} bg-transparent p-4 rounded-xl z-10 resize-none`}
                 onChange={onChange}
                 value={value}
                 placeholder={placeholder}

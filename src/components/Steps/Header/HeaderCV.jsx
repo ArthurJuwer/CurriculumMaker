@@ -65,7 +65,7 @@ export default function HeaderCV() {
                             description='Eles permitem que os empregadores vejam como podem entrar em contato com você.'
                         />
 
-                        <div className="pt-5 w-full flex flex-wrap gap-x-4 gap-y-10">
+                        <div className="pt-5 w-full flex flex-wrap gap-x-4 gap-y-10 relative">
                             {inputsArray.map((item, index) => (
                                 <Input
                                     key={index}

@@ -12,13 +12,17 @@ export default function PresentationCV() {
     const { values, setValues } = useContext(CurriculumContext);
 
     const [score, setScore] = useState('');
-
     const [objective, setObjective] = useState('texto do objetivo.');
     const [projects, setProjects] = useState([
-        { title: 'Projeto 1', category: 'Categoria', year: 'ANO', description: 'descreva seu projeto aqui'},
-        { title: 'Projeto 2', category: 'Categoria', year: 'ANO', description: 'descreva seu projeto aqui'},
+        { title: 'Projeto 1', category: 'Categoria', year: 'ANO', description: 'descreva seu projeto aqui' },
+        { title: 'Projeto 2', category: 'Categoria', year: 'ANO', description: 'descreva seu projeto aqui' },
     ]);
     const [selectedProject, setSelectedProject] = useState(0);
+
+    const [projectErrors, setProjectErrors] = useState([
+        { title: false, category: false, year: false, description: false },
+        { title: false, category: false, year: false, description: false },
+    ]);
 
     useEffect(() => {
         setValues(prevValues => ({
@@ -27,7 +31,26 @@ export default function PresentationCV() {
             projects,
             score,
         }));
-    }, [objective, projects,score, setValues]);
+    }, [objective, projects, score, setValues]);
+
+    // Função para validar todos os inputs
+    const validateAllInputs = () => {
+        console.log("Validando todos os inputs...");
+
+        const errors = projects.map((project, index) => ({
+            title: project.title === 'Projeto ' + (index + 1) ? true : false,
+            category: project.category === 'Categoria' ? true : false,
+            year: project.year === 'ANO' ? true : false,
+            description: project.description === 'descreva seu projeto aqui' ? true : false,
+        }));
+
+        console.log(errors); // Log para verificar os erros
+        setProjectErrors(errors); // Atualiza os erros para todos os projetos
+    };
+
+    useEffect(() => {
+        validateAllInputs(); // Revalida sempre que o projeto selecionado mudar
+    }, [selectedProject, projects]); // Dependências para revalidar
 
     const handleProjectChange = (index, field, value) => {
         const updatedProjects = projects.map((project, idx) =>
@@ -53,7 +76,7 @@ export default function PresentationCV() {
             <TopMarker stepsAtual={'2'} />
             <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
                 <div className="flex flex-col gap-y-8 w-8/12 h-full">
-                    <Score values={values} page={2} backValue={(newScore) => setScore(newScore)}/>
+                    <Score values={values} page={2} backValue={(newScore) => setScore(newScore)} />
                     <div className="h-full flex flex-col gap-y-8">
                         <Title
                             title={'Apresentação Pessoal'}
@@ -65,7 +88,7 @@ export default function PresentationCV() {
                                 id={0}
                                 label={'Objetivo'}
                                 width={'w-7/12'}
-                                value={objective != 'texto do objetivo.' ? objective : ''}
+                                value={objective !== 'texto do objetivo.' ? objective : ''}
                                 onChange={(e) => setObjective(e.target.value)}
                                 placeholder={'ex: Conseguir uma posição como assistente administrativo, contribuindo com minhas habilidades de gestão e atendimento para a empresa.'}
                             />
@@ -98,24 +121,31 @@ export default function PresentationCV() {
                                         width="w-5/12"
                                         label="Titulo do Projeto"
                                         onChange={(e) => handleProjectChange(selectedProject, 'title', e.target.value)}
-                                        value={projects[selectedProject].title === `Projeto ${selectedProject+1}` ? '' : projects[selectedProject].title}
-                                        placeholder={`ex: Documentação Administrativa ${selectedProject+1}`}
+                                        value={projects[selectedProject].title}
+                                        error={projectErrors[selectedProject]?.title} // Passando erro
+                                        placeholder="ex: Documentação Administrativa"
+                                        validateAllInputs={validateAllInputs} // Passando a função de validação
                                     />
                                     <Input
                                         id={`category-${selectedProject}`}
                                         width="w-5/12"
                                         label="Categoria"
                                         onChange={(e) => handleProjectChange(selectedProject, 'category', e.target.value)}
-                                        value={projects[selectedProject].category === 'Categoria' ? '' : projects[selectedProject].category}
+                                        value={projects[selectedProject].category}
+                                        error={projectErrors[selectedProject]?.category} // Passando erro
                                         placeholder={'ex: Administração'}
+                                        validateAllInputs={validateAllInputs} // Passando a função de validação
                                     />
                                     <Input
                                         id={`year-${selectedProject}`}
                                         width="w-2/12"
                                         label="Ano"
                                         onChange={(e) => handleProjectChange(selectedProject, 'year', e.target.value)}
-                                        value={projects[selectedProject].year === 'ANO' ? '' : projects[selectedProject].year}
+                                        value={projects[selectedProject].year}
+                                        error={projectErrors[selectedProject]?.year} // Passando erro
                                         placeholder={'ex: 2022'}
+                                        validateAllInputs={validateAllInputs} // Passando a função de validação
+                                        year={true}
                                     />
                                 </div>
                                 <TextArea
@@ -123,8 +153,10 @@ export default function PresentationCV() {
                                     isLast={true}
                                     label="Descrição"
                                     onChange={(e) => handleProjectChange(selectedProject, 'description', e.target.value)}
-                                    value={projects[selectedProject].description === 'descreva seu projeto aqui' ? '' : projects[selectedProject].description}
+                                    value={projects[selectedProject].description}
+                                    error={projectErrors[selectedProject]?.description} // Passando erro
                                     placeholder={'ex: Este documento tem como objetivo, organizar e padronizar os processos administrativos, garantindo eficiência e conformidade nas operações diárias.'}
+                                    validateAllInputs={validateAllInputs} // Passando a função de validação
                                 />
                             </div>
                         </div>

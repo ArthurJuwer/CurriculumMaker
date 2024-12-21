@@ -73,7 +73,7 @@ export default function Input({
                 email={email}
                 number={number}
             />
-            {isLast ? <a href="https://www.linkedin.com/in/" target="_blank" className="absolute -bottom-6 right-0-0 text-sm underline text-DefaultOrange">acessar sua conta</a> : ''}
+            {isLast ? <a href="https://www.linkedin.com/in/" target="_blank" className="absolute -bottom-6 right-0 text-sm underline text-DefaultOrange">acessar sua conta</a> : ''}
 
             {/* Delete button (if provided) */}
             {onDelete && (

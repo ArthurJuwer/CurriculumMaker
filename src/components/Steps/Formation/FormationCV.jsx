@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Plus, Trash } from "lucide-react"; // Importar o ícone da lixeira
 import Curriculum from "../StepsGlobalComponents/Curriculum";
 import Input from "../StepsGlobalComponents/Input";
 import Score from "../StepsGlobalComponents/Score";
@@ -99,10 +99,24 @@ export default function FormationCV() {
         setIsModalOpen(false);
     };
 
+    const deleteFormation = (index) => {
+        const newFormations = formations.filter((_, i) => i !== index);
+        setFormations(newFormations);
+    };
+
+    const deleteCertification = (id) => {
+        const updatedCertifications = certifications.filter((_, index) => index !== id);
+        setCertifications(updatedCertifications);
+    };
+    const deleteLanguage = (id) => {
+        const newLanguages = languages.filter((_, index) => index !== id);
+        setLanguages(newLanguages);
+    };
+
     const inputsFormation = [
-        { label: 'Escola', placeholder: 'ex: Universidade Unisinos Porto Alegre',category: 'school' },
+        { label: 'Escola', placeholder: 'ex: Universidade Unisinos Porto Alegre', category: 'school' },
         { label: 'Ano Entrada', placeholder: 'ex: 2020', category: 'yearEntry' },
-        { label: 'Título', placeholder: 'ex: Graduação Administração',category: 'title' },
+        { label: 'Título', placeholder: 'ex: Graduação Administração', category: 'title' },
         { label: 'Ano Saída', placeholder: 'ex: 2024', category: 'yearLeave' },
     ];
 
@@ -110,18 +124,17 @@ export default function FormationCV() {
         <div className="h-screen w-full bg-DefaultGray">
             <TopMarker stepsAtual={1} />
             <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
-            <div className="flex flex-col gap-y-8 w-8/12 h-full">
-                <Score values={values} page={3} backValue={(newScore) => setScore(newScore)}/>
+                <div className="flex flex-col gap-y-8 w-8/12 h-full">
+                    <Score values={values} page={3} backValue={(newScore) => setScore(newScore)} />
                     <div className="flex flex-col gap-y-8 overflow-y-auto overflow-x-visible 
-                    [&::-webkit-scrollbar]:w-2
-                    [&::-webkit-scrollbar-track]:bg-gray-transparent
-                    [&::-webkit-scrollbar-track]:rounded-full
-                    [&::-webkit-scrollbar-thumb]:rounded-full
-                    [&::-webkit-scrollbar-thumb]:bg-TitleGray
-                    dark:[&::-webkit-scrollbar-track]:bg-TitleGray
-                    dark:[&::-webkit-scrollbar-thumb]:bg-TitleGray 
+                        [&::-webkit-scrollbar]:w-2
+                        [&::-webkit-scrollbar-track]:bg-gray-transparent
+                        [&::-webkit-scrollbar-track]:rounded-full
+                        [&::-webkit-scrollbar-thumb]:rounded-full
+                        [&::-webkit-scrollbar-thumb]:bg-TitleGray
+                        dark:[&::-webkit-scrollbar-track]:bg-TitleGray
+                        dark:[&::-webkit-scrollbar-thumb]:bg-TitleGray 
                     ">
-                        
                         <Title
                             title="Formação e Competências"
                             description="Esta seção destaca sua formação acadêmica, idiomas e certificações similares ao cargo desejado."
@@ -130,27 +143,26 @@ export default function FormationCV() {
                             <div className="flex flex-col gap-y-4 w-8/12 -mt-6">
                                 <FormationSubTitle subtitle={'Formação'} />
                                 {formations?.map((formation, idx) => (
-                                    <div key={idx} className="border border-BorderInputGray rounded-xl px-2 py-7 flex flex-wrap w-full gap-x-4 gap-y-6">
+                                    <div key={idx} className="border border-BorderInputGray rounded-xl px-2 py-7 flex flex-wrap w-full gap-x-4 gap-y-6 relative">
                                         <div className="flex gap-x-4 gap-y-6 w-full flex-wrap">
                                             {inputsFormation?.map((item) => (
                                                 <Input
                                                     key={item.category}
                                                     id={item.category}
                                                     label={item.label}
-                                                    value={
-                                                        formation[item.category] === 'escola' ||
-                                                        formation[item.category] === 'titulo' ||
-                                                        formation[item.category] === 'ano entrada' ||
-                                                        formation[item.category] === 'ano saida'
-                                                        ? ''
-                                                        : formation[item.category]
-                                                    }
+                                                    value={formation[item.category]}
                                                     width={inputsFormation.indexOf(item) % 2 === 0 ? 'w-[calc(65%)]' : 'w-[calc(35%-1rem)]'}
                                                     onChange={(e) => handleFormationChange(e, idx, item.category)}
                                                     placeholder={item.placeholder}
                                                 />
                                             ))}
                                         </div>
+                                        <button
+                                            onClick={() => deleteFormation(idx)}  // Excluir a formação
+                                            className="absolute -top-4 -right-2 p-2 bg-red-500 rounded-full text-white"
+                                        >
+                                            <Trash className="w-6 h-6" />
+                                        </button>
                                     </div>
                                 ))}
                                 <div className="w-full">
@@ -168,15 +180,19 @@ export default function FormationCV() {
                                     <h1 className="text-2xl font-bold text-TitleGray absolute -top-4 left-[23%] bg-DefaultGray px-2">Certificações</h1>
                                     <div className="border border-BorderInputGray h-full w-full rounded-2xl p-4 pt-6 flex flex-col justify-between items-end gap-y-2">
                                         <div className="w-full flex flex-col gap-y-2">
-                                            {certifications?.map((item,index)=>(
-                                                <FormationCertifications key={index} title={item?.name}/>
+                                            {certifications?.map((item, index) => (
+                                                <FormationCertifications
+                                                key={index}
+                                                id={index}
+                                                title={item.name}
+                                                onDelete={(id) => deleteCertification(id)} // Função para deletar
+                                            />
                                             ))}
-                                            
                                         </div>
                                         <button
                                             className="uppercase bg-TitleGray w-full py-2 text-white rounded-2xl text-sm"
                                             onClick={showModal}>
-                                                Adicionar
+                                            Adicionar
                                         </button>
                                     </div>
                                 </div>
@@ -185,32 +201,29 @@ export default function FormationCV() {
                         <div className="flex flex-col gap-y-4 w-full -mt-6">
                             <FormationSubTitle subtitle={'Idiomas'} />
                             <div className="flex gap-x-4 gap-y-6 w-full flex-wrap">
-                            {languages?.map((item, index) => (
-                                <Input
-                                    key={index}
+                                {languages?.map((item, index) => (
+                                    <Input
                                     id={index}
                                     label="Idioma"
                                     width="w-[calc(33.3%-1rem)]"
-                                    value={item?.language === 'Língua' ? '' : item?.language}
+                                    value={languages[index]?.language}
+                                    onChange={(e) => handleLanguagesChange(e, index, 'language')}
+                                    placeholder="ex: Inglês"
                                     isSelect={true}
-                                    onChange={(e) => {
-                                        const field = e.target.tagName === 'INPUT' ? 'language' : 'level';
-                                        handleLanguagesChange(e, index, field);
-                                    }}
-                                    placeholder={'ex: Língua Inglesa'}
+                                    onDelete={(id) => deleteLanguage(id)} // Passar a função para deletar
                                 />
-                            ))}
-                            <button
-                                className="bg-TitleGray h-14 w-14 rounded-xl text-white flex justify-center items-center"
-                                onClick={addLanguage}
-                            >
-                                <Plus className="h-8 w-8" />
-                            </button>
-                        </div>
-                        <div className="w-full pr-1">
-                            <ButtonNext link={'/steps/finalizationCV'} />
-                        </div>
-                            
+                                
+                                ))}
+                                <button
+                                    className="bg-TitleGray h-14 w-14 rounded-xl text-white flex justify-center items-center"
+                                    onClick={addLanguage}
+                                >
+                                    <Plus className="h-8 w-8" />
+                                </button>
+                            </div>
+                            <div className="w-full pr-1">
+                                <ButtonNext link={'/steps/finalizationCV'} />
+                            </div>
                         </div>
                     </div>
                 </div>

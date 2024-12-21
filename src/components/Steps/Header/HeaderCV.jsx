@@ -22,23 +22,35 @@ export default function HeaderCV() {
     const [telefone, setTelefone] = useState('Telefone');
     const [email, setEmail] = useState('Email');
     const [linkedin, setLinkedin] = useState('');
+    const [link, setLink] = useState(null);
 
     const { setValues } = useContext(CurriculumContext);
 
     const inputsArray = [
-        { label: 'Nome Completo', placeholder: 'ex: João Carlos', setVariable: setName },
-        { label: 'Bairro', placeholder: 'ex: Farroupilha', setVariable: setBairro },
-        { label: 'Cidade', placeholder: 'ex: Porto Alegre', setVariable: setCidade },
-        { label: 'Estado', placeholder: 'ex: RS', setVariable: setEstado },
-        { label: 'Telefone', placeholder: 'ex: (51) 00000-0000', setVariable: setTelefone },
-        { label: 'Email', placeholder: 'ex: joaocarlos@gmail.com', setVariable: setEmail },
-        { label: 'Linkedin', placeholder: 'ex: https://www.linkedin.com/in/joaocarlos/', setVariable: setLinkedin },
+        { label: 'Nome Completo', placeholder: 'ex: João Carlos', setVariable: setName, value: name },
+        { label: 'Bairro', placeholder: 'ex: Farroupilha', setVariable: setBairro, value: bairro },
+        { label: 'Cidade', placeholder: 'ex: Porto Alegre', setVariable: setCidade, value: cidade },
+        { label: 'Estado', placeholder: 'ex: RS', setVariable: setEstado, value: estado },
+        { label: 'Telefone', placeholder: 'ex: (51) 00000-0000', setVariable: setTelefone, value: telefone, number: true },
+        { label: 'Email', placeholder: 'ex: joaocarlos@gmail.com', setVariable: setEmail, value: email, email: true },
+        { label: 'Linkedin', placeholder: 'ex: https://www.linkedin.com/in/joaocarlos/', setVariable: setLinkedin, value: linkedin },
     ];
 
     const values = { score, model, color, name, email, bairro, cidade, estado, telefone, linkedin };
 
     const handleSubmit = () => {
+        const isValid = inputsArray.every((item) => 
+            item?.value !== item?.label && item?.value !== '' && item?.value !== undefined
+        );
+    
+        if (!isValid) {
+            alert('PREENCHA TODOS OS CAMPOS');
+            return;
+        }
+    
+        // Atualiza os valores no contexto e navega para a próxima página
         setValues(values);
+        setLink('/steps/presentationCV');
     };
 
     return (
@@ -58,15 +70,19 @@ export default function HeaderCV() {
                                 <Input
                                     key={index}
                                     id={index}
-                                    label={item.label}
+                                    label={item?.label}
                                     isLast={index === inputsArray.length - 1} 
                                     width={'w-[calc(50%-0.5rem)]'}
-                                    onChange={(e) => item.setVariable(e.target.value)}
-                                    placeholder={item.placeholder}
+                                    onChange={(e) => item?.setVariable(e.target.value)}
+                                    placeholder={item?.placeholder}
+                                    value={item?.value == item?.label ? '' : item?.value}
+                                    email={item?.email}
+                                    number={item?.number}
+                                    
                                 />
                             ))}
                         </div>
-                        <ButtonNext onClick={handleSubmit} link={'/steps/presentationCV'}/>
+                        <ButtonNext onClick={handleSubmit} link={link}/>
                     </div>
                 </div>
                 <Curriculum valuesCurriculum={values}/>

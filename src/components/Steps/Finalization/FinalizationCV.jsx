@@ -23,6 +23,7 @@ export default function FinalizationCV() {
     const [sizeFile, setSizeFile] = useState("PDF");
     const [nameCurriculum, setNameCurriculum] = useState("");
     const [currentPage, setCurrentPage] = useState(1); // Estado para controlar a página atual
+    const [imgData1, setImgData1] = useState(null); // Estado para armazenar a imagem da segunda página
     const [imgData2, setImgData2] = useState(null); // Estado para armazenar a imagem da segunda página
 
     const curriculumRef = useRef(); // Ref para o componente Curriculum
@@ -61,13 +62,12 @@ export default function FinalizationCV() {
 
     // Função para gerar o PDF
     const gerarPDF = () => {
-        html2canvas(curriculumRef.current, { scale: 3 }).then((canvas) => {
-            const imgData1 = canvas.toDataURL('image/png');
+        
             
             const doc = new jsPDF();
     
             const pdfWidth = 210; // A4 width in mm
-            const pdfHeight = 297; // A4 height in mm
+            const pdfHeight = 287; // A4 height in mm
 
             // Adiciona a primeira página
             doc.addImage(imgData1, 'PNG', 0, 0, pdfWidth, pdfHeight);
@@ -89,14 +89,20 @@ export default function FinalizationCV() {
 
             // Salva o PDF
             
-        });
+        
     };
 
     // Função para capturar a segunda página quando o currentPage for 2
     useEffect(() => {
-        if (values?.currentPage === 2) {
+        if (values?.currentPage === 1) {
             html2canvas(curriculumRef.current, { scale: 3 }).then((canvas) => {
-                const imgData = canvas.toDataURL('image/png');
+                let imgData = canvas.toDataURL('image/png');
+                setImgData1(imgData); // Armazena a imagem da segunda página
+            });
+        }
+        else if (values?.currentPage === 2) {
+            html2canvas(curriculumRef.current, { scale: 3 }).then((canvas) => {
+                let imgData = canvas.toDataURL('image/png');
                 setImgData2(imgData); // Armazena a imagem da segunda página
             });
         }

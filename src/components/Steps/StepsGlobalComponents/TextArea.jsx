@@ -18,6 +18,7 @@ export default function TextArea({ id, label, value, width, isLast, onChange, pl
                 onChange={onChange}
                 value={value}
                 placeholder={placeholder}
+                maxLength={120}
             />
         </div>
     )

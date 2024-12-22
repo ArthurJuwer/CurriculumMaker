@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { Trash } from "lucide-react";
+import { Check, Trash, X } from "lucide-react";
 
 export default function Input({
     id,
     label,
     width,
     value,
-    isLast, // Usado para validação de LinkedIn
+    isLast,
     isSelect,
     onChange,
     placeholder,
@@ -14,8 +14,9 @@ export default function Input({
     email,
     year,
     onDelete,
-    validateAllInputs, 
-    resetValidation, 
+    validateAllInputs,
+    resetValidation,
+    onValidationError, // Função de callback para enviar o erro de validação para o pai
 }) {
     const validDomains = [
         '@gmail.com', '@hotmail.com', '@yahoo.com', '@outlook.com',
@@ -24,9 +25,62 @@ export default function Input({
     ];
 
     const [validationError, setValidationError] = useState(false);
+    const [languageValue, setLanguageValue] = useState(value?.language || "");
+    const [levelValue, setLevelValue] = useState(value?.level || "NATIVO");
+    const [isEmpty, setIsEmpty] = useState(true);
 
-    const [languageValue, setLanguageValue] = useState(value?.language || ""); // Estado para o idioma
-    const [levelValue, setLevelValue] = useState(value?.level || "NATIVO"); // Estado para o nível
+    // Função para validar o input com base no tipo
+    const validateInput = (value, type) => {
+        let error = false;
+
+        if (!value) {
+            setIsEmpty(true);
+            setValidationError(false);
+            return false;
+        }
+
+        setIsEmpty(false);
+
+        if (type === 'email') {
+            const isValidEmail =
+                validDomains.some(domain => value.includes(domain)) &&
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+            error = !isValidEmail;
+        } else if (type === 'number') {
+            const isValidNumber = /^[0-9]{10,15}$/.test(value);
+            error = !isValidNumber;
+        } else if (type === 'year') {
+            const currentYear = new Date().getFullYear();
+            const yearValue = parseInt(value, 10);
+            error = isNaN(yearValue) || yearValue < 1900 || yearValue > currentYear;
+        } else if (type === 'linkedIn') {
+            const isValidLinkedIn = value.startsWith('https://www.linkedin.com/in/');
+            error = !isValidLinkedIn;
+        }
+
+        setValidationError(error);
+
+        // Enviar o estado de erro para o componente pai
+        if (onValidationError) {
+            onValidationError(error);
+        }
+
+        return !error;
+    };
+
+    useEffect(() => {
+        if (validateAllInputs) {
+            validateInput(value, email ? 'email' : number ? 'number' : year ? 'year' : isLast ? 'linkedIn' : null);
+        }
+    }, [validateAllInputs, value]);
+
+    // Função para resetar a validação
+    useEffect(() => {
+        if (resetValidation) {
+            setValidationError(false);
+            setIsEmpty(true);
+        }
+    }, [resetValidation]);
 
     const handleChange = (e) => {
         const inputType = email
@@ -40,68 +94,16 @@ export default function Input({
             : null;
 
         onChange(e); // Passa o valor para a função onChange externa
-        validateInput(e.target.value, inputType); // Valida o input com base no tipo
+        validateInput(e.target.value, inputType);
 
         if (e.target.type === "text") {
-            // Atualiza o idioma quando o input de texto for alterado
             setLanguageValue(e.target.value);
-            onChange(e.target.value, levelValue); // Envia o valor do idioma e o nível atual
+            onChange(e.target.value, levelValue);
         } else if (e.target.tagName === "SELECT") {
-            // Atualiza o nível quando o select for alterado
             setLevelValue(e.target.value);
-            onChange(languageValue, e.target.value); // Envia o idioma atual e o novo nível
+            onChange(languageValue, e.target.value);
         }
-
     };
-    
-    const [isEmpty, setIsEmpty] = useState(true);
-
-    // Função para validar o input com base no tipo
-    const validateInput = (value, type) => {
-        let error = false;
-    
-        if (!value) {
-            setIsEmpty(true);
-            setValidationError(false);
-            return false;
-        }
-    
-        setIsEmpty(false);
-    
-        if (type === 'email') {
-            const isValidEmail =
-                validDomains.some(domain => value.includes(domain)) &&
-                /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-            error = !isValidEmail;
-        } else if (type === 'number') {
-            const isValidNumber = /^[0-9]{10,15}$/.test(value);
-            error = !isValidNumber;
-        } else if (type === 'year') {
-            // Obter o ano atual
-            const currentYear = new Date().getFullYear();
-            // Verificar se o valor é um número e se está dentro do intervalo permitido
-            const yearValue = parseInt(value, 10);
-            error = isNaN(yearValue) || yearValue < 1900 || yearValue > currentYear;
-        } else if (type === 'linkedIn') {
-            const isValidLinkedIn = value.startsWith('https://www.linkedin.com/in/');
-            error = !isValidLinkedIn;
-        }
-    
-        setValidationError(error); // Aplica o erro para o campo específico
-        return !error;
-    };
-    useEffect(() => {
-        if (validateAllInputs) {
-            validateInput(value, email ? 'email' : number ? 'number' : year ? 'year' : isLast ? 'linkedIn' : null);
-        }
-    }, [validateAllInputs, value]);
-    // Função para resetar a validação (passada quando o projeto muda)
-    useEffect(() => {
-        if (resetValidation) {
-            setValidationError(false); // Reseta o erro quando o projeto mudar
-            setIsEmpty(true); // Reseta o estado de vazio
-        }
-    }, [resetValidation]);
 
     return (
         <div className={`relative ${width} ${isLast ? 'last:w-full' : ''}`}>
@@ -115,26 +117,30 @@ export default function Input({
             <input
                 type="text"
                 id={`input-${id}`}
-                className={`border w-full ${
-                    isEmpty
-                        ? 'border-BorderInputGray'
-                        : validationError
-                        ? 'border-red-600 outline-red-600' // Apenas o campo com erro ficará vermelho
-                        : 'border-green-600 outline-green-600'
-                } bg-transparent p-4 rounded-xl z-10`}
+                className={`border w-full ${isEmpty ? 'border-BorderInputGray' : validationError ? 'border-red-600 outline-red-600' : 'border-green-600 outline-green-600'} bg-transparent p-4 rounded-xl z-10`}
                 onChange={handleChange}
                 value={isSelect ? languageValue : value}
                 placeholder={placeholder}
                 aria-invalid={validationError ? "true" : "false"}
             />
 
+            {!validationError && !isEmpty && !isSelect && (
+                <div className="absolute top-1/2 right-4 transform -translate-y-1/2 size-8 rounded-full bg-green-600 flex justify-center items-center">
+                    <Check className="text-white size-6 mt-0.5 -rotate-2 "/>
+                </div>
+            )}
             {validationError && (
-                <p className="absolute -bottom-6 right-50 text-sm text-red-600">
-                    {email ? "O e-mail informado não corresponde ao esperado." :
-                    number ? "O número informado não corresponde ao esperado." :
-                    year ? "Ano inválido." :
-                    isLast ? "O link informado deve começar com \"https://www.linkedin.com/in/\"." : ""}
-                </p>
+                <>
+                    <p className="absolute -bottom-6 right-50 text-sm text-red-600">
+                        {email ? "O e-mail informado não corresponde ao esperado." :
+                        number ? "O número informado não corresponde ao esperado." :
+                        year ? "Ano inválido." :
+                        isLast ? "O link informado deve começar com \"https://www.linkedin.com/in/\"." : ""}
+                    </p>
+                    <div className="absolute top-1/2 right-4 transform -translate-y-1/2 size-8 rounded-full bg-red-600 flex justify-center items-center">
+                        <X className="text-white size-6 "/>
+                    </div>
+                </>
             )}
 
             {isLast && (
@@ -165,8 +171,8 @@ export default function Input({
                     <select
                         id={id}
                         className="absolute right-4 bottom-3 px-5 rounded-xl py-1 bg-transparent border border-BorderInputGray text-TitleGray font-semibold"
-                        value={levelValue} // Valor do nível
-                        onChange={handleChange} // Chama handleChanged
+                        value={levelValue}
+                        onChange={handleChange}
                     >
                         <option value="A1">A1</option>
                         <option value="A2">A2</option>

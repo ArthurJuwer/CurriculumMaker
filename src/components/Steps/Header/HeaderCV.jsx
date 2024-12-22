@@ -10,10 +10,10 @@ import { CurriculumContext } from "../../../context/CurriculumContext";
 
 export default function HeaderCV() {
     const location = useLocation();
-
     const params = new URLSearchParams(location.search);
     const color = params.get('color');
     const model = params.get('model');
+    
     const [score, setScore] = useState('');
     const [name, setName] = useState('Nome Completo');
     const [bairro, setBairro] = useState('Bairro');
@@ -37,17 +37,34 @@ export default function HeaderCV() {
     ];
 
     const values = { score, model, color, name, email, bairro, cidade, estado, telefone, linkedin };
+    const [validationErrors, setValidationErrors] = useState({});
+
+    // Função para lidar com erros de validação de campos individuais
+    const handleValidationError = (id, error) => {
+        setValidationErrors((prevErrors) => ({
+            ...prevErrors,
+            [id]: error,
+        }));
+    };
 
     const handleSubmit = () => {
-        const isValid = inputsArray.every((item) => 
-            item?.value !== item?.label && item?.value !== '' && item?.value !== undefined
-        );
-    
-        if (!isValid) {
+        // Verifica se todos os campos estão preenchidos
+        const allFieldsFilled = inputsArray.every((item) => item?.value !== item?.label && item?.value.trim() !== "");
+
+        // Verifica se não há erros de validação em nenhum campo
+        const allFieldsValid = Object.values(validationErrors).every((error) => error === false);
+
+        if (!allFieldsFilled) {
             alert('PREENCHA TODOS OS CAMPOS');
             return;
         }
-    
+
+        // Se algum campo tiver erro de validação, não avança
+        if (!allFieldsValid) {
+            alert('Corrija os erros antes de continuar');
+            return;
+        }
+
         // Atualiza os valores no contexto e navega para a próxima página
         setValues(values);
         setLink('/steps/presentationCV');
@@ -58,7 +75,7 @@ export default function HeaderCV() {
             <TopMarker stepsAtual={3} />
             <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
                 <div className="flex flex-col gap-y-8 w-8/12 h-full">
-                    <Score values={values} page={1} backValue={(newScore) => setScore(newScore)}/>
+                    <Score values={values} page={1} backValue={(newScore) => setScore(newScore)} />
                     <div className="h-full flex flex-col gap-y-8">
                         <Title
                             title='Cabeçalho'
@@ -78,15 +95,17 @@ export default function HeaderCV() {
                                     value={item?.value == item?.label ? '' : item?.value}
                                     email={item?.email}
                                     number={item?.number}
-                                    
+                                    onValidationError={(error) => handleValidationError(index, error)}
                                 />
                             ))}
                         </div>
-                        <ButtonNext onClick={handleSubmit} link={link}/>
+                        <ButtonNext onClick={handleSubmit} link={link} />
                     </div>
                 </div>
-                <Curriculum valuesCurriculum={values}/>
+                <Curriculum valuesCurriculum={values} />
             </div>
         </div>
     );
 }
+
+

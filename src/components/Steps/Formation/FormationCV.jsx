@@ -42,7 +42,7 @@ export default function FormationCV() {
     const addFormation = () => {
         setFormations([
             ...formations,
-            { school: '', title: '', yearEntry: '', yearLeave: '' },
+            { school: 'escola', title: 'titulo', yearEntry: 'ano entrada', yearLeave: 'ano saida' },
         ]);
     };
 
@@ -75,11 +75,12 @@ export default function FormationCV() {
         setFormations(newFormations);
     };
 
-    const handleLanguagesChange = (e, index, field) => {
+    const handleLanguagesChange = (newLanguage, newLevel, index) => {
         const newLanguages = [...languages];
         newLanguages[index] = {
             ...newLanguages[index],
-            [field]: e.target.value,
+            language: newLanguage, 
+            level: newLevel,  // Atualiza tanto o idioma quanto o nível
         };
         setLanguages(newLanguages);
     };
@@ -108,6 +109,7 @@ export default function FormationCV() {
         const updatedCertifications = certifications.filter((_, index) => index !== id);
         setCertifications(updatedCertifications);
     };
+    
     const deleteLanguage = (id) => {
         const newLanguages = languages.filter((_, index) => index !== id);
         setLanguages(newLanguages);
@@ -145,17 +147,20 @@ export default function FormationCV() {
                                 {formations?.map((formation, idx) => (
                                     <div key={idx} className="border border-BorderInputGray rounded-xl px-2 py-7 flex flex-wrap w-full gap-x-4 gap-y-6 relative">
                                         <div className="flex gap-x-4 gap-y-6 w-full flex-wrap">
-                                            {inputsFormation?.map((item) => (
-                                                <Input
-                                                    key={item.category}
-                                                    id={item.category}
-                                                    label={item.label}
-                                                    value={formation[item.category]}
-                                                    width={inputsFormation.indexOf(item) % 2 === 0 ? 'w-[calc(65%)]' : 'w-[calc(35%-1rem)]'}
-                                                    onChange={(e) => handleFormationChange(e, idx, item.category)}
-                                                    placeholder={item.placeholder}
-                                                />
-                                            ))}
+                                        {inputsFormation?.map((item) => (
+                                        <Input
+                                            key={item.category}
+                                            id={item.category}
+                                            label={item.label}
+                                            value={formation[item?.category] === 'escola' || formation[item?.category] === 'titulo' || formation[item?.category] === 'ano entrada' || formation[item?.category] === 'ano saida' ? '' : formation[item?.category]}  // Verifica valores padrões e substitui por ''
+                                            width={inputsFormation.indexOf(item) % 2 === 0 ? 'w-[calc(65%)]' : 'w-[calc(35%-1rem)]'}
+                                            onChange={(e) => handleFormationChange(e, idx, item.category)}
+                                            placeholder={item.placeholder}
+                                            isSelect={false}
+                                        />
+                                    ))}
+
+                                            
                                         </div>
                                         <button
                                             onClick={() => deleteFormation(idx)}  // Excluir a formação
@@ -182,11 +187,11 @@ export default function FormationCV() {
                                         <div className="w-full flex flex-col gap-y-2">
                                             {certifications?.map((item, index) => (
                                                 <FormationCertifications
-                                                key={index}
-                                                id={index}
-                                                title={item.name}
-                                                onDelete={(id) => deleteCertification(id)} // Função para deletar
-                                            />
+                                                    key={index}
+                                                    id={index}
+                                                    title={item.name}
+                                                    onDelete={(id) => deleteCertification(id)} // Função para deletar
+                                                />
                                             ))}
                                         </div>
                                         <button
@@ -203,16 +208,16 @@ export default function FormationCV() {
                             <div className="flex gap-x-4 gap-y-6 w-full flex-wrap">
                                 {languages?.map((item, index) => (
                                     <Input
-                                    id={index}
-                                    label="Idioma"
-                                    width="w-[calc(33.3%-1rem)]"
-                                    value={languages[index]?.language}
-                                    onChange={(e) => handleLanguagesChange(e, index, 'language')}
-                                    placeholder="ex: Inglês"
-                                    isSelect={true}
-                                    onDelete={index != 0 ? (id) => deleteLanguage(id) : ''} // Passar a função para deletar
-                                />
-                                
+                                        key={index}
+                                        id={index}
+                                        label="Idioma"
+                                        width="w-[calc(33.3%-1rem)]"
+                                        value={{ language: item.language != 'Língua' ? item.language : '', level: item.level }} // Passa idioma e nível
+                                        isSelect={true}
+                                        onChange={(newLanguage, newLevel) => handleLanguagesChange(newLanguage, newLevel, index)} // Passa ambos os valores
+                                        placeholder={index === 0 ? 'ex: Português' : 'ex: Inglês'}
+                                        onDelete={index !== 0 ? deleteLanguage : null}
+                                    />
                                 ))}
                                 <button
                                     className="bg-TitleGray h-14 w-14 rounded-xl text-white flex justify-center items-center"

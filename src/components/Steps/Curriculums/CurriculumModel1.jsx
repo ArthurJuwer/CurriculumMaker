@@ -65,7 +65,7 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
 
       {currentPage === 1 && (
         <div
-          className={`page-1 h-full ${isLast ? "w-full" : "w-4/12 border-2 border-WeakGray"} flex flex-col flex-wrap p-5 relative`}
+          className={`page-1 h-full ${isLast ? "w-full" : "w-4/12 border-2 border-WeakGray"} flex flex-col flex-wrap relative`}
           ref={borderRef}
         >
 
@@ -92,7 +92,7 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
             }
         </div>
         
-          <div className="flex flex-col flex-wrap gap-y-5 p-5" ref={curriculumRef} >
+          <div className="flex flex-col flex-wrap gap-y-5 p-10" ref={curriculumRef} >
             <div>
               
               <h1
@@ -252,7 +252,7 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
       {isNewPage && currentPage === 2 && (
           <div
             ref={borderRef}
-            className={`page-2 h-full ${isLast ? "w-full" : "w-4/12 border-2 border-WeakGray"} p-10 relative`}
+            className={`page-2 h-full ${isLast ? "w-full" : "w-4/12 border-2 border-WeakGray"} flex flex-col flex-wrap relative`}
             // MUDANÇA p-10 para p-5 e div de baixo p-5
           >
             <div
@@ -271,129 +271,134 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
                     2
                 </button>
             </div>
-            {valuesCurriculum?.objective && elementsMoved >= 5 && (
-                <div>
-                  <h1
-                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
-                  >
-                    Objetivo
-                  </h1>
-                  <p
-                    className="text-p1920 text-TitleGray"
-                    style={{ fontSize: valuesCurriculum?.textCorp }}
-                  >
-                    {valuesCurriculum?.objective}
-                  </p>
-                </div>
-              )}
-            {valuesCurriculum?.projects?.length > 0 && elementsMoved >= 4 && (
-                <div>
-                  <h1
-                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
-                  >
-                    Experiências
-                  </h1>
-                  <div className="flex flex-col gap-y-2">
-                    {valuesCurriculum?.projects?.map((item, index) => (
-                      <div key={`project-${index}`}>
-                        <p
-                          style={{ color: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textCorp }}
-                          className="text-p1920"
-                        >
-                          {item?.year}
-                        </p>
-                        <p
+
+            <div className="flex flex-col flex-wrap gap-y-5 p-10">
+
+            
+              {valuesCurriculum?.objective && elementsMoved >= 5 && (
+                  <div>
+                    <h1
+                      className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                      style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                    >
+                      Objetivo
+                    </h1>
+                    <p
+                      className="text-p1920 text-TitleGray"
+                      style={{ fontSize: valuesCurriculum?.textCorp }}
+                    >
+                      {valuesCurriculum?.objective}
+                    </p>
+                  </div>
+                )}
+              {valuesCurriculum?.projects?.length > 0 && elementsMoved >= 4 && (
+                  <div>
+                    <h1
+                      className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                      style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                    >
+                      Experiências
+                    </h1>
+                    <div className="flex flex-col gap-y-2">
+                      {valuesCurriculum?.projects?.map((item, index) => (
+                        <div key={`project-${index}`}>
+                          <p
+                            style={{ color: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textCorp }}
+                            className="text-p1920"
+                          >
+                            {item?.year}
+                          </p>
+                          <p
+                            style={{ fontSize: valuesCurriculum?.textCorp }}
+                            className="text-TitleGray text-p1920"
+                          >
+                            {item?.title} | {item?.category}
+                          </p>
+                          <p
+                            style={{ fontSize: valuesCurriculum?.textCorp }}
+                            className="text-WeakGray text-p1920"
+                          >
+                            {item?.description}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+              {valuesCurriculum?.formations && elementsMoved >= 3 && (
+                  <div>
+                    <h1
+                      className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                      style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                    >
+                      Formação
+                    </h1>
+                    {valuesCurriculum?.formations?.map((item, index) => (
+                      <ul key={`formation-${index}`} className="pb-2">
+                        <div className="flex items-center gap-x-4">
+                          <li
+                            style={{ fontSize: valuesCurriculum?.textCorp }}
+                            className="text-TitleGray text-p1920 flex items-center"
+                          >
+                            • {item?.school}
+                          </li>
+                        </div>
+
+                        <li
                           style={{ fontSize: valuesCurriculum?.textCorp }}
                           className="text-TitleGray text-p1920"
                         >
-                          {item?.title} | {item?.category}
-                        </p>
-                        <p
-                          style={{ fontSize: valuesCurriculum?.textCorp }}
-                          className="text-WeakGray text-p1920"
-                        >
-                          {item?.description}
-                        </p>
-                      </div>
+                          • {item?.title} | {item?.yearEntry} - {item?.yearLeave}
+                        </li>
+                      </ul>
                     ))}
                   </div>
-                </div>
-              )}
-
-            {valuesCurriculum?.formations && elementsMoved >= 3 && (
-                <div>
-                  <h1
-                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
-                  >
-                    Formação
-                  </h1>
-                  {valuesCurriculum?.formations?.map((item, index) => (
-                    <ul key={`formation-${index}`} className="pb-2">
-                      <div className="flex items-center gap-x-4">
+                )}
+              {valuesCurriculum?.languages && elementsMoved >= 2 && (
+                  <div>
+                    <h1
+                      className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                      style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                    >
+                      Idiomas
+                    </h1>
+                    <ul className="pb-2">
+                      {valuesCurriculum?.languages?.map((item, index) => (
                         <li
                           style={{ fontSize: valuesCurriculum?.textCorp }}
-                          className="text-TitleGray text-p1920 flex items-center"
+                          key={index}
+                          className="text-TitleGray text-p1920"
                         >
-                          • {item?.school}
+                          • {item?.language} ({item?.level})
                         </li>
-                      </div>
-
-                      <li
-                        style={{ fontSize: valuesCurriculum?.textCorp }}
-                        className="text-TitleGray text-p1920"
-                      >
-                        • {item?.title} | {item?.yearEntry} - {item?.yearLeave}
-                      </li>
+                      ))}
                     </ul>
-                  ))}
-                </div>
-              )}
-            {valuesCurriculum?.languages && elementsMoved >= 2 && (
+                  </div>
+                )}
+              {valuesCurriculum?.certifications && elementsMoved >= 1 &&(
                 <div>
                   <h1
                     className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                     style={{ fontSize: valuesCurriculum?.textSubTitle }}
                   >
-                    Idiomas
+                    Certificações
                   </h1>
-                  <ul className="pb-2">
-                    {valuesCurriculum?.languages?.map((item, index) => (
+                  <ul className="pb-2 list-disc pl-4">
+                    {valuesCurriculum?.certifications?.map((item, index) => (
                       <li
                         style={{ fontSize: valuesCurriculum?.textCorp }}
                         key={index}
                         className="text-TitleGray text-p1920"
                       >
-                        • {item?.language} ({item?.level})
+                        {item?.name} <br />
+                        Carga horária {item?.workload}h. (Conclusão {item?.conclusion})
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
-            {valuesCurriculum?.certifications && elementsMoved >= 1 &&(
-              <div>
-                <h1
-                  className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                  style={{ fontSize: valuesCurriculum?.textSubTitle }}
-                >
-                  Certificações
-                </h1>
-                <ul className="pb-2 list-disc pl-4">
-                  {valuesCurriculum?.certifications?.map((item, index) => (
-                    <li
-                      style={{ fontSize: valuesCurriculum?.textCorp }}
-                      key={index}
-                      className="text-TitleGray text-p1920"
-                    >
-                      {item?.name} <br />
-                      Carga horária {item?.workload}h. (Conclusão {item?.conclusion})
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            </div>
           </div>
       )}
     </>

@@ -14,8 +14,8 @@ export default function Input({
     email,
     year,
     onDelete,
-    validateAllInputs, // Função para revalidar todos os inputs
-    resetValidation, // Função para resetar a validação ao mudar de projeto
+    validateAllInputs, 
+    resetValidation, 
 }) {
     const validDomains = [
         '@gmail.com', '@hotmail.com', '@yahoo.com', '@outlook.com',
@@ -24,6 +24,36 @@ export default function Input({
     ];
 
     const [validationError, setValidationError] = useState(false);
+
+    const [languageValue, setLanguageValue] = useState(value?.language || ""); // Estado para o idioma
+    const [levelValue, setLevelValue] = useState(value?.level || "NATIVO"); // Estado para o nível
+
+    const handleChange = (e) => {
+        const inputType = email
+            ? 'email'
+            : number
+            ? 'number'
+            : year
+            ? 'year'
+            : isLast
+            ? 'linkedIn'
+            : null;
+
+        onChange(e); // Passa o valor para a função onChange externa
+        validateInput(e.target.value, inputType); // Valida o input com base no tipo
+
+        if (e.target.type === "text") {
+            // Atualiza o idioma quando o input de texto for alterado
+            setLanguageValue(e.target.value);
+            onChange(e.target.value, levelValue); // Envia o valor do idioma e o nível atual
+        } else if (e.target.tagName === "SELECT") {
+            // Atualiza o nível quando o select for alterado
+            setLevelValue(e.target.value);
+            onChange(languageValue, e.target.value); // Envia o idioma atual e o novo nível
+        }
+
+    };
+    
     const [isEmpty, setIsEmpty] = useState(true);
 
     // Função para validar o input com base no tipo
@@ -60,30 +90,11 @@ export default function Input({
         setValidationError(error); // Aplica o erro para o campo específico
         return !error;
     };
-
-    // Função chamada sempre que o valor de um input mudar
-    const handleChange = (e) => {
-        const inputType = email
-            ? 'email'
-            : number
-            ? 'number'
-            : year
-            ? 'year'
-            : isLast
-            ? 'linkedIn'
-            : null;
-
-        onChange(e); // Passa o valor para a função onChange externa
-        validateInput(e.target.value, inputType); // Valida o input com base no tipo
-    };
-
-    // Função para validar todos os inputs ao mudar de projeto
     useEffect(() => {
         if (validateAllInputs) {
             validateInput(value, email ? 'email' : number ? 'number' : year ? 'year' : isLast ? 'linkedIn' : null);
         }
-    }, [validateAllInputs, value]); // Revalida sempre que o projeto mudar ou o valor mudar
-
+    }, [validateAllInputs, value]);
     // Função para resetar a validação (passada quando o projeto muda)
     useEffect(() => {
         if (resetValidation) {
@@ -112,7 +123,7 @@ export default function Input({
                         : 'border-green-600 outline-green-600'
                 } bg-transparent p-4 rounded-xl z-10`}
                 onChange={handleChange}
-                value={value}
+                value={isSelect ? languageValue : value}
                 placeholder={placeholder}
                 aria-invalid={validationError ? "true" : "false"}
             />
@@ -152,14 +163,17 @@ export default function Input({
                     </h1>
                 ) : (
                     <select
-                        id={`select-${id}`}
+                        id={id}
                         className="absolute right-4 bottom-3 px-5 rounded-xl py-1 bg-transparent border border-BorderInputGray text-TitleGray font-semibold"
-                        onChange={(e) => onChange(e, id, 'level')}
-                        value={value?.level || ''}
+                        value={levelValue} // Valor do nível
+                        onChange={handleChange} // Chama handleChanged
                     >
-                        {['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map(level => (
-                            <option key={level} value={level}>{level}</option>
-                        ))}
+                        <option value="A1">A1</option>
+                        <option value="A2">A2</option>
+                        <option value="B1">B1</option>
+                        <option value="B2">B2</option>
+                        <option value="C1">C1</option>
+                        <option value="C2">C2</option>
                     </select>
                 )
             )}

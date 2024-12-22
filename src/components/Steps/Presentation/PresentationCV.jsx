@@ -10,8 +10,39 @@ import { CurriculumContext } from "../../../context/CurriculumContext";
 
 export default function PresentationCV() {
     const { values, setValues } = useContext(CurriculumContext);
-
+    const [link, setLink] = useState(null)
     const [score, setScore] = useState('');
+
+    const handleSubmit = () => {
+        // Valida todos os campos (objetivo, projetos e notas)
+        validateAllInputs();
+    
+        // Verifica se há erros nos campos de projeto
+        const hasProjectErrors = projectErrors.some((error) =>
+            Object.values(error).includes(true)
+        );
+    
+        // Verifica se o objetivo está vazio
+        const isObjectiveEmpty = objective === 'texto do objetivo.' || objective === '';
+    
+        // Verifica se algum campo está inválido
+        if (hasProjectErrors || isObjectiveEmpty) {
+            alert('PREENCHA TODOS OS CAMPOS CORRETAMENTE');
+            return;
+        }
+    
+        // Atualiza os valores no contexto com o objetivo, projetos e score
+        setValues(prevValues => ({
+            ...prevValues,
+            objective,
+            projects,
+            score,
+        }));
+    
+        // Define o link para a próxima página
+        setLink('/steps/FormationCV');
+    }
+
     const [objective, setObjective] = useState('texto do objetivo.');
     const [projects, setProjects] = useState([
         { title: 'Projeto 1', category: 'Categoria', year: 'ANO', description: 'descreva seu projeto aqui' },
@@ -61,14 +92,6 @@ export default function PresentationCV() {
 
     const handleProjectSwitch = (index) => {
         setSelectedProject(index);
-    };
-
-    const handleSubmit = () => {
-        setValues(prevValues => ({
-            ...prevValues,
-            objective,
-            projects,
-        }));
     };
 
     return (
@@ -121,7 +144,7 @@ export default function PresentationCV() {
                                         width="w-5/12"
                                         label="Titulo do Projeto"
                                         onChange={(e) => handleProjectChange(selectedProject, 'title', e.target.value)}
-                                        value={projects[selectedProject].title}
+                                        value={projects[selectedProject]?.title === `Projeto ${selectedProject + 1}` ? '' : projects[selectedProject]?.title}
                                         error={projectErrors[selectedProject]?.title} // Passando erro
                                         placeholder="ex: Documentação Administrativa"
                                         validateAllInputs={validateAllInputs} // Passando a função de validação
@@ -131,7 +154,7 @@ export default function PresentationCV() {
                                         width="w-5/12"
                                         label="Categoria"
                                         onChange={(e) => handleProjectChange(selectedProject, 'category', e.target.value)}
-                                        value={projects[selectedProject].category}
+                                        value={projects[selectedProject]?.category === 'Categoria' ? '' : projects[selectedProject]?.category}
                                         error={projectErrors[selectedProject]?.category} // Passando erro
                                         placeholder={'ex: Administração'}
                                         validateAllInputs={validateAllInputs} // Passando a função de validação
@@ -141,7 +164,7 @@ export default function PresentationCV() {
                                         width="w-2/12"
                                         label="Ano"
                                         onChange={(e) => handleProjectChange(selectedProject, 'year', e.target.value)}
-                                        value={projects[selectedProject].year}
+                                        value={projects[selectedProject]?.year === 'ANO' ? '' : projects[selectedProject]?.year}
                                         error={projectErrors[selectedProject]?.year} // Passando erro
                                         placeholder={'ex: 2022'}
                                         validateAllInputs={validateAllInputs} // Passando a função de validação
@@ -153,7 +176,7 @@ export default function PresentationCV() {
                                     isLast={true}
                                     label="Descrição"
                                     onChange={(e) => handleProjectChange(selectedProject, 'description', e.target.value)}
-                                    value={projects[selectedProject].description}
+                                    value={projects[selectedProject].description === 'descreva seu projeto aqui' ? '' : projects[selectedProject].description}
                                     error={projectErrors[selectedProject]?.description} // Passando erro
                                     placeholder={'ex: Este documento tem como objetivo, organizar e padronizar os processos administrativos, garantindo eficiência e conformidade nas operações diárias.'}
                                     validateAllInputs={validateAllInputs} // Passando a função de validação
@@ -161,7 +184,7 @@ export default function PresentationCV() {
                             </div>
                         </div>
                         <div className="-mt-5">
-                            <ButtonNext onClick={handleSubmit} link={'/steps/formationCV'} />
+                            <ButtonNext onClick={handleSubmit} link={link} />
                         </div>
                     </div>
                 </div>

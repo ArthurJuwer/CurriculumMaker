@@ -9,11 +9,14 @@ import ButtonNext from "../StepsGlobalComponents/ButtonNext";
 import FormationCertifications from "./FormationCertifications";
 import { useContext, useState, useEffect } from "react";
 import { CurriculumContext } from "../../../context/CurriculumContext";
+import ErrorMessage from "../StepsGlobalComponents/ErrorMessage";
 
 export default function FormationCV() {
     const { values, setValues } = useContext(CurriculumContext);
 
     const [score, setScore] = useState(values?.score);
+    const [link, setLink] = useState('');
+    const [generalError, setGeneralError] = useState('');
 
     const [formations, setFormations] = useState([
         { school: 'escola', title: 'titulo', yearEntry: 'ano entrada', yearLeave: 'ano saida' },
@@ -38,6 +41,40 @@ export default function FormationCV() {
             score,
         }));
     }, [score, formations, languages, certifications, setValues]);
+
+    const handleSubmit = () => {
+        // Verifica se todos os campos estão preenchidos
+        const allFieldsFilled = formations.every(formation => 
+            formation.school !== 'escola' && formation.school.trim() !== '' &&
+            formation.title !== 'titulo' && formation.title.trim() !== '' &&
+            formation.yearEntry !== 'ano entrada' && formation.yearEntry.trim() !== '' &&
+            formation.yearLeave !== 'ano saida' && formation.yearLeave.trim() !== ''
+        ) && languages.every(language => 
+            language.language !== 'Língua' && language.language.trim() !== ''
+        ) 
+    
+        // Verifica se não há erros de validação em nenhum campo
+        const allFieldsValid = formations.every(formation => 
+            parseInt(formation.yearEntry) <= parseInt(formation.yearLeave)  // Exemplo de validação: ano de entrada não pode ser maior que o de saída
+        ) && certifications.every(certification => 
+            !isNaN(certification.workload) && parseInt(certification.workload) > 0  // Exemplo: carga horária deve ser um número positivo
+        );
+    
+        if (!allFieldsFilled) {
+            setGeneralError('Preencha todos os campos');
+            return;
+        }
+    
+        // Se algum campo tiver erro de validação, não avança
+        if (!allFieldsValid) {
+            setGeneralError('Corrija os erros antes de continuar');
+            return;
+        }
+    
+        // Atualiza os valores no contexto e navega para a próxima página
+        setValues(values);
+        setLink('/steps/finalizationCV');
+    };
 
     const addFormation = () => {
         setFormations([
@@ -117,9 +154,9 @@ export default function FormationCV() {
 
     const inputsFormation = [
         { label: 'Escola', placeholder: 'ex: Universidade Unisinos Porto Alegre', category: 'school' },
-        { label: 'Ano Entrada', placeholder: 'ex: 2020', category: 'yearEntry' },
-        { label: 'Título', placeholder: 'ex: Graduação Administração', category: 'title' },
-        { label: 'Ano Saída', placeholder: 'ex: 2024', category: 'yearLeave' },
+        { label: 'Ano Entrada', placeholder: 'ex: 2020', category: 'yearEntry', year: true},
+        { label: 'Título', placeholder: 'ex: Graduação Administração', category: 'title'},
+        { label: 'Ano Saída', placeholder: 'ex: 2024', category: 'yearLeave', year: true},
     ];
 
     return (
@@ -149,14 +186,15 @@ export default function FormationCV() {
                                         <div className="flex gap-x-4 gap-y-6 w-full flex-wrap">
                                         {inputsFormation?.map((item) => (
                                         <Input
-                                            key={item.category}
-                                            id={item.category}
-                                            label={item.label}
+                                            key={item?.category}
+                                            id={item?.category}
+                                            label={item?.label}
                                             value={formation[item?.category] === 'escola' || formation[item?.category] === 'titulo' || formation[item?.category] === 'ano entrada' || formation[item?.category] === 'ano saida' ? '' : formation[item?.category]}  // Verifica valores padrões e substitui por ''
                                             width={inputsFormation.indexOf(item) % 2 === 0 ? 'w-[calc(65%)]' : 'w-[calc(35%-1rem)]'}
-                                            onChange={(e) => handleFormationChange(e, idx, item.category)}
-                                            placeholder={item.placeholder}
+                                            onChange={(e) => handleFormationChange(e, idx, item?.category)}
+                                            placeholder={item?.placeholder}
                                             isSelect={false}
+                                            year={item?.year}                                            
                                         />
                                     ))}
 
@@ -227,7 +265,7 @@ export default function FormationCV() {
                                 </button>
                             </div>
                             <div className="w-full pr-1">
-                                <ButtonNext link={'/steps/finalizationCV'} />
+                                <ButtonNext onClick={handleSubmit} link={link} />
                             </div>
                         </div>
                     </div>
@@ -277,6 +315,7 @@ export default function FormationCV() {
                     </div>
                 </div>
             )}
+            <ErrorMessage message={generalError} onClose={() => setGeneralError('')}/>
         </div>
     );
 }

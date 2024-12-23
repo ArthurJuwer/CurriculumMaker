@@ -7,6 +7,7 @@ import Title from "../StepsGlobalComponents/Title";
 import TopMarker from "../StepsGlobalComponents/TopMarker";
 import { useLocation } from 'react-router-dom';
 import { CurriculumContext } from "../../../context/CurriculumContext";
+import ErrorMessage from "../StepsGlobalComponents/ErrorMessage";
 
 export default function HeaderCV() {
     const location = useLocation();
@@ -15,6 +16,7 @@ export default function HeaderCV() {
     const model = params.get('model');
     
     const [score, setScore] = useState('');
+    const [generalError, setGeneralError] = useState('');
     const [name, setName] = useState('Nome Completo');
     const [bairro, setBairro] = useState('Bairro');
     const [cidade, setCidade] = useState('Cidade');
@@ -37,6 +39,7 @@ export default function HeaderCV() {
     ];
 
     const values = { score, model, color, name, email, bairro, cidade, estado, telefone, linkedin };
+
     const [validationErrors, setValidationErrors] = useState({});
 
     // Função para lidar com erros de validação de campos individuais
@@ -55,13 +58,15 @@ export default function HeaderCV() {
         const allFieldsValid = Object.values(validationErrors).every((error) => error === false);
 
         if (!allFieldsFilled) {
-            alert('PREENCHA TODOS OS CAMPOS');
+            // alert('PREENCHA TODOS OS CAMPOS');
+            
+            setGeneralError('Preencha todos os campos')
             return;
         }
 
         // Se algum campo tiver erro de validação, não avança
         if (!allFieldsValid) {
-            alert('Corrija os erros antes de continuar');
+            setGeneralError('Corrija os erros antes de continuar')
             return;
         }
 
@@ -69,6 +74,8 @@ export default function HeaderCV() {
         setValues(values);
         setLink('/steps/presentationCV');
     };
+
+    
 
     return (
         <div className="h-screen w-full bg-DefaultGray">
@@ -85,18 +92,22 @@ export default function HeaderCV() {
                         <div className="pt-5 w-full flex flex-wrap gap-x-4 gap-y-10 relative">
                             {inputsArray.map((item, index) => (
                                 <Input
-                                    key={index}
-                                    id={index}
-                                    label={item?.label}
-                                    isLast={index === inputsArray.length - 1} 
-                                    width={'w-[calc(50%-0.5rem)]'}
-                                    onChange={(e) => item?.setVariable(e.target.value)}
-                                    placeholder={item?.placeholder}
-                                    value={item?.value == item?.label ? '' : item?.value}
-                                    email={item?.email}
-                                    number={item?.number}
-                                    onValidationError={(error) => handleValidationError(index, error)}
-                                />
+                                key={index}
+                                id={index}
+                                label={item?.label}
+                                isLast={index === inputsArray.length - 1} 
+                                width={'w-[calc(50%-0.5rem)]'}
+                                onChange={(e) => {
+                                    if (item?.setVariable) {
+                                        item.setVariable(e.target.value);  // Garantir que setVariable está definido
+                                    }
+                                }}
+                                placeholder={item?.placeholder}
+                                value={item?.value !== undefined && item?.value !== item?.label ? item?.value : ''}  // Garantir que o valor não seja undefined
+                                email={item?.email}
+                                number={item?.number}
+                                onValidationError={(error) => handleValidationError(index, error)}
+                            />
                             ))}
                         </div>
                         <ButtonNext onClick={handleSubmit} link={link} />
@@ -104,6 +115,7 @@ export default function HeaderCV() {
                 </div>
                 <Curriculum valuesCurriculum={values} />
             </div>
+            <ErrorMessage message={generalError} onClose={() => setGeneralError('')}/>
         </div>
     );
 }

@@ -1,8 +1,8 @@
-import { Pipette } from "lucide-react"
 import ModelsColors from "./ModelsColors"
 import ModelsThemes from "./ModelsThemes"
 import { useState } from "react"
 import Curriculum from "../Steps/StepsGlobalComponents/Curriculum"
+
 
 export default function Models() {
 
@@ -18,7 +18,6 @@ export default function Models() {
 
     const [colorPass, setColorPass] = useState(colors[0].color)
     const [selectedIndex, setSelectedIndex] = useState(null);
-
     const valuesModel = {
         "model": "1",
         "color": colorPass,

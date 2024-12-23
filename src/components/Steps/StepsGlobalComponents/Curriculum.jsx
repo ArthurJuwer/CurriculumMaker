@@ -9,8 +9,8 @@ export default function Curriculum({ valuesCurriculum, isLast, twoPages }) {
 
     // Com base no valor de `values.model`, renderiza o modelo correspondente
     console.log(values)
-    let curriculumModel;
     
+    let curriculumModel;
     switch (values?.model) {
         case "1":
             curriculumModel = <CurriculumModel1 valuesCurriculum={valuesCurriculum} isLast={isLast} twoPages={twoPages} />;

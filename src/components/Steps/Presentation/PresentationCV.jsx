@@ -7,31 +7,31 @@ import Title from "../StepsGlobalComponents/Title";
 import TopMarker from "../StepsGlobalComponents/TopMarker";
 import Input from "../StepsGlobalComponents/Input";
 import { CurriculumContext } from "../../../context/CurriculumContext";
+import ErrorMessage from "../StepsGlobalComponents/ErrorMessage";
 
 export default function PresentationCV() {
     const { values, setValues } = useContext(CurriculumContext);
+    const [generalError, setGeneralError] = useState(null)
     const [link, setLink] = useState(null)
     const [score, setScore] = useState('');
 
     const handleSubmit = () => {
-        // Valida todos os campos (objetivo, projetos e notas)
         validateAllInputs();
     
-        // Verifica se há erros nos campos de projeto
         const hasProjectErrors = projectErrors.some((error) =>
             Object.values(error).includes(true)
         );
     
-        // Verifica se o objetivo está vazio
         const isObjectiveEmpty = objective === 'texto do objetivo.' || objective === '';
     
-        // Verifica se algum campo está inválido
-        if (hasProjectErrors || isObjectiveEmpty) {
-            alert('PREENCHA TODOS OS CAMPOS CORRETAMENTE');
+        if (isObjectiveEmpty) {
+            setGeneralError('Preencha todos os campos.')
+            return;
+        } else if(hasProjectErrors){
+            setGeneralError('Arrume os erros.')
             return;
         }
     
-        // Atualiza os valores no contexto com o objetivo, projetos e score
         setValues(prevValues => ({
             ...prevValues,
             objective,
@@ -39,7 +39,6 @@ export default function PresentationCV() {
             score,
         }));
     
-        // Define o link para a próxima página
         setLink('/steps/FormationCV');
     }
 
@@ -66,16 +65,19 @@ export default function PresentationCV() {
 
     // Função para validar todos os inputs
     const validateAllInputs = () => {
-        console.log("Validando todos os inputs...");
-
+        const currentYear = new Date().getFullYear(); // Ano atual
+        
         const errors = projects.map((project, index) => ({
-            title: project.title === 'Projeto ' + (index + 1) ? true : false,
-            category: project.category === 'Categoria' ? true : false,
-            year: project.year === 'ANO' ? true : false,
-            description: project.description === 'descreva seu projeto aqui' ? true : false,
+            title: project?.title === 'Projeto ' + (index + 1) ? true : false,
+            category: project?.category === 'Categoria' ? true : false,
+            year: 
+            !project?.year || 
+            isNaN(project?.year) || 
+            Number(project?.year) < 1900 || 
+            Number(project?.year) > currentYear,
+            description: project?.description === 'descreva seu projeto aqui' ? true : false,
         }));
 
-        console.log(errors); // Log para verificar os erros
         setProjectErrors(errors); // Atualiza os erros para todos os projetos
     };
 
@@ -190,6 +192,7 @@ export default function PresentationCV() {
                 </div>
                 <Curriculum valuesCurriculum={values} />
             </div>
+            <ErrorMessage message={generalError} onClose={() => setGeneralError('')}/>
         </div>
     );
 }

@@ -9,6 +9,7 @@ export default function Input({
     isLast,
     isSelect,
     onChange,
+    onFocus,
     placeholder,
     number,
     email,
@@ -104,6 +105,45 @@ export default function Input({
             onChange(languageValue, e.target.value);
         }
     };
+    const [showContent,setShowContent] = useState(null)
+    const [isOnFocus, setIsOnFocus] = useState(null); 
+    const [lastFocus, setLastFocus] = useState(null);
+
+
+    const handleFocus = (e) => {
+        if (onFocus) {
+            onFocus(e); 
+        }
+        setIsOnFocus(e.target.id);
+    };
+
+    const handleBlur = (e) => {
+        setLastFocus(e.target.id);
+        setIsOnFocus(null); 
+    };
+
+    useEffect(() => {
+        if (!validationError && !isEmpty) {
+            if (isOnFocus) {
+                // Se o campo ainda estiver focado, aguarda 1,5s
+                const timer = setTimeout(() => {
+                    setShowContent(true);
+                }, 1500);
+
+                return () => clearTimeout(timer); // Limpa o timer ao sair
+            } else if (lastFocus) {
+                // Se o campo perdeu o foco, verifica instantaneamente
+                setShowContent(true);
+            } else {
+                setShowContent(false);
+            }
+        } else {
+            setShowContent(false);
+        }
+    }, [isOnFocus, lastFocus, validationError, isEmpty]);
+
+    const onlyNumbers = number || year
+
 
     return (
         <div className={`relative ${width} ${isLast ? 'last:w-full' : ''}`}>
@@ -115,17 +155,31 @@ export default function Input({
             </label>
 
             <input
-                type="text"
+                type={onlyNumbers ? 'number' : 'text'}
                 id={`input-${id}`}
-                className={`border w-full ${isEmpty ? 'border-BorderInputGray' : validationError ? 'border-red-600 outline-red-600' : 'border-green-600 outline-green-600'} bg-transparent p-4 rounded-xl z-10`}
+                className={`border w-full 
+                    ${isEmpty ? 'border-BorderInputGray' : validationError ? 'border-red-600 outline-red-600' : `${isSelect ? 'border-green-700' : 'border-BorderInputGray'} outline-green-700`}
+                    ${onlyNumbers ? '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' : ''}
+                    bg-transparent p-4 rounded-xl z-10
+                `}
                 onChange={handleChange}
                 value={isSelect ? languageValue : value}
                 placeholder={placeholder}
                 aria-invalid={validationError ? "true" : "false"}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                onInput={(e) => {
+                    if (year && e.target.value.length > 4) {
+                        e.target.value = e.target.value.slice(0, 4);  
+                        handleChange(e);  
+                    }
+                }}
+                
             />
 
-            {!validationError && !isEmpty && !isSelect && (
-                <div className="absolute top-1/2 right-4 transform -translate-y-1/2 size-8 rounded-full bg-green-600 flex justify-center items-center">
+            {showContent && !isSelect && (
+                
+                <div className="absolute top-1/2 right-4 transform -translate-y-1/2 size-8 rounded-full bg-green-700 flex justify-center items-center">
                     <Check className="text-white size-6 mt-0.5 -rotate-2 "/>
                 </div>
             )}

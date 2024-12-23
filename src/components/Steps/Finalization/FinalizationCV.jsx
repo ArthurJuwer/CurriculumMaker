@@ -10,6 +10,7 @@ import FinalizationSelect from "./FinalizationSelect";
 import Score from "../StepsGlobalComponents/Score";
 import html2canvas from 'html2canvas'; // Importar html2canvas
 import { jsPDF } from 'jspdf'; // Importar jsPDF
+import ErrorMessage from "../StepsGlobalComponents/ErrorMessage";
 
 export default function FinalizationCV() {
     const { values, setValues } = useContext(CurriculumContext);
@@ -60,9 +61,13 @@ export default function FinalizationCV() {
         { label: "Fonte Corpo", options: ["6px", "8px", "10px", "12px", "14px", "16px", "18px"], defaultValue: "12px", setVariable: setTextCorp },
     ];
 
-    // Função para gerar o PDF
+    const [generalError, setGeneralError] = useState(null)
     const gerarPDF = () => {
         
+            if(!nameCurriculum){
+                setGeneralError('O arquivo precisa ter um nome.')
+                return
+            }
             
             const doc = new jsPDF();
     
@@ -80,11 +85,11 @@ export default function FinalizationCV() {
                     alert("VISUALIZE A SEGUNDA PAGINA")
                 } else {
                     doc.addImage(imgData2, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                    doc.save(`${nameCurriculum || "curriculum"}.pdf`);
+                    doc.save(`${nameCurriculum}.pdf`);
                 }
                 
             } else {
-                doc.save(`${nameCurriculum || "curriculum"}.pdf`);
+                doc.save(`${nameCurriculum}.pdf`);
             } 
 
             // Salva o PDF
@@ -179,6 +184,7 @@ export default function FinalizationCV() {
                     </div>
                 </div>
             </div>
+            <ErrorMessage message={generalError} onClose={()=> setGeneralError('')}/>
         </div>
     );
 }

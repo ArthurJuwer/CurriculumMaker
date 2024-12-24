@@ -8,60 +8,38 @@ import TopMarker from "../StepsGlobalComponents/TopMarker";
 import Input from "../StepsGlobalComponents/Input";
 import { CurriculumContext } from "../../../context/CurriculumContext";
 import ErrorMessage from "../StepsGlobalComponents/ErrorMessage";
+import { useNavigate } from "react-router-dom";
 
 export default function PresentationCV() {
     const { values, setValues } = useContext(CurriculumContext);
-    const [generalError, setGeneralError] = useState(null)
-    const [link, setLink] = useState(null)
+    const [generalError, setGeneralError] = useState(null);
     const [score, setScore] = useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = () => {
-        validateAllInputs();
-    
-        const hasProjectErrors = projectErrors.some((error) =>
-            Object.values(error).includes(true)
-        );
-    
-        const isObjectiveEmpty = objective === 'texto do objetivo.' || objective === '';
-    
-        if (isObjectiveEmpty) {
-            setGeneralError('Preencha todos os campos.')
-            return;
-        } else if(hasProjectErrors){
-            setGeneralError('Arrume os erros.')
-            return;
-        }
-    
-        setValues(prevValues => ({
-            ...prevValues,
-            objective,
-            projects,
-            score,
-        }));
-    
-        setLink('/steps/FormationCV');
-    }
-
+    // Estado para armazenar o objetivo e os projetos
     const [objective, setObjective] = useState('texto do objetivo.');
     const [projects, setProjects] = useState([
         { title: 'Projeto 1', category: 'Categoria', year: 'ANO', description: 'descreva seu projeto aqui' },
         { title: 'Projeto 2', category: 'Categoria', year: 'ANO', description: 'descreva seu projeto aqui' },
     ]);
     const [selectedProject, setSelectedProject] = useState(0);
-
     const [projectErrors, setProjectErrors] = useState([
         { title: false, category: false, year: false, description: false },
         { title: false, category: false, year: false, description: false },
     ]);
 
+    // Recuperar o objetivo e os projetos do localStorage
     useEffect(() => {
-        setValues(prevValues => ({
-            ...prevValues,
-            objective,
-            projects,
-            score,
-        }));
-    }, [objective, projects, score, setValues]);
+        const storedObjective = localStorage.getItem('objective');
+        if (storedObjective) {
+            setObjective(storedObjective);
+        }
+
+        const storedProjects = JSON.parse(localStorage.getItem('projects'));
+        if (storedProjects && Array.isArray(storedProjects)) {
+            setProjects(storedProjects);
+        }
+    }, []);
 
     // Função para validar todos os inputs
     const validateAllInputs = () => {
@@ -84,6 +62,15 @@ export default function PresentationCV() {
     useEffect(() => {
         validateAllInputs(); 
     }, [selectedProject, projects]);
+    
+    useEffect(() => {
+        setValues(prevValues => ({
+            ...prevValues,
+            objective,
+            projects,
+            score,
+        }));
+    }, [objective, projects, score, setValues]);
 
     const handleProjectChange = (index, field, value) => {
         const updatedProjects = projects.map((project, idx) =>
@@ -94,6 +81,37 @@ export default function PresentationCV() {
 
     const handleProjectSwitch = (index) => {
         setSelectedProject(index);
+    };
+
+    const handleSubmit = () => {
+        validateAllInputs();
+
+        const hasProjectErrors = projectErrors.some((error) =>
+            Object.values(error).includes(true)
+        );
+
+        const isObjectiveEmpty = objective === 'texto do objetivo.' || objective === '';
+
+        if (isObjectiveEmpty) {
+            setGeneralError('Preencha todos os campos.')
+            return;
+        } else if (hasProjectErrors) {
+            setGeneralError('Arrume os erros.')
+            return;
+        }
+
+        // Salvar o objetivo e os projetos no localStorage
+        localStorage.setItem('objective', objective);
+        localStorage.setItem('projects', JSON.stringify(projects));
+
+        setValues(prevValues => ({
+            ...prevValues,
+            objective,
+            projects,
+            score,
+        }));
+
+        navigate('/steps/FormationCV');
     };
 
     return (
@@ -186,7 +204,7 @@ export default function PresentationCV() {
                             </div>
                         </div>
                         <div className="-mt-5">
-                            <ButtonNext onClick={handleSubmit} link={link} />
+                            <ButtonNext onClick={handleSubmit} />
                         </div>
                     </div>
                 </div>

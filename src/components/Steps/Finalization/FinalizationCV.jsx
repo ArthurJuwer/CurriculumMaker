@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import ModelsColors from "../../Models/ModelsColors";
+
 import Curriculum from "../StepsGlobalComponents/Curriculum";
 import Title from "../StepsGlobalComponents/Title";
 import TopMarker from "../StepsGlobalComponents/TopMarker";
@@ -11,6 +11,7 @@ import Score from "../StepsGlobalComponents/Score";
 import html2canvas from 'html2canvas'; // Importar html2canvas
 import { jsPDF } from 'jspdf'; // Importar jsPDF
 import ErrorMessage from "../StepsGlobalComponents/ErrorMessage";
+import ModelsColors from "../Models/ModelsColors";
 
 export default function FinalizationCV() {
     const { values, setValues } = useContext(CurriculumContext);

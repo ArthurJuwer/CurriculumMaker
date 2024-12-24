@@ -1,20 +1,22 @@
 import { useContext, useState, useEffect } from "react";
-import ButtonNext from "../StepsGlobalComponents/ButtonNext";
-import Curriculum from "../StepsGlobalComponents/Curriculum";
+import { useNavigate, useLocation } from 'react-router-dom';
+import { CurriculumContext } from "../../../context/CurriculumContext";
 import Input from "../StepsGlobalComponents/Input";
+import ButtonNext from "../StepsGlobalComponents/ButtonNext";
 import Score from "../StepsGlobalComponents/Score";
 import Title from "../StepsGlobalComponents/Title";
 import TopMarker from "../StepsGlobalComponents/TopMarker";
-import { useLocation } from 'react-router-dom';
-import { CurriculumContext } from "../../../context/CurriculumContext";
 import ErrorMessage from "../StepsGlobalComponents/ErrorMessage";
+import Curriculum from "../StepsGlobalComponents/Curriculum";
 
 export default function HeaderCV() {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const color = params.get('color');
     const model = params.get('model');
-    
+
+    const { setValues, values: contextValues } = useContext(CurriculumContext);
+
     const [score, setScore] = useState('');
     const [generalError, setGeneralError] = useState('');
     const [name, setName] = useState('Nome Completo');
@@ -24,9 +26,8 @@ export default function HeaderCV() {
     const [telefone, setTelefone] = useState('Telefone');
     const [email, setEmail] = useState('Email');
     const [linkedin, setLinkedin] = useState('');
-    const [link, setLink] = useState(null);
 
-    const { setValues } = useContext(CurriculumContext);
+    const navigate = useNavigate();
 
     const inputsArray = [
         { label: 'Nome Completo', placeholder: 'ex: João Carlos', setVariable: setName, value: name },
@@ -42,7 +43,19 @@ export default function HeaderCV() {
 
     const [validationErrors, setValidationErrors] = useState({});
 
-    // Função para lidar com erros de validação de campos individuais
+    useEffect(() => {
+        // Carregue os valores iniciais do contexto ou outra fonte
+        if (contextValues) {
+            setName(contextValues.name || 'Nome Completo');
+            setBairro(contextValues.bairro || 'Bairro');
+            setCidade(contextValues.cidade || 'Cidade');
+            setEstado(contextValues.estado || 'Estado');
+            setTelefone(contextValues.telefone || 'Telefone');
+            setEmail(contextValues.email || 'Email');
+            setLinkedin(contextValues.linkedin || '');
+        }
+    }, [contextValues]);
+
     const handleValidationError = (id, error) => {
         setValidationErrors((prevErrors) => ({
             ...prevErrors,
@@ -51,31 +64,22 @@ export default function HeaderCV() {
     };
 
     const handleSubmit = () => {
-        // Verifica se todos os campos estão preenchidos
         const allFieldsFilled = inputsArray.every((item) => item?.value !== item?.label && item?.value.trim() !== "");
-
-        // Verifica se não há erros de validação em nenhum campo
         const allFieldsValid = Object.values(validationErrors).every((error) => error === false);
 
         if (!allFieldsFilled) {
-            // alert('PREENCHA TODOS OS CAMPOS');
-            
-            setGeneralError('Preencha todos os campos')
+            setGeneralError('Preencha todos os campos');
             return;
         }
 
-        // Se algum campo tiver erro de validação, não avança
         if (!allFieldsValid) {
-            setGeneralError('Corrija os erros antes de continuar')
+            setGeneralError('Corrija os erros antes de continuar');
             return;
         }
 
-        // Atualiza os valores no contexto e navega para a próxima página
         setValues(values);
-        setLink('/steps/presentationCV');
+        navigate('/steps/presentationCV');
     };
-
-    
 
     return (
         <div className="h-screen w-full bg-DefaultGray">
@@ -88,36 +92,33 @@ export default function HeaderCV() {
                             title='Cabeçalho'
                             description='Eles permitem que os empregadores vejam como podem entrar em contato com você.'
                         />
-
                         <div className="pt-5 w-full flex flex-wrap gap-x-4 gap-y-10 relative">
                             {inputsArray.map((item, index) => (
                                 <Input
-                                key={index}
-                                id={index}
-                                label={item?.label}
-                                isLast={index === inputsArray.length - 1} 
-                                width={'w-[calc(50%-0.5rem)]'}
-                                onChange={(e) => {
-                                    if (item?.setVariable) {
-                                        item.setVariable(e.target.value);  // Garantir que setVariable está definido
-                                    }
-                                }}
-                                placeholder={item?.placeholder}
-                                value={item?.value !== undefined && item?.value !== item?.label ? item?.value : ''}  // Garantir que o valor não seja undefined
-                                email={item?.email}
-                                number={item?.number}
-                                onValidationError={(error) => handleValidationError(index, error)}
-                            />
+                                    key={index}
+                                    id={index}
+                                    label={item?.label}
+                                    isLast={index === inputsArray.length - 1}
+                                    width={'w-[calc(50%-0.5rem)]'}
+                                    onChange={(e) => {
+                                        if (item?.setVariable) {
+                                            item.setVariable(e.target.value);
+                                        }
+                                    }}
+                                    placeholder={item?.placeholder}
+                                    value={item?.value !== undefined && item?.value !== item?.label ? item?.value : ''}
+                                    email={item?.email}
+                                    number={item?.number}
+                                    onValidationError={(error) => handleValidationError(index, error)}
+                                />
                             ))}
                         </div>
-                        <ButtonNext onClick={handleSubmit} link={link} />
+                        <ButtonNext onClick={handleSubmit} />
                     </div>
                 </div>
                 <Curriculum valuesCurriculum={values} />
             </div>
-            <ErrorMessage message={generalError} onClose={() => setGeneralError('')}/>
+            <ErrorMessage message={generalError} onClose={() => setGeneralError('')} />
         </div>
     );
 }
-
-

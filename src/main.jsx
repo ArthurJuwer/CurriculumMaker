@@ -3,20 +3,25 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
-import Models from './components/Models/Models.jsx'
+import Models from './components/Steps/Models/Models.jsx'
 import HeaderCV from './components/Steps/Header/HeaderCV.jsx'
 import PresentationCV from './components/Steps/Presentation/PresentationCV.jsx'
 import FormationCV from './components/Steps/Formation/FormationCV.jsx'
 import { CurriculumProvider } from './context/CurriculumContext.jsx'
 import FinalizationCV from './components/Steps/Finalization/FinalizationCV.jsx'
+import SelectMethod from './components/Steps/SelectMethod/SelectMethod.jsx'
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <App />
   },
   {
-    path: '/models',
+    path: '/steps/selectMethod',
+    element: <SelectMethod />
+  },
+  {
+    path: '/steps/models',
     element: <Models />
   },
   {

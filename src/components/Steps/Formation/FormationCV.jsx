@@ -10,41 +10,45 @@ import FormationCertifications from "./FormationCertifications";
 import { useContext, useState, useEffect } from "react";
 import { CurriculumContext } from "../../../context/CurriculumContext";
 import ErrorMessage from "../StepsGlobalComponents/ErrorMessage";
+import { useNavigate } from "react-router-dom";
 
 export default function FormationCV() {
     const { values, setValues } = useContext(CurriculumContext);
-
     const [score, setScore] = useState(values?.score);
-    const [link, setLink] = useState('');
     const [generalError, setGeneralError] = useState('');
     const [generalErrorModal, setGeneralErrorModal] = useState(null);
-
-    const [formations, setFormations] = useState([
+    const [invalidFormationsConfer, setInvalidFormations] = useState(null);
+    const [formations, setFormations] = useState(JSON.parse(localStorage.getItem('formations')) || [
         { school: 'escola', title: 'titulo', yearEntry: 'ano entrada', yearLeave: 'ano saida' },
     ]);
-    const [languages, setLanguages] = useState([
+    const [languages, setLanguages] = useState(JSON.parse(localStorage.getItem('languages')) || [
         { language: 'Língua', level: 'NATIVO' },
     ]);
-    const [certifications, setCertifications] = useState([]); 
-    const [isModalOpen, setIsModalOpen] = useState(false); 
+    const [certifications, setCertifications] = useState(JSON.parse(localStorage.getItem('certifications')) || []);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [certificationInputs, setCertificationInputs] = useState({
         name: '',
         workload: '',
         conclusion: '',
     });
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         setValues(prevValues => ({
             ...prevValues,
             formations,
-            languages, 
-            certifications, 
+            languages,
+            certifications,
             score,
         }));
+        // Salvar no localStorage sempre que houver mudança
+        localStorage.setItem('formations', JSON.stringify(formations));
+        localStorage.setItem('languages', JSON.stringify(languages));
+        localStorage.setItem('certifications', JSON.stringify(certifications));
     }, [score, formations, languages, certifications, setValues]);
 
     const handleSubmit = () => {
-        // Verifica se todos os campos estão preenchidos
         const allFieldsFilled = formations.every(formation => 
             formation.school !== 'escola' && formation.school.trim() !== '' &&
             formation.title !== 'titulo' && formation.title.trim() !== '' &&
@@ -52,27 +56,26 @@ export default function FormationCV() {
             formation.yearLeave !== 'ano saida' && formation.yearLeave.trim() !== ''
         ) && languages.every(language => 
             language.language !== 'Língua' && language.language.trim() !== ''
-        ) 
-    
-        // Verifica se não há erros de validação em nenhum campo
-        const allFieldsValid = formations.every(formation => 
-            parseInt(formation.yearEntry) <= parseInt(formation.yearLeave)  // Exemplo de validação: ano de entrada não pode ser maior que o de saída
-        ) && certifications.every(certification => 
-            !isNaN(certification.workload) && parseInt(certification.workload) > 0  // Exemplo: carga horária deve ser um número positivo
         );
-    
+        
+        const invalidFormations = formations.filter(formation => 
+            parseInt(formation.yearEntry) > parseInt(formation.yearLeave)
+        );
+        
+        setInvalidFormations(invalidFormations.map((_, index) => index));
+
         if (!allFieldsFilled) {
             setGeneralError('Preencha todos os campos');
             return;
         }
     
-        if (!allFieldsValid) {
-            setGeneralError('Corrija os erros antes de continuar');
+        if (invalidFormations.length > 0) {
+            setGeneralError(`Corrija os seguintes campos: Ano de entrada maior que ano de saída em ${invalidFormations.length} formação(ões).`);
             return;
         }
-    
+
         setValues(values);
-        setLink('/steps/finalizationCV');
+        navigate('/steps/finalizationCV');
     };
 
     const addFormation = () => {
@@ -90,17 +93,36 @@ export default function FormationCV() {
     };
 
     const addCertification = () => {
-        if (certificationInputs.name && certificationInputs.workload && certificationInputs.conclusion) {
-            setCertifications([
-                ...certifications,
-                certificationInputs,
-            ]);
-            setCertificationInputs({ name: '', workload: '', conclusion: '' }); 
-            setIsModalOpen(false); 
-        } else {
-            setGeneralErrorModal('Preencha todos os campos.')
-            console.log(generalErrorModal)
+        const { name, workload, conclusion } = certificationInputs;
+
+        if (!name || !workload || !conclusion) {
+            setGeneralErrorModal('Preencha todos os campos.');
+            return;
         }
+
+        const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/;
+        if (!regex.test(conclusion)) {
+            setGeneralErrorModal('Data inválida. Use o formato DD/MM/YYYY.');
+            return;
+        }
+
+        const [day, month, year] = conclusion.split('/').map(Number);
+        const isValidDate = (d, m, y) => {
+            const date = new Date(y, m - 1, d);
+            return date.getFullYear() === y && date.getMonth() === m - 1 && date.getDate() === d;
+        };
+
+        if (!isValidDate(day, month, year)) {
+            setGeneralErrorModal('Data inválida. Verifique o valor inserido.');
+            return;
+        }
+
+        setCertifications([
+            ...certifications,
+            certificationInputs,
+        ]);
+        setCertificationInputs({ name: '', workload: '', conclusion: '' });
+        setIsModalOpen(false);
     };
 
     const handleFormationChange = (e, index, field) => {
@@ -117,16 +139,43 @@ export default function FormationCV() {
         newLanguages[index] = {
             ...newLanguages[index],
             language: newLanguage, 
-            level: newLevel,  // Atualiza tanto o idioma quanto o nível
+            level: newLevel,  
         };
         setLanguages(newLanguages);
     };
 
     const handleCertificationChange = (e, field) => {
+        const value = e.target.value;
+        
         setCertificationInputs({
             ...certificationInputs,
-            [field]: e.target.value,
+            [field]: value,
         });
+
+        if (field === 'conclusion') {
+            const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/;
+            if (value && !regex.test(value)) {
+                setGeneralErrorModal('Data inválida. Use o formato DD/MM/YYYY.');
+                return;
+            }
+
+            const [day, month, year] = value.split('/').map(Number);
+            const isValidDate = (d, m, y) => {
+                const date = new Date(y, m - 1, d);
+                return (
+                    date.getFullYear() === y &&
+                    date.getMonth() === m - 1 &&
+                    date.getDate() === d
+                );
+            };
+
+            if (value && !isValidDate(day, month, year)) {
+                setGeneralErrorModal('Data inválida. Verifique o valor inserido.');
+                return;
+            }
+
+            setGeneralErrorModal('');
+        }
     };
 
     const showModal = () => {
@@ -135,7 +184,7 @@ export default function FormationCV() {
 
     const hideModal = () => {
         setIsModalOpen(false);
-        setGeneralErrorModal('')
+        setGeneralErrorModal('');
     };
 
     const deleteFormation = (index) => {
@@ -147,7 +196,7 @@ export default function FormationCV() {
         const updatedCertifications = certifications.filter((_, index) => index !== id);
         setCertifications(updatedCertifications);
     };
-    
+
     const deleteLanguage = (id) => {
         const newLanguages = languages.filter((_, index) => index !== id);
         setLanguages(newLanguages);
@@ -157,12 +206,8 @@ export default function FormationCV() {
         { label: 'Escola', placeholder: 'ex: Universidade Unisinos Porto Alegre', category: 'school' },
         { label: 'Ano Entrada', placeholder: 'ex: 2020', category: 'yearEntry', year: true},
         { label: 'Título', placeholder: 'ex: Graduação Administração', category: 'title'},
-        { label: 'Ano Saída', placeholder: 'ex: 2024', category: 'yearLeave', year: true},
+        { label: 'Ano Saída', placeholder: 'ex: 2024', category: 'yearLeave', year: true, yearNoRange: true},
     ];
-
-
-
-
     return (
         <div className="h-screen w-full bg-DefaultGray">
             <TopMarker stepsAtual={1} />
@@ -195,11 +240,16 @@ export default function FormationCV() {
                                             label={item?.label}
                                             value={formation[item?.category] === 'escola' || formation[item?.category] === 'titulo' || formation[item?.category] === 'ano entrada' || formation[item?.category] === 'ano saida' ? '' : formation[item?.category]}  // Verifica valores padrões e substitui por ''
                                             width={inputsFormation.indexOf(item) % 2 === 0 ? 'w-[calc(65%)]' : 'w-[calc(35%-1rem)]'}
-                                            onChange={(e) => handleFormationChange(e, idx, item?.category)}
+                                            onChange={(e) => {
+                                                handleFormationChange(e, idx, item?.category)
+                                                setInvalidFormations('')
+                                            }}
                                             placeholder={item?.placeholder}
                                             isSelect={false}
-                                            year={item?.year}                                            
-                                        />
+                                            year={item?.year}     
+                                            yearNoRange={item?.yearNoRange}
+                                            yearNoRangeIsBig={item?.yearNoRange ? invalidFormationsConfer?.includes(idx) : ''} // Passa true se o índice estiver na lista
+                                            />
                                     ))}
 
                                             
@@ -269,7 +319,7 @@ export default function FormationCV() {
                                 </button>
                             </div>
                             <div className="w-full pr-1">
-                                <ButtonNext onClick={handleSubmit} link={link} />
+                                <ButtonNext onClick={handleSubmit} />
                             </div>
                         </div>
                     </div>

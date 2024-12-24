@@ -1,8 +1,8 @@
+
 import ModelsColors from "./ModelsColors"
 import ModelsThemes from "./ModelsThemes"
+import ButtonBack from "../StepsGlobalComponents/ButtonBack";
 import { useState } from "react"
-import Curriculum from "../Steps/StepsGlobalComponents/Curriculum"
-
 
 export default function Models() {
 
@@ -88,6 +88,10 @@ export default function Models() {
                     />
                 ))}
             </div>
+            <div className="absolute top-14 left-20">
+                <ButtonBack />
+            </div>
+            
             <div className="flex justify-center items-center gap-x-12 w-full h-screen">
                 <ModelsThemes 
                     valuesCurriculum={valuesModel}

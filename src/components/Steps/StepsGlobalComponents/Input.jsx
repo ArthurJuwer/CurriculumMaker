@@ -14,6 +14,8 @@ export default function Input({
     number,
     email,
     year,
+    yearNoRange,
+    yearNoRangeIsBig,
     onDelete,
     validateAllInputs,
     resetValidation,
@@ -51,14 +53,9 @@ export default function Input({
             const isValidNumber = /^[0-9]{10,15}$/.test(value);
             error = !isValidNumber;
         } else if (type === 'year') {
-
-
-            // ANO DE ENTRADA ABAIXO DO CURRENTYEAR
-            // ANO DE SAIDA SEM LIMITE
-
-            const currentYear = new Date().getFullYear();
+            const currentYear = new Date().getFullYear();           
             const yearValue = parseInt(value, 10);
-            error = isNaN(yearValue) || yearValue < 1900 || yearValue > currentYear;
+            error = isNaN(yearValue) || yearValue < 1900 || (!yearNoRange ? yearValue > currentYear : null);
         } else if (type === 'linkedIn') {
             const isValidLinkedIn = value.startsWith('https://www.linkedin.com/in/');
             error = !isValidLinkedIn;
@@ -162,7 +159,7 @@ export default function Input({
                 type={onlyNumbers ? 'number' : 'text'}
                 id={`input-${id}`}
                 className={`border w-full 
-                    ${isEmpty ? 'border-BorderInputGray' : validationError ? 'border-red-600 outline-red-600' : `${isSelect ? 'border-green-700' : 'border-BorderInputGray'} outline-green-700`}
+                    ${isEmpty ? 'border-BorderInputGray' : validationError || yearNoRangeIsBig ? 'border-red-600 outline-red-600' : `${isSelect ? 'border-green-700' : 'border-BorderInputGray'} outline-green-700`}
                     ${onlyNumbers ? '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' : ''}
                     bg-transparent p-4 rounded-xl z-10
                 `}
@@ -178,10 +175,11 @@ export default function Input({
                         handleChange(e);  
                     }
                 }}
+                onWheel={(e) => e.preventDefault()} // nao esta funcionando
                 
             />
 
-            {showContent && !isSelect && (
+            {showContent && !isSelect && !yearNoRangeIsBig && (
                 
                 <div className="absolute top-1/2 right-4 transform -translate-y-1/2 size-8 rounded-full bg-green-700 flex justify-center items-center">
                     <Check className="text-white size-6 mt-0.5 -rotate-2 "/>

@@ -1,5 +1,4 @@
 export default function ModelsColors({ backgroundColor, isSelected, onClick, isRounded }) {
-    console.log(isSelected);
     return (
         // TRANSFORMAR PARA HOOK
         

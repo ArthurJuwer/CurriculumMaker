@@ -237,7 +237,7 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
                         className="text-TitleGray text-p1920"
                       >
                         {item?.name} <br />
-                        Carga horária {item?.workload}h. (Conclusão {item?.conclusion})
+                        Carga horária {item?.workload}. (Conclusão {item?.conclusion})
                       </li>
                     ))}
                   </ul>

@@ -17,6 +17,7 @@ export default function FormationCV() {
     const [score, setScore] = useState(values?.score);
     const [link, setLink] = useState('');
     const [generalError, setGeneralError] = useState('');
+    const [generalErrorModal, setGeneralErrorModal] = useState(null);
 
     const [formations, setFormations] = useState([
         { school: 'escola', title: 'titulo', yearEntry: 'ano entrada', yearLeave: 'ano saida' },
@@ -65,13 +66,11 @@ export default function FormationCV() {
             return;
         }
     
-        // Se algum campo tiver erro de validação, não avança
         if (!allFieldsValid) {
             setGeneralError('Corrija os erros antes de continuar');
             return;
         }
     
-        // Atualiza os valores no contexto e navega para a próxima página
         setValues(values);
         setLink('/steps/finalizationCV');
     };
@@ -99,7 +98,8 @@ export default function FormationCV() {
             setCertificationInputs({ name: '', workload: '', conclusion: '' }); 
             setIsModalOpen(false); 
         } else {
-            alert("Por favor, preencha todos os campos.");
+            setGeneralErrorModal('Preencha todos os campos.')
+            console.log(generalErrorModal)
         }
     };
 
@@ -135,6 +135,7 @@ export default function FormationCV() {
 
     const hideModal = () => {
         setIsModalOpen(false);
+        setGeneralErrorModal('')
     };
 
     const deleteFormation = (index) => {
@@ -158,6 +159,9 @@ export default function FormationCV() {
         { label: 'Título', placeholder: 'ex: Graduação Administração', category: 'title'},
         { label: 'Ano Saída', placeholder: 'ex: 2024', category: 'yearLeave', year: true},
     ];
+
+
+
 
     return (
         <div className="h-screen w-full bg-DefaultGray">
@@ -227,7 +231,7 @@ export default function FormationCV() {
                                                 <FormationCertifications
                                                     key={index}
                                                     id={index}
-                                                    title={item.name}
+                                                    title={item?.name}
                                                     onDelete={(id) => deleteCertification(id)} // Função para deletar
                                                 />
                                             ))}
@@ -275,43 +279,50 @@ export default function FormationCV() {
 
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-8 rounded-xl w-4/12 flex flex-col gap-y-8">
+                    <div className="bg-white p-8 rounded-xl w-4/12 flex flex-col gap-y-8 relative">
                         <h2 className="text-xl font-bold">Adicionar Certificação</h2>
                         <div className="flex flex-col gap-y-8">
                             <Input
                                 label="Nome da Certificação"
-                                value={certificationInputs.name}
+                                value={certificationInputs?.name}
                                 onChange={(e) => handleCertificationChange(e, 'name')}
                                 placeholder={'ex: Curso de Administração Empresarial'}
                             />
                             <Input
                                 label="Carga Horária"
-                                value={certificationInputs.workload}
+                                value={certificationInputs?.workload}
                                 onChange={(e) => handleCertificationChange(e, 'workload')}
-                                placeholder={'ex: 120'}
+                                placeholder={'ex: 120h'}
                             />
                             <Input
                                 label="Data"
-                                value={certificationInputs.conclusion}
-                                onChange={(e) => handleCertificationChange(e, 'conclusion')}
-                                type="number"
+                                value={certificationInputs?.conclusion}
+                                onChange={(e) => {
+                                    handleCertificationChange(e, 'conclusion')
+                                }}
                                 placeholder={'ex: 15/03/2021'}
                             />
                         </div>
+                        {generalErrorModal && (
+                            <p className="absolute bottom-20 left-9 text-sm text-red-600">
+                                {generalErrorModal}
+                            </p>
+                        )}
                         <div className="flex justify-between">
                             <button
                                 onClick={hideModal}
-                                className="px-4 py-2 bg-gray-400 text-white rounded-lg"
+                                className="px-4 py-2 bg-TitleGray text-white rounded-lg"
                             >
                                 Cancelar
                             </button>
                             <button
                                 onClick={addCertification}
-                                className="px-4 py-2 bg-TitleGray text-white rounded-lg"
+                                className={`px-4 py-2  ${certificationInputs.name != '' && certificationInputs.workload != ''&& certificationInputs.conclusion != '' ? 'bg-TitleGray' : 'bg-gray-400'}  text-white rounded-lg`}
                             >
                                 Adicionar
                             </button>
                         </div>
+
                     </div>
                 </div>
             )}

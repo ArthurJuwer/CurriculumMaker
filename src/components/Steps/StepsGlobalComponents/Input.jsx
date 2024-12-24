@@ -51,17 +51,21 @@ export default function Input({
             const isValidNumber = /^[0-9]{10,15}$/.test(value);
             error = !isValidNumber;
         } else if (type === 'year') {
+
+
+            // ANO DE ENTRADA ABAIXO DO CURRENTYEAR
+            // ANO DE SAIDA SEM LIMITE
+
             const currentYear = new Date().getFullYear();
             const yearValue = parseInt(value, 10);
             error = isNaN(yearValue) || yearValue < 1900 || yearValue > currentYear;
         } else if (type === 'linkedIn') {
             const isValidLinkedIn = value.startsWith('https://www.linkedin.com/in/');
             error = !isValidLinkedIn;
-        }
+        } 
 
         setValidationError(error);
 
-        // Enviar o estado de erro para o componente pai
         if (onValidationError) {
             onValidationError(error);
         }

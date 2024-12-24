@@ -9,7 +9,6 @@ export default function FormationCertifications({ title, onDelete, id }) {
                     <p className="w-10/12 text-xs font-medium">{title}</p>
                 </div>
                 
-                {/* Botão de Lixeira */}
                 {onDelete && (
                     <button
                         onClick={() => onDelete(id)}

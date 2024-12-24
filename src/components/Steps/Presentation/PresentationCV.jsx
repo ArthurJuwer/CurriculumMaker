@@ -82,8 +82,8 @@ export default function PresentationCV() {
     };
 
     useEffect(() => {
-        validateAllInputs(); // Revalida sempre que o projeto selecionado mudar
-    }, [selectedProject, projects]); // Dependências para revalidar
+        validateAllInputs(); 
+    }, [selectedProject, projects]);
 
     const handleProjectChange = (index, field, value) => {
         const updatedProjects = projects.map((project, idx) =>
@@ -147,9 +147,9 @@ export default function PresentationCV() {
                                         label="Titulo do Projeto"
                                         onChange={(e) => handleProjectChange(selectedProject, 'title', e.target.value)}
                                         value={projects[selectedProject]?.title === `Projeto ${selectedProject + 1}` ? '' : projects[selectedProject]?.title}
-                                        error={projectErrors[selectedProject]?.title} // Passando erro
+                                        error={projectErrors[selectedProject]?.title} 
                                         placeholder="ex: Documentação Administrativa"
-                                        validateAllInputs={validateAllInputs} // Passando a função de validação
+                                        validateAllInputs={validateAllInputs} 
                                     />
                                     <Input
                                         id={`category-${selectedProject}`}
@@ -157,9 +157,9 @@ export default function PresentationCV() {
                                         label="Categoria"
                                         onChange={(e) => handleProjectChange(selectedProject, 'category', e.target.value)}
                                         value={projects[selectedProject]?.category === 'Categoria' ? '' : projects[selectedProject]?.category}
-                                        error={projectErrors[selectedProject]?.category} // Passando erro
+                                        error={projectErrors[selectedProject]?.category}
                                         placeholder={'ex: Administração'}
-                                        validateAllInputs={validateAllInputs} // Passando a função de validação
+                                        validateAllInputs={validateAllInputs} 
                                     />
                                     <Input
                                         id={`year-${selectedProject}`}
@@ -167,9 +167,9 @@ export default function PresentationCV() {
                                         label="Ano"
                                         onChange={(e) => handleProjectChange(selectedProject, 'year', e.target.value)}
                                         value={projects[selectedProject]?.year === 'ANO' ? '' : projects[selectedProject]?.year}
-                                        error={projectErrors[selectedProject]?.year} // Passando erro
+                                        error={projectErrors[selectedProject]?.year} 
                                         placeholder={'ex: 2022'}
-                                        validateAllInputs={validateAllInputs} // Passando a função de validação
+                                        validateAllInputs={validateAllInputs} 
                                         year={true}
                                     />
                                 </div>
@@ -179,9 +179,9 @@ export default function PresentationCV() {
                                     label="Descrição"
                                     onChange={(e) => handleProjectChange(selectedProject, 'description', e.target.value)}
                                     value={projects[selectedProject].description === 'descreva seu projeto aqui' ? '' : projects[selectedProject].description}
-                                    error={projectErrors[selectedProject]?.description} // Passando erro
+                                    error={projectErrors[selectedProject]?.description}
                                     placeholder={'ex: Este documento tem como objetivo, organizar e padronizar os processos administrativos, garantindo eficiência e conformidade nas operações diárias.'}
-                                    validateAllInputs={validateAllInputs} // Passando a função de validação
+                                    validateAllInputs={validateAllInputs}
                                 />
                             </div>
                         </div>

@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 export default function PresentationCV() {
     const { values, setValues } = useContext(CurriculumContext);
     const [generalError, setGeneralError] = useState(null);
+    const [biggestPageReached, setBiggestPageReached] = useState(values?.biggestPageReached);
     const [score, setScore] = useState('');
     const navigate = useNavigate();
 
@@ -38,6 +39,9 @@ export default function PresentationCV() {
         const storedProjects = JSON.parse(localStorage.getItem('projects'));
         if (storedProjects && Array.isArray(storedProjects)) {
             setProjects(storedProjects);
+        }
+        if(values?.biggestPageReached < 2){
+            setBiggestPageReached(2)
         }
     }, []);
 
@@ -69,8 +73,9 @@ export default function PresentationCV() {
             objective,
             projects,
             score,
+            biggestPageReached,
         }));
-    }, [objective, projects, score, setValues]);
+    }, [objective, projects, score, biggestPageReached, setValues]);
 
     const handleProjectChange = (index, field, value) => {
         const updatedProjects = projects.map((project, idx) =>

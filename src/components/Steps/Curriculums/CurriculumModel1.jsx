@@ -2,9 +2,9 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { CurriculumContext } from "../../../context/CurriculumContext";
 
 export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages }) {
-  const [isNewPage, setIsNewPage] = useState(false); // Para controlar se uma nova página é necessária
-  const curriculumRef = useRef(null); // Referência para o contêiner do currículo
-  const borderRef = useRef(null); // Referência para o contêiner das bordas
+  const [isNewPage, setIsNewPage] = useState(false); 
+  const curriculumRef = useRef(null); 
+  const borderRef = useRef(null); 
   const [currentPage, setCurrentPage] = useState(1);
   const [elementsMoved, setElementsMoved] = useState(0);
   const {setValues} = useContext(CurriculumContext)
@@ -23,9 +23,6 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
         setElementsMoved(prevState => prevState + 1)
         
       } 
-      // else {
-      //   setIsNewPage(false);
-      // }
     }
   }, [valuesCurriculum]);
     

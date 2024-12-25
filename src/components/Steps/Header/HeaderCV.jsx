@@ -12,13 +12,15 @@ import Curriculum from "../StepsGlobalComponents/Curriculum";
 export default function HeaderCV() {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const color = params.get('color');
-    const model = params.get('model');
+    // const color = params.get('color');
+    // const model = params.get('model');
 
     const { setValues, values: contextValues } = useContext(CurriculumContext);
 
     const [score, setScore] = useState('');
     const [generalError, setGeneralError] = useState('');
+    const [color, setColor] = useState(params.get('color'));
+    const [model, setModel] = useState(params.get('model'));
     const [name, setName] = useState('Nome Completo');
     const [bairro, setBairro] = useState('Bairro');
     const [cidade, setCidade] = useState('Cidade');
@@ -26,6 +28,7 @@ export default function HeaderCV() {
     const [telefone, setTelefone] = useState('Telefone');
     const [email, setEmail] = useState('Email');
     const [linkedin, setLinkedin] = useState('');
+    const [biggestPageReached, setBiggestPageReached] = useState(1);
 
     const navigate = useNavigate();
 
@@ -39,13 +42,15 @@ export default function HeaderCV() {
         { label: 'Linkedin', placeholder: 'ex: https://www.linkedin.com/in/joaocarlos/', setVariable: setLinkedin, value: linkedin },
     ];
 
-    const values = { score, model, color, name, email, bairro, cidade, estado, telefone, linkedin };
+    const values = { score, model, color, name, email, bairro, cidade, estado, telefone, linkedin, biggestPageReached };
 
     const [validationErrors, setValidationErrors] = useState({});
 
     useEffect(() => {
         // Carregue os valores iniciais do contexto ou outra fonte
         if (contextValues) {
+            setColor(params.get('color') || contextValues.color  || '#124f2b');
+            setModel(params.get('model') || contextValues.model || 1);
             setName(contextValues.name || 'Nome Completo');
             setBairro(contextValues.bairro || 'Bairro');
             setCidade(contextValues.cidade || 'Cidade');
@@ -53,6 +58,7 @@ export default function HeaderCV() {
             setTelefone(contextValues.telefone || 'Telefone');
             setEmail(contextValues.email || 'Email');
             setLinkedin(contextValues.linkedin || '');
+            setBiggestPageReached(contextValues.biggestPageReached || 1);
         }
     }, [contextValues]);
 

@@ -19,6 +19,7 @@ export default function FinalizationCV() {
     const [color, setColor] = useState(values?.color);
     const [model, setModel] = useState(values?.model);
     const [language, setLanguages] = useState("BR");
+    const [biggestPageReached, SetBiggestPageReached] = useState(values?.biggestPageReached);
     const [textTitle, setTextTitle] = useState("28px");
     const [textSubTitle, setTextSubTitle] = useState("20px");
     const [textCorp, setTextCorp] = useState("12px");
@@ -31,6 +32,9 @@ export default function FinalizationCV() {
     const curriculumRef = useRef(); // Ref para o componente Curriculum
 
     useEffect(() => {
+
+        SetBiggestPageReached(4)
+
         setValues((prevValues) => ({
             ...prevValues,
             model,
@@ -41,8 +45,10 @@ export default function FinalizationCV() {
             sizeFile,
             nameCurriculum,
             score,
+            biggestPageReached,
+            
         }));
-    }, [model, color, textTitle, textSubTitle, textCorp, sizeFile, nameCurriculum, score, setValues]);
+    }, [model, color, textTitle, textSubTitle, textCorp, sizeFile, nameCurriculum, score, biggestPageReached, setValues]);
 
     const colors = [
         { color: "A1A1A1" },
@@ -72,15 +78,12 @@ export default function FinalizationCV() {
             
             const doc = new jsPDF();
     
-            const pdfWidth = 210; // A4 width in mm
-            const pdfHeight = 287; // A4 height in mm
+            const pdfWidth = 210; 
+            const pdfHeight = 287; 
 
-            // Adiciona a primeira página
             doc.addImage(imgData1, 'PNG', 0, 0, pdfWidth, pdfHeight);
 
-            // Verifica se é necessário adicionar uma segunda página
-            if (values?.elementsMoved > 0) { // Verifica se a segunda página deve ser adicionada
-                // Adiciona uma nova página ao PDF com a imagem da segunda página armazenada
+            if (values?.elementsMoved > 0) {
                 doc.addPage();
                 if(imgData2 == null){
                     alert("VISUALIZE A SEGUNDA PAGINA")
@@ -92,27 +95,23 @@ export default function FinalizationCV() {
             } else {
                 doc.save(`${nameCurriculum}.pdf`);
             } 
-
-            // Salva o PDF
-            
         
     };
 
-    // Função para capturar a segunda página quando o currentPage for 2
     useEffect(() => {
         if (values?.currentPage === 1) {
             html2canvas(curriculumRef.current, { scale: 3 }).then((canvas) => {
                 let imgData = canvas.toDataURL('image/png');
-                setImgData1(imgData); // Armazena a imagem da segunda página
+                setImgData1(imgData);
             });
         }
         else if (values?.currentPage === 2) {
             html2canvas(curriculumRef.current, { scale: 3 }).then((canvas) => {
                 let imgData = canvas.toDataURL('image/png');
-                setImgData2(imgData); // Armazena a imagem da segunda página
+                setImgData2(imgData);
             });
         }
-    }, [values?.currentPage]); // Executa sempre que o currentPage mudar para 2
+    }, [values?.currentPage]);
 
     return (
         <div className="h-screen w-full bg-DefaultGray">
@@ -149,7 +148,6 @@ export default function FinalizationCV() {
                     </div>
                 </div>
 
-                {/* Currículo - referenciado para exportar separadamente */}
                 <div className="h-full w-4/12 border-2 border-WeakGray">
                     <div ref={curriculumRef} className="flex items-center justify-center h-full w-full">
                         {values ? (
@@ -170,8 +168,6 @@ export default function FinalizationCV() {
                             placeholder={"ex: meu-curriculo"}
                             onChange={(e) => setNameCurriculum(e.target.value)}
                         />
-
-                        {/* Botão para gerar PDF */}
                         <button
                             className="w-full p-4 rounded-xl bg-DefaultOrange text-white uppercase text-sm tracking-wider font-medium"
                             onClick={gerarPDF} 

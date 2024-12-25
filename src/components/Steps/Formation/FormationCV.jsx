@@ -16,6 +16,7 @@ export default function FormationCV() {
     const { values, setValues } = useContext(CurriculumContext);
     const [score, setScore] = useState(values?.score);
     const [generalError, setGeneralError] = useState('');
+    const [biggestPageReached, SetBiggestPageReached] = useState(values?.biggestPageReached);
     const [generalErrorModal, setGeneralErrorModal] = useState(null);
     const [invalidFormationsConfer, setInvalidFormations] = useState(null);
     const [formations, setFormations] = useState(JSON.parse(localStorage.getItem('formations')) || [
@@ -35,18 +36,26 @@ export default function FormationCV() {
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        if(values?.biggestPageReached < 3){
+            SetBiggestPageReached(3)
+        }
+       
+
         setValues(prevValues => ({
             ...prevValues,
             formations,
             languages,
             certifications,
             score,
+            biggestPageReached,
         }));
+        
         // Salvar no localStorage sempre que houver mudança
         localStorage.setItem('formations', JSON.stringify(formations));
         localStorage.setItem('languages', JSON.stringify(languages));
         localStorage.setItem('certifications', JSON.stringify(certifications));
-    }, [score, formations, languages, certifications, setValues]);
+    }, [score, formations, languages, certifications, biggestPageReached, setValues]);
 
     const handleSubmit = () => {
         const allFieldsFilled = formations.every(formation => 

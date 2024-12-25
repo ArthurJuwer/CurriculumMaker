@@ -1,7 +1,7 @@
 export default function SelectMethodOptions({title, text, icon, onClick, select}){
     return(
         <div 
-            className={`w-1/2 h-full bg-transparent cursor-pointer  ${select ? 'border-2 border-[#FF6D05]' : 'border border-BorderInputGray'}   p-10 flex items-center gap-x-8 rounded-2xl`}
+            className={`w-1/2  h-full bg-transparent cursor-pointer  ${select ? 'border-2 border-[#FF6D05]' : 'border border-BorderInputGray'}   p-10 flex items-center gap-x-8 rounded-2xl`}
             onClick={onClick}    
         >
             

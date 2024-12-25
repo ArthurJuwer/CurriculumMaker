@@ -4,7 +4,7 @@ import CurriculumModel3 from "../Curriculums/CurriculumModel3";
 import { CurriculumContext } from "../../../context/CurriculumContext";
 import { useContext } from "react";
 
-export default function Curriculum({ valuesCurriculum, isLast, twoPages }) {
+export default function Curriculum({ isLast, twoPages }) {
     const { values } = useContext(CurriculumContext);
 
     // Com base no valor de `values.model`, renderiza o modelo correspondente
@@ -13,16 +13,16 @@ export default function Curriculum({ valuesCurriculum, isLast, twoPages }) {
     let curriculumModel;
     switch (values?.model) {
         case "1":
-            curriculumModel = <CurriculumModel1 valuesCurriculum={valuesCurriculum} isLast={isLast} twoPages={twoPages} />;
+            curriculumModel = <CurriculumModel1 isLast={isLast} twoPages={twoPages} />;
             break;
         case "2":
-            curriculumModel = <CurriculumModel2 valuesCurriculum={valuesCurriculum} isLast={isLast} />;
+            curriculumModel = <CurriculumModel2 isLast={isLast} />;
             break;
         case "3":
-            curriculumModel = <CurriculumModel3 valuesCurriculum={valuesCurriculum} isLast={isLast} />;
+            curriculumModel = <CurriculumModel3 isLast={isLast} />;
             break;
         default:
-            curriculumModel = <CurriculumModel1 valuesCurriculum={valuesCurriculum} isLast={isLast} />;
+            curriculumModel = <CurriculumModel1 isLast={isLast} />;
             break;
     }
 

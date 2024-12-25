@@ -1,13 +1,13 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { CurriculumContext } from "../../../context/CurriculumContext";
 
-export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages }) {
+export default function CurriculumModel1({ isLast, twoPages }) {
   const [isNewPage, setIsNewPage] = useState(false); 
   const curriculumRef = useRef(null); 
   const borderRef = useRef(null); 
   const [currentPage, setCurrentPage] = useState(1);
   const [elementsMoved, setElementsMoved] = useState(0);
-  const {setValues} = useContext(CurriculumContext)
+  const {values, setValues} = useContext(CurriculumContext)
   
 
 
@@ -24,7 +24,7 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
         
       } 
     }
-  }, [valuesCurriculum]);
+  }, [values]);
     
   
     useEffect(()=>{
@@ -94,68 +94,75 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
               
               <h1
                 className="uppercase text-StrongGray text-title1920 font-bold pb-1"
-                style={{ fontSize: valuesCurriculum?.textTitle || "19pt" }}
+                style={{ fontSize: values?.textTitle || "19pt" }}
               >
-                {valuesCurriculum?.name}
+                {values?.name}
               </h1>
               <ol
                 className="text-p1920 flex flex-wrap gap-y-2 gap-x-2"
-                style={{ color: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textCorp }}
+                style={{ color: `#${values?.color}`, fontSize: values?.textCorp }}
               >
                 <div className="flex gap-x-1">
-                  <li>{valuesCurriculum?.bairro} |</li>
-                  <li>{valuesCurriculum?.cidade},</li>
-                  <li>{valuesCurriculum?.estado} |</li>
-                  <li>{valuesCurriculum?.telefone} |</li>
+                  <li>{values?.bairro} |</li>
+                  <li>{values?.cidade},</li>
+                  <li>{values?.estado} |</li>
+                  <li>{values?.telefone} |</li>
                 </div>
-                <li>{valuesCurriculum?.email}</li>
-                <li>{valuesCurriculum?.linkedin}</li>
+                <li>{values?.email}</li>
+                <li>{values?.linkedin}</li>
               </ol>
             </div>
+            {console.log(values?.biggestPageReached >= 2)}
+
+
+            {/* SE EU PUXAR COM VALUES ELE VEM */}
+            {/* VALE A PENA COLOCAR OS DOIS values PARA VALUES NORMAL */}
+
+            {console.log(!(elementsMoved >= 5))}
 
             <div className="flex flex-col gap-y-2">
-              {valuesCurriculum?.objective && !(elementsMoved >= 5) && (
+              {values?.biggestPageReached >= 2 && values?.objective && !(elementsMoved >= 5) && (
                 <div>
                   <h1
                     className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                    style={{ fontSize: values?.textSubTitle }}
                   >
                     Objetivo
                   </h1>
                   <p
                     className="text-p1920 text-TitleGray"
-                    style={{ fontSize: valuesCurriculum?.textCorp }}
+                    style={{ fontSize: values?.textCorp }}
                   >
-                    {valuesCurriculum?.objective}
+                    {values?.objective}
                   </p>
                 </div>
               )}
 
-              {valuesCurriculum?.projects?.length > 0 && !(elementsMoved >= 4) && (
+              {values?.projects?.length > 0 && !(elementsMoved >= 4) && (
                 <div>
                   <h1
                     className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                    style={{ fontSize: values?.textSubTitle }}
                   >
                     Experiências
                   </h1>
                   <div className="flex flex-col gap-y-2">
-                    {valuesCurriculum?.projects?.map((item, index) => (
+                    {values?.projects?.map((item, index) => (
                       <div key={`project-${index}`}>
                         <p
-                          style={{ color: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textCorp }}
+                          style={{ color: `#${values?.color}`, fontSize: values?.textCorp }}
                           className="text-p1920"
                         >
                           {item?.year}
                         </p>
                         <p
-                          style={{ fontSize: valuesCurriculum?.textCorp }}
+                          style={{ fontSize: values?.textCorp }}
                           className="text-TitleGray text-p1920"
                         >
                           {item?.title} | {item?.category}
                         </p>
                         <p
-                          style={{ fontSize: valuesCurriculum?.textCorp }}
+                          style={{ fontSize: values?.textCorp }}
                           className="text-WeakGray text-p1920"
                         >
                           {item?.description}
@@ -166,19 +173,19 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
                 </div>
               )}
 
-              {valuesCurriculum?.formations && !(elementsMoved >= 3) && (
+              {values?.formations && !(elementsMoved >= 3) && (
                 <div>
                   <h1
                     className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                    style={{ fontSize: values?.textSubTitle }}
                   >
                     Formação
                   </h1>
-                  {valuesCurriculum?.formations?.map((item, index) => (
+                  {values?.formations?.map((item, index) => (
                     <ul key={`formation-${index}`} className="pb-2">
                       <div className="flex items-center gap-x-4">
                         <li
-                          style={{ fontSize: valuesCurriculum?.textCorp }}
+                          style={{ fontSize: values?.textCorp }}
                           className="text-TitleGray text-p1920 flex items-center"
                         >
                           • {item?.school}
@@ -186,7 +193,7 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
                       </div>
 
                       <li
-                        style={{ fontSize: valuesCurriculum?.textCorp }}
+                        style={{ fontSize: values?.textCorp }}
                         className="text-TitleGray text-p1920"
                       >
                         • {item?.title} | {item?.yearEntry} - {item?.yearLeave}
@@ -196,18 +203,18 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
                 </div>
               )}
 
-              {valuesCurriculum?.languages && !(elementsMoved >= 2) && (
+              {values?.languages && !(elementsMoved >= 2) && (
                 <div>
                   <h1
                     className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                    style={{ fontSize: values?.textSubTitle }}
                   >
                     Idiomas
                   </h1>
                   <ul className="pb-2">
-                    {valuesCurriculum?.languages?.map((item, index) => (
+                    {values?.languages?.map((item, index) => (
                       <li
-                        style={{ fontSize: valuesCurriculum?.textCorp }}
+                        style={{ fontSize: values?.textCorp }}
                         key={index}
                         className="text-TitleGray text-p1920"
                       >
@@ -218,18 +225,18 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
                 </div>
               )}
 
-              {valuesCurriculum?.certifications && !(elementsMoved >= 1) && (
+              {values?.certifications && !(elementsMoved >= 1) && (
                 <div>
                   <h1
                     className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                    style={{ fontSize: values?.textSubTitle }}
                   >
                     Certificações
                   </h1>
                   <ul className="pb-2 list-disc pl-4">
-                    {valuesCurriculum?.certifications?.map((item, index) => (
+                    {values?.certifications?.map((item, index) => (
                       <li
-                        style={{ fontSize: valuesCurriculum?.textCorp }}
+                        style={{ fontSize: values?.textCorp }}
                         key={index}
                         className="text-TitleGray text-p1920"
                       >
@@ -272,47 +279,47 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
             <div className="flex flex-col flex-wrap gap-y-5 p-10">
 
             
-              {valuesCurriculum?.objective && elementsMoved >= 5 && (
+              {values?.objective && elementsMoved >= 5 && (
                   <div>
                     <h1
                       className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                      style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                      style={{ fontSize: values?.textSubTitle }}
                     >
                       Objetivo
                     </h1>
                     <p
                       className="text-p1920 text-TitleGray"
-                      style={{ fontSize: valuesCurriculum?.textCorp }}
+                      style={{ fontSize: values?.textCorp }}
                     >
-                      {valuesCurriculum?.objective}
+                      {values?.objective}
                     </p>
                   </div>
                 )}
-              {valuesCurriculum?.projects?.length > 0 && elementsMoved >= 4 && (
+              {values?.projects?.length > 0 && elementsMoved >= 4 && (
                   <div>
                     <h1
                       className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                      style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                      style={{ fontSize: values?.textSubTitle }}
                     >
                       Experiências
                     </h1>
                     <div className="flex flex-col gap-y-2">
-                      {valuesCurriculum?.projects?.map((item, index) => (
+                      {values?.projects?.map((item, index) => (
                         <div key={`project-${index}`}>
                           <p
-                            style={{ color: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textCorp }}
+                            style={{ color: `#${values?.color}`, fontSize: values?.textCorp }}
                             className="text-p1920"
                           >
                             {item?.year}
                           </p>
                           <p
-                            style={{ fontSize: valuesCurriculum?.textCorp }}
+                            style={{ fontSize: values?.textCorp }}
                             className="text-TitleGray text-p1920"
                           >
                             {item?.title} | {item?.category}
                           </p>
                           <p
-                            style={{ fontSize: valuesCurriculum?.textCorp }}
+                            style={{ fontSize: values?.textCorp }}
                             className="text-WeakGray text-p1920"
                           >
                             {item?.description}
@@ -323,19 +330,19 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
                   </div>
                 )}
 
-              {valuesCurriculum?.formations && elementsMoved >= 3 && (
+              {values?.formations && elementsMoved >= 3 && (
                   <div>
                     <h1
                       className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                      style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                      style={{ fontSize: values?.textSubTitle }}
                     >
                       Formação
                     </h1>
-                    {valuesCurriculum?.formations?.map((item, index) => (
+                    {values?.formations?.map((item, index) => (
                       <ul key={`formation-${index}`} className="pb-2">
                         <div className="flex items-center gap-x-4">
                           <li
-                            style={{ fontSize: valuesCurriculum?.textCorp }}
+                            style={{ fontSize: values?.textCorp }}
                             className="text-TitleGray text-p1920 flex items-center"
                           >
                             • {item?.school}
@@ -343,7 +350,7 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
                         </div>
 
                         <li
-                          style={{ fontSize: valuesCurriculum?.textCorp }}
+                          style={{ fontSize: values?.textCorp }}
                           className="text-TitleGray text-p1920"
                         >
                           • {item?.title} | {item?.yearEntry} - {item?.yearLeave}
@@ -352,18 +359,18 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
                     ))}
                   </div>
                 )}
-              {valuesCurriculum?.languages && elementsMoved >= 2 && (
+              {values?.languages && elementsMoved >= 2 && (
                   <div>
                     <h1
                       className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                      style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                      style={{ fontSize: values?.textSubTitle }}
                     >
                       Idiomas
                     </h1>
                     <ul className="pb-2">
-                      {valuesCurriculum?.languages?.map((item, index) => (
+                      {values?.languages?.map((item, index) => (
                         <li
-                          style={{ fontSize: valuesCurriculum?.textCorp }}
+                          style={{ fontSize: values?.textCorp }}
                           key={index}
                           className="text-TitleGray text-p1920"
                         >
@@ -373,18 +380,18 @@ export default function CurriculumModel1({ valuesCurriculum, isLast, twoPages })
                     </ul>
                   </div>
                 )}
-              {valuesCurriculum?.certifications && elementsMoved >= 1 &&(
+              {values?.certifications && elementsMoved >= 1 &&(
                 <div>
                   <h1
                     className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                    style={{ fontSize: valuesCurriculum?.textSubTitle }}
+                    style={{ fontSize: values?.textSubTitle }}
                   >
                     Certificações
                   </h1>
                   <ul className="pb-2 list-disc pl-4">
-                    {valuesCurriculum?.certifications?.map((item, index) => (
+                    {values?.certifications?.map((item, index) => (
                       <li
-                        style={{ fontSize: valuesCurriculum?.textCorp }}
+                        style={{ fontSize: values?.textCorp }}
                         key={index}
                         className="text-TitleGray text-p1920"
                       >

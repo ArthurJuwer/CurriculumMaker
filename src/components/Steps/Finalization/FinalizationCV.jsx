@@ -8,14 +8,13 @@ import FinalizationInput from "./FinalizationInput";
 import { CurriculumContext } from "../../../context/CurriculumContext";
 import FinalizationSelect from "./FinalizationSelect";
 import Score from "../StepsGlobalComponents/Score";
-import html2canvas from 'html2canvas'; // Importar html2canvas
-import { jsPDF } from 'jspdf'; // Importar jsPDF
+import html2canvas from 'html2canvas'; 
+import { jsPDF } from 'jspdf'; 
 import ErrorMessage from "../StepsGlobalComponents/ErrorMessage";
 import ModelsColors from "../Models/ModelsColors";
 
 export default function FinalizationCV() {
     const { values, setValues } = useContext(CurriculumContext);
-    const [score, setScore] = useState(values?.score);
     const [color, setColor] = useState(values?.color);
     const [model, setModel] = useState(values?.model);
     const [language, setLanguages] = useState("BR");
@@ -24,7 +23,7 @@ export default function FinalizationCV() {
     const [textSubTitle, setTextSubTitle] = useState("20px");
     const [textCorp, setTextCorp] = useState("12px");
     const [sizeFile, setSizeFile] = useState("PDF");
-    const [nameCurriculum, setNameCurriculum] = useState("");
+    const [nameCurriculum, setNameCurriculum] = useState(values?.nameCurriculum || "");
     const [currentPage, setCurrentPage] = useState(1); // Estado para controlar a página atual
     const [imgData1, setImgData1] = useState(null); // Estado para armazenar a imagem da segunda página
     const [imgData2, setImgData2] = useState(null); // Estado para armazenar a imagem da segunda página
@@ -32,7 +31,7 @@ export default function FinalizationCV() {
     const curriculumRef = useRef(); // Ref para o componente Curriculum
 
     useEffect(() => {
-
+        
         SetBiggestPageReached(4)
 
         setValues((prevValues) => ({
@@ -44,11 +43,10 @@ export default function FinalizationCV() {
             textCorp,
             sizeFile,
             nameCurriculum,
-            score,
             biggestPageReached,
             
         }));
-    }, [model, color, textTitle, textSubTitle, textCorp, sizeFile, nameCurriculum, score, biggestPageReached, setValues]);
+    }, [model, color, textTitle, textSubTitle, textCorp, sizeFile, nameCurriculum, biggestPageReached, setValues]);
 
     const colors = [
         { color: "A1A1A1" },
@@ -164,6 +162,7 @@ export default function FinalizationCV() {
                         <FinalizationInput
                             key={34}
                             id={Math.random()}
+                            value={nameCurriculum}
                             label={"Nome do Arquivo"}
                             placeholder={"ex: meu-curriculo"}
                             onChange={(e) => setNameCurriculum(e.target.value)}
@@ -176,7 +175,7 @@ export default function FinalizationCV() {
                         </button>
 
                         <div className="">
-                            <Score values={values} page={4} backValue={(newScore) => setScore(newScore)} isLast={true} />
+                            <Score isLast={true}/>
                         </div>
                     </div>
                 </div>

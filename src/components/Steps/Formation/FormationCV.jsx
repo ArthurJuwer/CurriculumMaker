@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function FormationCV() {
     const { values, setValues } = useContext(CurriculumContext);
-    const [score, setScore] = useState(values?.score);
     const [generalError, setGeneralError] = useState('');
     const [biggestPageReached, SetBiggestPageReached] = useState(values?.biggestPageReached);
     const [generalErrorModal, setGeneralErrorModal] = useState(null);
@@ -47,7 +46,6 @@ export default function FormationCV() {
             formations,
             languages,
             certifications,
-            score,
             biggestPageReached,
         }));
         
@@ -55,7 +53,7 @@ export default function FormationCV() {
         localStorage.setItem('formations', JSON.stringify(formations));
         localStorage.setItem('languages', JSON.stringify(languages));
         localStorage.setItem('certifications', JSON.stringify(certifications));
-    }, [score, formations, languages, certifications, biggestPageReached, setValues]);
+    }, [formations, languages, certifications, biggestPageReached, setValues]);
 
     const handleSubmit = () => {
         const allFieldsFilled = formations.every(formation => 
@@ -222,7 +220,7 @@ export default function FormationCV() {
             <TopMarker stepsAtual={1} />
             <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
                 <div className="flex flex-col gap-y-8 w-8/12 h-full">
-                    <Score values={values} page={3} backValue={(newScore) => setScore(newScore)} />
+                    <Score />
                     <div className="flex flex-col gap-y-8 overflow-y-auto overflow-x-visible 
                         [&::-webkit-scrollbar]:w-2
                         [&::-webkit-scrollbar-track]:bg-gray-transparent

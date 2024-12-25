@@ -12,78 +12,77 @@ import Curriculum from "../StepsGlobalComponents/Curriculum";
 export default function HeaderCV() {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    // const color = params.get('color');
-    // const model = params.get('model');
+    const navigate = useNavigate();
 
     const { setValues, values: contextValues } = useContext(CurriculumContext);
 
-    const [score, setScore] = useState('');
-    const [generalError, setGeneralError] = useState('');
-    const [color, setColor] = useState(params.get('color'));
-    const [model, setModel] = useState(params.get('model'));
-    const [name, setName] = useState('Nome Completo');
-    const [bairro, setBairro] = useState('Bairro');
-    const [cidade, setCidade] = useState('Cidade');
-    const [estado, setEstado] = useState('Estado');
-    const [telefone, setTelefone] = useState('Telefone');
-    const [email, setEmail] = useState('Email');
-    const [linkedin, setLinkedin] = useState('');
-    const [biggestPageReached, setBiggestPageReached] = useState(1);
-
-    const navigate = useNavigate();
-
-    const inputsArray = [
-        { label: 'Nome Completo', placeholder: 'ex: João Carlos', setVariable: setName, value: name },
-        { label: 'Bairro', placeholder: 'ex: Farroupilha', setVariable: setBairro, value: bairro },
-        { label: 'Cidade', placeholder: 'ex: Porto Alegre', setVariable: setCidade, value: cidade },
-        { label: 'Estado', placeholder: 'ex: RS', setVariable: setEstado, value: estado },
-        { label: 'Telefone', placeholder: 'ex: (51) 00000-0000', setVariable: setTelefone, value: telefone, number: true },
-        { label: 'Email', placeholder: 'ex: joaocarlos@gmail.com', setVariable: setEmail, value: email, email: true },
-        { label: 'Linkedin', placeholder: 'ex: https://www.linkedin.com/in/joaocarlos/', setVariable: setLinkedin, value: linkedin },
-    ];
-
-    const values = { score, model, color, name, email, bairro, cidade, estado, telefone, linkedin, biggestPageReached };
+    const [formState, setFormState] = useState({
+        score: contextValues?.score || '',
+        generalError: '',
+        color: params.get('color') || contextValues?.color || '#124f2b',
+        model: params.get('model') || contextValues?.model || 1,
+        name: contextValues?.name || 'Nome Completo',
+        bairro: contextValues?.bairro || 'Bairro',
+        cidade: contextValues?.cidade || 'Cidade',
+        estado: contextValues?.estado || 'Estado',
+        telefone: contextValues?.telefone || 'Telefone',
+        email: contextValues?.email || 'Email',
+        linkedin: contextValues?.linkedin || '',
+        biggestPageReached: contextValues?.biggestPageReached || 1,
+    });
 
     const [validationErrors, setValidationErrors] = useState({});
 
     useEffect(() => {
-        // Carregue os valores iniciais do contexto ou outra fonte
+        // Carregar valores do contexto apenas na montagem
         if (contextValues) {
-            setColor(params.get('color') || contextValues.color  || '#124f2b');
-            setModel(params.get('model') || contextValues.model || 1);
-            setName(contextValues.name || 'Nome Completo');
-            setBairro(contextValues.bairro || 'Bairro');
-            setCidade(contextValues.cidade || 'Cidade');
-            setEstado(contextValues.estado || 'Estado');
-            setTelefone(contextValues.telefone || 'Telefone');
-            setEmail(contextValues.email || 'Email');
-            setLinkedin(contextValues.linkedin || '');
-            setBiggestPageReached(contextValues.biggestPageReached || 1);
+            setFormState((prev) => ({
+                ...prev,
+                ...contextValues, // Preserva os valores anteriores e usa os do contexto
+            }));
         }
-    }, [contextValues]);
+    }, []); // [] garante que isso só execute na montagem
+    
+    useEffect(() => {
+        // Atualize o contexto com o estado mais recente do formulário
+        setValues((prev) => ({
+            ...prev,
+            ...formState, // Atualiza apenas os valores relevantes
+        }));
+    }, [formState]);
+
+    const inputsArray = [
+        { label: 'Nome Completo', placeholder: 'ex: João Carlos', key: 'name' },
+        { label: 'Bairro', placeholder: 'ex: Farroupilha', key: 'bairro' },
+        { label: 'Cidade', placeholder: 'ex: Porto Alegre', key: 'cidade' },
+        { label: 'Estado', placeholder: 'ex: RS', key: 'estado' },
+        { label: 'Telefone', placeholder: 'ex: (51) 00000-0000', key: 'telefone', number: true },
+        { label: 'Email', placeholder: 'ex: joaocarlos@gmail.com', key: 'email', email: true },
+        { label: 'Linkedin', placeholder: 'ex: https://www.linkedin.com/in/joaocarlos/', key: 'linkedin' },
+    ];
+
+    const handleChange = (key, value) => {
+        setFormState((prev) => ({ ...prev, [key]: value }));
+    };
 
     const handleValidationError = (id, error) => {
-        setValidationErrors((prevErrors) => ({
-            ...prevErrors,
-            [id]: error,
-        }));
+        setValidationErrors((prevErrors) => ({ ...prevErrors, [id]: error }));
     };
 
     const handleSubmit = () => {
-        const allFieldsFilled = inputsArray.every((item) => item?.value !== item?.label && item?.value.trim() !== "");
-        const allFieldsValid = Object.values(validationErrors).every((error) => error === false);
+        const allFieldsFilled = inputsArray.every(({ key, label }) => formState[key]?.trim() && formState[key] !== label);
+        const allFieldsValid = Object.values(validationErrors).every((error) => !error);
 
         if (!allFieldsFilled) {
-            setGeneralError('Preencha todos os campos');
+            setFormState((prev) => ({ ...prev, generalError: 'Preencha todos os campos' }));
             return;
         }
 
         if (!allFieldsValid) {
-            setGeneralError('Corrija os erros antes de continuar');
+            setFormState((prev) => ({ ...prev, generalError: 'Corrija os erros antes de continuar' }));
             return;
         }
 
-        setValues(values);
         navigate('/steps/presentationCV');
     };
 
@@ -92,39 +91,35 @@ export default function HeaderCV() {
             <TopMarker stepsAtual={3} />
             <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
                 <div className="flex flex-col gap-y-8 w-8/12 h-full">
-                    <Score values={values} page={1} backValue={(newScore) => setScore(newScore)} />
+                    <Score />
                     <div className="h-full flex flex-col gap-y-8">
                         <Title
                             title='Cabeçalho'
                             description='Eles permitem que os empregadores vejam como podem entrar em contato com você.'
                         />
                         <div className="pt-5 w-full flex flex-wrap gap-x-4 gap-y-10 relative">
-                            {inputsArray.map((item, index) => (
+                            {inputsArray.map(({ label, placeholder, key, email, number }, index) => (
                                 <Input
                                     key={index}
                                     id={index}
-                                    label={item?.label}
+                                    label={label}
                                     isLast={index === inputsArray.length - 1}
-                                    width={'w-[calc(50%-0.5rem)]'}
-                                    onChange={(e) => {
-                                        if (item?.setVariable) {
-                                            item.setVariable(e.target.value);
-                                        }
-                                    }}
-                                    placeholder={item?.placeholder}
-                                    value={item?.value !== undefined && item?.value !== item?.label ? item?.value : ''}
-                                    email={item?.email}
-                                    number={item?.number}
-                                    onValidationError={(error) => handleValidationError(index, error)}
+                                    width='w-[calc(50%-0.5rem)]'
+                                    onChange={(e) => handleChange(key, e.target.value)}
+                                    placeholder={placeholder}
+                                    value={formState[key] !== undefined && formState[key] !== label ? formState[key] : ''}
+                                    email={email}
+                                    number={number}
+                                    onValidationError={(error) => handleValidationError(key, error)}
                                 />
                             ))}
                         </div>
                         <ButtonNext onClick={handleSubmit} />
                     </div>
                 </div>
-                <Curriculum valuesCurriculum={values} />
+                <Curriculum />
             </div>
-            <ErrorMessage message={generalError} onClose={() => setGeneralError('')} />
+            <ErrorMessage message={formState.generalError} onClose={() => handleChange('generalError', '')} />
         </div>
     );
 }

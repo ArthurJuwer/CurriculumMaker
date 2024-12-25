@@ -14,12 +14,11 @@ export default function PresentationCV() {
     const { values, setValues } = useContext(CurriculumContext);
     const [generalError, setGeneralError] = useState(null);
     const [biggestPageReached, setBiggestPageReached] = useState(values?.biggestPageReached);
-    const [score, setScore] = useState('');
     const navigate = useNavigate();
 
     // Estado para armazenar o objetivo e os projetos
-    const [objective, setObjective] = useState('texto do objetivo.');
-    const [projects, setProjects] = useState([
+    const [objective, setObjective] = useState(values?.objective || 'texto do objetivo.');
+    const [projects, setProjects] = useState(values?.projects || [
         { title: 'Projeto 1', category: 'Categoria', year: 'ANO', description: 'descreva seu projeto aqui' },
         { title: 'Projeto 2', category: 'Categoria', year: 'ANO', description: 'descreva seu projeto aqui' },
     ]);
@@ -31,15 +30,11 @@ export default function PresentationCV() {
 
     // Recuperar o objetivo e os projetos do localStorage
     useEffect(() => {
-        const storedObjective = localStorage.getItem('objective');
-        if (storedObjective) {
-            setObjective(storedObjective);
-        }
 
-        const storedProjects = JSON.parse(localStorage.getItem('projects'));
-        if (storedProjects && Array.isArray(storedProjects)) {
-            setProjects(storedProjects);
-        }
+        // const storedProjects = JSON.parse(localStorage.getItem('projects'));
+        // if (storedProjects && Array.isArray(storedProjects)) {
+        //     setProjects(storedProjects);
+        // }
         if(values?.biggestPageReached < 2){
             setBiggestPageReached(2)
         }
@@ -72,10 +67,9 @@ export default function PresentationCV() {
             ...prevValues,
             objective,
             projects,
-            score,
             biggestPageReached,
         }));
-    }, [objective, projects, score, biggestPageReached, setValues]);
+    }, [objective, projects, biggestPageReached, setValues]);
 
     const handleProjectChange = (index, field, value) => {
         const updatedProjects = projects.map((project, idx) =>
@@ -113,7 +107,6 @@ export default function PresentationCV() {
             ...prevValues,
             objective,
             projects,
-            score,
         }));
 
         navigate('/steps/FormationCV');
@@ -124,7 +117,7 @@ export default function PresentationCV() {
             <TopMarker stepsAtual={'2'} />
             <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
                 <div className="flex flex-col gap-y-8 w-8/12 h-full">
-                    <Score values={values} page={2} backValue={(newScore) => setScore(newScore)} />
+                    <Score />
                     <div className="h-full flex flex-col gap-y-8">
                         <Title
                             title={'Apresentação Pessoal'}

@@ -22,32 +22,15 @@ export default function CurriculumModel1({ isLast, twoPages }) {
         setIsNewPage(true);
         setElementsMoved(prevState => prevState + 1)
         
+          setValues((prevValues) => ({
+            ...prevValues,
+            elementsMoved,
+          }));
+        
       } 
     }
-  }, [values]);
-    
-  
-    useEffect(()=>{
-        
-    if (curriculumRef.current && borderRef.current) {
-        let curriculumHeight = curriculumRef.current.offsetHeight;
-        let borderHeight = borderRef.current.offsetHeight;
-        if (curriculumHeight > borderHeight) {
-            setIsNewPage(true);
-            setElementsMoved((prevState) => prevState + 1);
-            
-        }
-    }
+  }, [values, elementsMoved]);
 
-  }, [elementsMoved])
-  useEffect(() => {
-    if (elementsMoved > 0) {
-      setValues((prevValues) => ({
-        ...prevValues,
-        elementsMoved,
-      }));
-    }
-  }, [elementsMoved, setValues]);
   useEffect(()=>{
     setValues((prevValues) => ({
       ...prevValues,

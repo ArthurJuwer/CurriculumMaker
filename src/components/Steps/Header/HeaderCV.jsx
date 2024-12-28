@@ -39,6 +39,9 @@ export default function HeaderCV() {
             setFormState((prev) => ({
                 ...prev,
                 ...contextValues, // Preserva os valores anteriores e usa os do contexto
+                color: params.get('color'),
+                model: params.get('model'),
+
             }));
         }
     }, []); // [] garante que isso só execute na montagem
@@ -49,6 +52,7 @@ export default function HeaderCV() {
             ...prev,
             ...formState, // Atualiza apenas os valores relevantes
         }));
+        
     }, [formState]);
 
     const inputsArray = [
@@ -68,6 +72,12 @@ export default function HeaderCV() {
     const handleValidationError = (id, error) => {
         setValidationErrors((prevErrors) => ({ ...prevErrors, [id]: error }));
     };
+
+    
+
+    // const errorConsult = () =>{
+        
+    // }
 
     const handleSubmit = () => {
         const allFieldsFilled = inputsArray.every(({ key, label }) => formState[key]?.trim() && formState[key] !== label);

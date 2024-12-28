@@ -30,6 +30,13 @@ export default function FinalizationCV() {
 
     const curriculumRef = useRef(); // Ref para o componente Curriculum
 
+    useEffect(()=>{
+        setValues((prevValues) =>({
+            ...prevValues,
+            elementsMoved: 0,
+        })) 
+    }, [])
+
     useEffect(() => {
         
         SetBiggestPageReached(4)
@@ -84,7 +91,8 @@ export default function FinalizationCV() {
             if (values?.elementsMoved > 0) {
                 doc.addPage();
                 if(imgData2 == null){
-                    alert("VISUALIZE A SEGUNDA PAGINA")
+                    setGeneralError('Visualize a segunda pagina. Confira se está tudo certo.')
+                    alert("")
                 } else {
                     doc.addImage(imgData2, 'PNG', 0, 0, pdfWidth, pdfHeight);
                     doc.save(`${nameCurriculum}.pdf`);

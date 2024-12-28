@@ -1,7 +1,16 @@
 import { Link } from "react-router-dom";
 import AppStepNavigator from "./components/App/AppStepNavigator";
+import { useEffect, useState } from "react";
 
 export default function App() {
+  const [linkToGo, setLinkToGo] = useState('/steps/models') 
+
+  useEffect(()=>{
+    if(localStorage.getItem('curriculumValues') !== null){
+      setLinkToGo('/steps/selectMethod')
+    }
+  },[])
+
   const steps = [
     { numberStep: '1', textStep: 'Clique no botão' },
     { numberStep: '2', textStep: 'Insira seus dados' },
@@ -13,7 +22,7 @@ export default function App() {
       <div className="flex flex-col justify-center items-center text-center gap-y-8">
         <h1 className="font-black text-6xl text-StrongGray w-8/12">Monte seu Currículo Vencedor Gratuito e Rápido</h1>
         <p className="text-WeakGray w-1/2">O modelo de currículo foi elaborado para atender às “regras de currículo” que os recrutadores valorizam. Diferencie-se e acelere sua contratação com um modelo comprovado na prática.</p>
-        <Link to={'/steps/selectMethod'}>
+        <Link to={linkToGo}>
           <button className="bg-DefaultOrange p-4 w-96 rounded-xl text-white shadow-2xl font-bold">Criar meu currículo</button>
         </Link>
       </div>

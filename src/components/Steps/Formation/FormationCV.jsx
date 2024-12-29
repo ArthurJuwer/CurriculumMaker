@@ -358,6 +358,7 @@ export default function FormationCV() {
                                     handleCertificationChange(e, 'conclusion')
                                 }}
                                 placeholder={'ex: 15/03/2021'}
+                                conclusion={generalErrorModal ? true : false}
                             />
                         </div>
                         {generalErrorModal && (
@@ -374,7 +375,7 @@ export default function FormationCV() {
                             </button>
                             <button
                                 onClick={addCertification}
-                                className={`px-4 py-2  ${certificationInputs.name != '' && certificationInputs.workload != ''&& certificationInputs.conclusion != '' ? 'bg-TitleGray' : 'bg-gray-400'}  text-white rounded-lg`}
+                                className={`px-4 py-2  ${certificationInputs.name != '' && certificationInputs.workload != ''&& certificationInputs.conclusion != '' && !generalErrorModal ? 'bg-TitleGray' : 'bg-gray-400'}  text-white rounded-lg`}
                             >
                                 Adicionar
                             </button>

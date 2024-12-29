@@ -21,7 +21,7 @@ export default function App() {
     <div className="w-full h-screen bg-DefaultGray flex flex-col justify-center items-center gap-y-40">
       <div className="flex flex-col justify-center items-center text-center gap-y-8">
         <h1 className="font-black text-6xl text-StrongGray w-8/12">Monte seu Currículo Vencedor Gratuito e Rápido</h1>
-        <p className="text-WeakGray w-1/2">O modelo de currículo foi elaborado para atender às “regras de currículo” que os recrutadores valorizam. Diferencie-se e acelere sua contratação com um modelo comprovado na prática.</p>
+        <p className="text-WeakGray w-1/2">O aplicativo foi elaborado para atender às “regras de currículo” que os recrutadores valorizam. Diferencie-se e acelere sua contratação com um modelo comprovado na prática.</p>
         <Link to={linkToGo}>
           <button className="bg-DefaultOrange p-4 w-96 rounded-xl text-white shadow-2xl font-bold">Criar meu currículo</button>
         </Link>

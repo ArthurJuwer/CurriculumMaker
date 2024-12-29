@@ -7,8 +7,10 @@ import ErrorMessage from "./ErrorMessage";
 export default function ButtonBack() {
     const location = useLocation();
     const navigate = useNavigate();
-    const { values } = useContext(CurriculumContext);
+    const { values, setValues } = useContext(CurriculumContext);
     const [generalError, setGeneralError] = useState(values?.generalError)
+
+    const biggestPageReached = values?.biggestPageReached || 1;
 
     const navigationMap = {
         '/steps/selectMethod': '/',
@@ -66,14 +68,12 @@ export default function ButtonBack() {
 
         const consultOnNavStep2 = (!errors || !errorObjective);
         // Verificação do tamanho das listas
-        const formationsLenghtPlus0 = values?.formations?.length > 0;
-        const certificationsLenghtPlus0 = values?.certifications?.length > 0;
-        const languagesLenghtPlus0 = values?.languages?.length > 0;
 
-        let allFieldsFilled = null
+        
         // step 3
-        if (formationsLenghtPlus0 && languagesLenghtPlus0){
-            allFieldsFilled = values?.formations.every(formation =>
+        let consultOnNavStep3
+        if(values?.formations){
+            const allFieldsFilled = values?.formations.every(formation =>
                 formation.school !== 'escola' && formation.school.trim() !== '' &&
                 formation.title !== 'titulo' && formation.title.trim() !== '' &&
                 formation.yearEntry !== 'ano entrada' && formation.yearEntry.trim() !== '' &&
@@ -81,16 +81,12 @@ export default function ButtonBack() {
             ) && values?.languages.every(language =>
                 language.language !== 'Língua' && language.language.trim() !== ''
             );
+            consultOnNavStep3 = !allFieldsFilled;
         }
         
-
         
 
-        // Garantir que a validação de step 3 leve em consideração se as listas possuem itens
-        const consultOnNavStep3 = allFieldsFilled && certificationsLenghtPlus0;
-
-        // Se algum campo estiver inválido, exibe a mensagem de erro
-        if (consultOnNavStep1 || consultOnNavStep2 || !consultOnNavStep3) {
+        if ((consultOnNavStep1 || consultOnNavStep2 || consultOnNavStep3) && biggestPageReached >= 4) {
             setGeneralError('Preencha Todos os campos');
             return false;
         }
@@ -102,7 +98,12 @@ export default function ButtonBack() {
             return
         }
         const currentUrl = location.pathname;
+        setValues((prev)=>({
+            ...prev,
+            generalError: ''
+        }))
         navigate(navigationMap[currentUrl] || -1);
+        
         
     };
 

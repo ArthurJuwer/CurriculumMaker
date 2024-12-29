@@ -28,10 +28,7 @@ export default function ButtonNav() {
         setVisibleLabel(null); 
     };
 
-    // Função para verificar a validade dos campos
     const validateFields = () => {
-
-        // step 1
 
         const validateContactInfo = (type, value) => {
             let error = false;
@@ -75,10 +72,7 @@ export default function ButtonNav() {
 
 
         const consultOnNavStep2 = (!errors || !errorObjective);
-        // Verificação do tamanho das listas
-        const certificationsLenghtPlus0 = values?.certifications?.length > 0;
 
-        // step 3
         const allFieldsFilled = values?.formations.every(formation =>
                 formation.school !== 'escola' && formation.school.trim() !== '' &&
                 formation.title !== 'titulo' && formation.title.trim() !== '' &&
@@ -87,23 +81,16 @@ export default function ButtonNav() {
             ) && values?.languages.every(language =>
                 language.language !== 'Língua' && language.language.trim() !== ''
             );
-        
-        
 
-        
+        const consultOnNavStep3 = !allFieldsFilled;
 
-        // Garantir que a validação de step 3 leve em consideração se as listas possuem itens
-        const consultOnNavStep3 = allFieldsFilled && certificationsLenghtPlus0;
-
-        // Se algum campo estiver inválido, exibe a mensagem de erro
-        if (consultOnNavStep1 || consultOnNavStep2 || !consultOnNavStep3) {
+        if ((consultOnNavStep1 || consultOnNavStep2 || consultOnNavStep3) && biggestPageReached >= 4) {
             setGeneralError('Preencha Todos os campos');
             return false;
         }
         return true;
     };
-
-    // Função para redirecionar para a próxima etapa
+    
     const handleNavigation = (link) => {
         if (!validateFields()) {
             return;

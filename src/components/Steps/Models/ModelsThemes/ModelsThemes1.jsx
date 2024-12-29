@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 
-export default function ModelsThemes({ valuesCurriculum }) {
+export default function ModelsThemes1({ valuesCurriculum }) {
   return (
     <div className="h-full w-3/12 border-2 border-WeakGray p-9 group relative z-0">
       <div className="hidden group-hover:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-        <Link to={`/steps/headerCV?model=${valuesCurriculum?.model}&color=${valuesCurriculum?.color}`}>
+        <Link to={`/steps/headerCV?model=1&color=${valuesCurriculum?.color}`}>
           <button
             className="px-4 py-2 rounded-xl text-white opacity-100"
             style={{ backgroundColor: `#${valuesCurriculum?.color}` }}
@@ -14,13 +14,12 @@ export default function ModelsThemes({ valuesCurriculum }) {
         </Link>
       </div>
       <div className="group-hover:opacity-75 flex flex-col gap-y-3">
-        {/* Informações Pessoais */}
         <div>
           <h1 className={`uppercase text-StrongGray text-title1920Model font-bold pb-1`}>
             {valuesCurriculum?.name}
           </h1>
           <ol
-            className="text-titleDescript1920Model flex flex-wrap gap-y-2 gap-x-2"
+            className="text-p1920Model flex flex-wrap gap-y-2 gap-x-2"
             style={{ color: `#${valuesCurriculum?.color}` }}
           >
             <div className="flex gap-x-1">
@@ -35,15 +34,12 @@ export default function ModelsThemes({ valuesCurriculum }) {
         </div>
 
         <div className="flex flex-col gap-y-2">
-          {/* Objetivo */}
           {valuesCurriculum?.objective && (
             <div>
               <h1 className="uppercase text-StrongGray text-subtitle1920Model font-bold pb-1">Objetivo</h1>
               <p className="text-p1920Model text-TitleGray">{valuesCurriculum?.objective}</p>
             </div>
           )}
-
-          {/* Experiências */}
           {valuesCurriculum?.projects?.length > 0 && (
             <div>
               <h1 className="uppercase text-StrongGray text-subtitle1920Model font-bold pb-1">Experiências</h1>
@@ -63,7 +59,6 @@ export default function ModelsThemes({ valuesCurriculum }) {
             </div>
           )}
 
-          {/* Formação */}
           {valuesCurriculum?.formations && (
             <div>
               <h1 className="uppercase text-StrongGray text-subtitle1920Model font-bold pb-1">Formação</h1>
@@ -76,7 +71,6 @@ export default function ModelsThemes({ valuesCurriculum }) {
             </div>
           )}
 
-          {/* IDIOMAS */}
           {valuesCurriculum?.languages && (
             <div>
               <h1 className="uppercase text-StrongGray text-subtitle1920Model font-bold pb-1">Idiomas</h1>
@@ -88,7 +82,6 @@ export default function ModelsThemes({ valuesCurriculum }) {
             </div>
           )}
 
-          {/* CERTIFICAÇÕES */}
           {valuesCurriculum?.certifications && (
             <div>
               <h1 className="uppercase text-StrongGray text-subtitle1920Model font-bold pb-1">Certificações</h1>

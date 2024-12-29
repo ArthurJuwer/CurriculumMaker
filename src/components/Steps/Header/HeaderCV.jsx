@@ -39,8 +39,8 @@ export default function HeaderCV() {
             setFormState((prev) => ({
                 ...prev,
                 ...contextValues, // Preserva os valores anteriores e usa os do contexto
-                color: params.get('color'),
-                model: params.get('model'),
+                color: params.get('color') || contextValues?.color,
+                model: params.get('model') || contextValues?.model,
 
             }));
         }

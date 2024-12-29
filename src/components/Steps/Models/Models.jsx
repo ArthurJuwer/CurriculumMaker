@@ -1,8 +1,9 @@
 
 import ModelsColors from "./ModelsColors"
-import ModelsThemes from "./ModelsThemes"
 import ButtonBack from "../StepsGlobalComponents/ButtonBack";
 import { useState } from "react"
+import ModelsThemes1 from "./ModelsThemes/ModelsThemes1";
+import ModelsThemes2 from "./ModelsThemes/ModelsThemes2";
 
 export default function Models() {
 
@@ -23,7 +24,7 @@ export default function Models() {
         "color": colorPass,
         "name": "Carlos Silva Souza",
         "email": "carlos.silva@email.com",
-        "bairro": "Centro Histórico",
+        "bairro": "Farroupilha",
         "cidade": "Porto Alegre",
         "estado": "RS",
         "telefone": "(51) 99999-8888",
@@ -93,7 +94,10 @@ export default function Models() {
             </div>
             
             <div className="flex justify-center items-center gap-x-12 w-full h-screen">
-                <ModelsThemes 
+                <ModelsThemes1 
+                    valuesCurriculum={valuesModel}
+                 />
+                 <ModelsThemes2 
                     valuesCurriculum={valuesModel}
                  />
             </div>

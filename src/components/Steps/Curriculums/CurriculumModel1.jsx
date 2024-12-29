@@ -7,6 +7,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
   const borderRef = useRef(null); 
   const [currentPage, setCurrentPage] = useState(1);
   const [elementsMoved, setElementsMoved] = useState(0);
+  const [titles, setTitles] = useState(['Objetivo', 'Experiências', 'Formação', 'Idiomas', 'Certificações'])
   const {values, setValues} = useContext(CurriculumContext)
   
 
@@ -37,6 +38,17 @@ export default function CurriculumModel1({ isLast, twoPages }) {
       currentPage,
     }));
   }, [currentPage])
+
+  useEffect(()=>{
+    setValues((prevValues) => ({
+      ...prevValues,
+      titles,
+    }));
+  }, [])
+  
+  useEffect(()=>{
+    setTitles(values?.titles)
+  }, [values?.titles])
 
 
   return (
@@ -72,7 +84,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
             }
         </div>
         
-          <div className="flex flex-col flex-wrap gap-y-5 p-10" ref={curriculumRef} >
+          <div className="flex flex-col flex-wrap gap-y-3 p-10" ref={curriculumRef} >
             <div>
               
               <h1
@@ -95,13 +107,6 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                 <li>{values?.linkedin}</li>
               </ol>
             </div>
-            {console.log(values?.biggestPageReached >= 2)}
-
-
-            {/* SE EU PUXAR COM VALUES ELE VEM */}
-            {/* VALE A PENA COLOCAR OS DOIS values PARA VALUES NORMAL */}
-
-            {console.log(!(elementsMoved >= 5))}
 
             <div className="flex flex-col gap-y-2">
               {values?.biggestPageReached >= 2 && values?.objective && !(elementsMoved >= 5) && (
@@ -110,7 +115,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                     className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                     style={{ fontSize: values?.textSubTitle }}
                   >
-                    Objetivo
+                    {titles?.[0]}
                   </h1>
                   <p
                     className="text-p1920 text-TitleGray"
@@ -127,7 +132,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                     className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                     style={{ fontSize: values?.textSubTitle }}
                   >
-                    Experiências
+                    {titles?.[1]}
                   </h1>
                   <div className="flex flex-col gap-y-2">
                     {values?.projects?.map((item, index) => (
@@ -159,10 +164,10 @@ export default function CurriculumModel1({ isLast, twoPages }) {
               {values?.formations && !(elementsMoved >= 3) && (
                 <div>
                   <h1
-                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                    className={`${values?.formations.length <= 0 && values?.biggestPageReached >= 4 ? 'hidden' : ''} uppercase text-StrongGray text-subtitle1920 font-bold pb-2`}
                     style={{ fontSize: values?.textSubTitle }}
                   >
-                    Formação
+                    {titles?.[2]}
                   </h1>
                   {values?.formations?.map((item, index) => (
                     <ul key={`formation-${index}`} className="pb-2">
@@ -192,7 +197,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                     className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                     style={{ fontSize: values?.textSubTitle }}
                   >
-                    Idiomas
+                    {titles?.[3]}
                   </h1>
                   <ul className="pb-2">
                     {values?.languages?.map((item, index) => (
@@ -211,10 +216,10 @@ export default function CurriculumModel1({ isLast, twoPages }) {
               {values?.certifications && !(elementsMoved >= 1) && (
                 <div>
                   <h1
-                    className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
+                    className={`${values?.certifications.length <= 0 && values?.biggestPageReached >= 4 ? 'hidden' : ''} uppercase text-StrongGray text-subtitle1920 font-bold pb-2`}
                     style={{ fontSize: values?.textSubTitle }}
                   >
-                    Certificações
+                    {titles?.[4]}
                   </h1>
                   <ul className="pb-2 list-disc pl-4">
                     {values?.certifications?.map((item, index) => (
@@ -268,7 +273,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                       className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                       style={{ fontSize: values?.textSubTitle }}
                     >
-                      Objetivo
+                      {titles?.[0]}
                     </h1>
                     <p
                       className="text-p1920 text-TitleGray"
@@ -284,7 +289,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                       className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                       style={{ fontSize: values?.textSubTitle }}
                     >
-                      Experiências
+                     {titles?.[1]}
                     </h1>
                     <div className="flex flex-col gap-y-2">
                       {values?.projects?.map((item, index) => (
@@ -319,7 +324,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                       className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                       style={{ fontSize: values?.textSubTitle }}
                     >
-                      Formação
+                      {titles?.[2]}
                     </h1>
                     {values?.formations?.map((item, index) => (
                       <ul key={`formation-${index}`} className="pb-2">
@@ -348,7 +353,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                       className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                       style={{ fontSize: values?.textSubTitle }}
                     >
-                      Idiomas
+                      {titles?.[3]}
                     </h1>
                     <ul className="pb-2">
                       {values?.languages?.map((item, index) => (
@@ -369,7 +374,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                     className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
                     style={{ fontSize: values?.textSubTitle }}
                   >
-                    Certificações
+                    {titles?.[4]}
                   </h1>
                   <ul className="pb-2 list-disc pl-4">
                     {values?.certifications?.map((item, index) => (

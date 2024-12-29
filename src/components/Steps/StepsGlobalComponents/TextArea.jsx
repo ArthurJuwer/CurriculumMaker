@@ -70,7 +70,7 @@ export default function TextArea({
         onChange={onChange}
         value={value}
         placeholder={placeholder}
-        maxLength={120}
+        maxLength={150}
         onFocus={handleFocus}
         onBlur={handleBlur}
       />

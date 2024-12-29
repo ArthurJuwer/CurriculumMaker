@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Check, Trash, X } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 export default function Input({
     id,
@@ -16,11 +17,16 @@ export default function Input({
     year,
     yearNoRange,
     yearNoRangeIsBig,
+    conclusion,
     onDelete,
     validateAllInputs,
     resetValidation,
     onValidationError, // Função de callback para enviar o erro de validação para o pai
 }) {
+
+
+
+
     const validDomains = [
         '@gmail.com', '@hotmail.com', '@yahoo.com', '@outlook.com',
         '@icloud.com', '@aol.com', '@live.com', '@msn.com',
@@ -159,7 +165,7 @@ export default function Input({
                 type={onlyNumbers ? 'number' : 'text'}
                 id={`input-${id}`}
                 className={`border w-full 
-                    ${isEmpty ? 'border-BorderInputGray' : validationError || yearNoRangeIsBig ? 'border-red-600 outline-red-600' : `${isSelect ? 'border-green-700' : 'border-BorderInputGray'} outline-green-700`}
+                    ${isEmpty ? 'border-BorderInputGray' : validationError || yearNoRangeIsBig || conclusion ? 'border-red-600 outline-red-600' : `${isSelect ? 'border-green-700' : 'border-BorderInputGray'} outline-green-700`}
                     ${onlyNumbers ? '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' : ''}
                     bg-transparent p-4 rounded-xl z-10
                 `}
@@ -179,7 +185,7 @@ export default function Input({
                 
             />
 
-            {showContent && !isSelect && !yearNoRangeIsBig && (
+            {showContent && !isSelect && !yearNoRangeIsBig && !conclusion && (
                 
                 <div className="absolute top-1/2 right-4 transform -translate-y-1/2 size-8 rounded-full bg-green-700 flex justify-center items-center">
                     <Check className="text-white size-6 mt-0.5 -rotate-2 "/>

@@ -18,7 +18,6 @@ const updateScore = (condition, fieldName) => {
     const addedItemsCount = updatedItemChecks.filter(item => item.added).length;
 
     let newScore = prev.score;
-    console.log(addedItemsCount)
     if (addedItemsCount === 6) {
       newScore = 100; 
     } else {
@@ -64,16 +63,11 @@ if (newScore < 0) {
   const verificationContact = verificationContactEmail && verificationContactPhone; // Contato válido se ambos forem válidos
   
 
-  const verificationObjectiveAndProjects =
+  const verificationObjective =
     values?.objective?.trim() !== "" &&
     values?.objective !== "texto do objetivo." &&
-    values?.projects?.some(
-      (project) =>
-        project?.title?.trim() !== "" &&
-        project?.category?.trim() !== "" &&
-        project?.year?.trim() !== "" &&
-        project?.description?.trim() !== ""
-    );
+    values?.objective !== undefined
+
   const verificationFormationAndCertification =
     values?.certifications?.length >= 1 &&
     values?.formations?.some(
@@ -107,7 +101,7 @@ if (newScore < 0) {
 
     updateScore(verificationLinkedin, 'hasLinkedInBeenAdded');
     updateScore(verificationContact, 'hasContactInfoBeenAdded');
-    updateScore(verificationObjectiveAndProjects, 'hasObjectiveBeenAdded');
+    updateScore(verificationObjective, 'hasObjectiveBeenAdded');
     updateScore(verificationFormationAndCertification, 'hasFormationAndCertificationBeenAdded');
     updateScore(verificationTwoLanguages, 'hasTwoLanguagesBeenAdded');
     updateScore(verificationNameCurriculum, 'hasNameCurriculumBeenAdded');
@@ -177,10 +171,10 @@ if (newScore < 0) {
               </li>
               <li
                 className={`border-b border-gray-300 pb-1 ${
-                  verificationObjectiveAndProjects ? "line-through" : ""
+                  verificationObjective ? "line-through" : ""
                 }`}
               >
-                Preencha Objetivo e Experiências
+                Preencha o Objetivo
               </li>
             </ul>
 

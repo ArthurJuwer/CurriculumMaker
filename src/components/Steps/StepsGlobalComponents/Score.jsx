@@ -115,6 +115,7 @@ if (newScore < 0) {
     values?.formations,
     values?.languages,
     values?.nameCurriculum,
+    values?.generalError
   ]);
 
   return (

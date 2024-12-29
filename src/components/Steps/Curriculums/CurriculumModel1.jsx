@@ -7,8 +7,10 @@ export default function CurriculumModel1({ isLast, twoPages }) {
   const borderRef = useRef(null); 
   const [currentPage, setCurrentPage] = useState(1);
   const [elementsMoved, setElementsMoved] = useState(0);
-  const [titles, setTitles] = useState(['Objetivo', 'Experiências', 'Formação', 'Idiomas', 'Certificações'])
+  const [secondPage, setSecondPage] = useState(false);
   const {values, setValues} = useContext(CurriculumContext)
+  const [titles, setTitles] = useState(values?.titles || ['Objetivo', 'Experiências', 'Formação', 'Idiomas', 'Certificações', 'Carga horária', 'Conclusão'])
+
   
 
 
@@ -21,6 +23,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
 
       if (curriculumHeight > borderHeight) {
         setIsNewPage(true);
+        setSecondPage(true)
         setElementsMoved(prevState => prevState + 1)
         
           setValues((prevValues) => ({
@@ -36,8 +39,9 @@ export default function CurriculumModel1({ isLast, twoPages }) {
     setValues((prevValues) => ({
       ...prevValues,
       currentPage,
+      secondPage,
     }));
-  }, [currentPage])
+  }, [currentPage, secondPage])
 
   useEffect(()=>{
     setValues((prevValues) => ({
@@ -229,7 +233,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                         className="text-TitleGray text-p1920"
                       >
                         {item?.name} <br />
-                        Carga horária {item?.workload}. (Conclusão {item?.conclusion})
+                        {titles?.[5]} {item?.workload}. ({titles?.[6]} {item?.conclusion})
                       </li>
                     ))}
                   </ul>
@@ -384,7 +388,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                         className="text-TitleGray text-p1920"
                       >
                         {item?.name} <br />
-                        Carga horária {item?.workload}h. (Conclusão {item?.conclusion})
+                        {titles?.[5]} {item?.workload}h. ({titles?.[6]} {item?.conclusion})
                       </li>
                     ))}
                   </ul>

@@ -33,7 +33,7 @@ export default function FinalizationCV() {
         setValues((prevValues) =>({
             ...prevValues,
             elementsMoved: 0,
-        })) 
+        }))
     }, [])
 
     useEffect(() => {
@@ -50,9 +50,10 @@ export default function FinalizationCV() {
             sizeFile,
             nameCurriculum,
             biggestPageReached,
+            languageCurriculum
             
         }));
-    }, [model, color, textTitle, textSubTitle, textCorp, sizeFile, nameCurriculum, biggestPageReached, setValues]);
+    }, [model, color, textTitle, textSubTitle, textCorp, sizeFile, languageCurriculum, nameCurriculum, biggestPageReached, setValues]);
 
     useEffect(() => {
         if (languageCurriculum === 'Inglês') {
@@ -162,7 +163,7 @@ export default function FinalizationCV() {
 
             doc.addImage(imgData1, 'PNG', 0, 0, pdfWidth, pdfHeight);
             // ALTERAR
-            if (values?.elementsMoved > 0 || values?.currentPage == 2) {
+            if (values?.elementsMoved > 0 || values?.secondPage === true) {
                 doc.addPage();
                 if(imgData2 == null){
                     setGeneralError('Visualize a segunda pagina. Confira se está tudo certo.')

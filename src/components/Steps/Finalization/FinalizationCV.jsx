@@ -160,7 +160,6 @@ export default function FinalizationCV() {
             const pdfHeight = 287; 
 
             doc.addImage(imgData1, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            // ALTERAR
             if (values?.elementsMoved > 0 || values?.secondPage === true) {
                 doc.addPage();
                 if(imgData2 == null){
@@ -175,8 +174,6 @@ export default function FinalizationCV() {
             } 
         
     };
-
-    
 
     return (
         <div className="h-screen w-full bg-DefaultGray">

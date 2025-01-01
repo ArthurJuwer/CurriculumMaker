@@ -1,12 +1,23 @@
 
 import ModelsColors from "./ModelsColors"
 import ButtonBack from "../StepsGlobalComponents/ButtonBack";
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import ModelsThemes1 from "./ModelsThemes/ModelsThemes1";
 import ModelsThemes2 from "./ModelsThemes/ModelsThemes2";
+import { CurriculumContext } from "../../../context/CurriculumContext";
 
 export default function Models() {
+    const { values, setValues } = useContext(CurriculumContext);
+    const [generalError, setGeneralError] = useState(values?.generalError)
+    useEffect(()=>{
 
+        setGeneralError('')
+        setValues((prev)=>({
+          ...prev,
+          generalError
+        }))
+
+      },[])
     const colors = [
         { color: 'A1A1A1' },
         { color: 'AF9B94' },

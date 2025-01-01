@@ -88,7 +88,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
             }
         </div>
         
-          <div className="flex flex-col flex-wrap gap-y-3 p-10" ref={curriculumRef} >
+          <div className="flex flex-col flex-wrap gap-y-3 p-10 w-full overflow-x-hidden" ref={curriculumRef} >
             <div>
               
               <h1

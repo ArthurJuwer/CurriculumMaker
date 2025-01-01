@@ -13,9 +13,9 @@ export default function TextArea({
   isEmpty,
   onFocus,
 }) {
-  const [showContent, setShowContent] = useState(false); // Controla quando mostrar o ícone
-  const [isOnFocus, setIsOnFocus] = useState(null); // Controla o foco
-  const [lastFocus, setLastFocus] = useState(null); // Lida com o último foco
+  const [showContent, setShowContent] = useState(false); 
+  const [isOnFocus, setIsOnFocus] = useState(null);
+  const [lastFocus, setLastFocus] = useState(null); 
 
   const handleFocus = (e) => {
     if (onFocus) {
@@ -30,23 +30,23 @@ export default function TextArea({
   };
 
   useEffect(() => {
-    // Quando o campo não tem erro e não está vazio, verifica o foco
+
     if (!validationError && !isEmpty) {
       if (isOnFocus) {
-        // Se o campo ainda está com foco, aguarda 1,5s
+
         const timer = setTimeout(() => {
           setShowContent(true);
         }, 1500);
 
-        return () => clearTimeout(timer); // Limpa o timer quando sair do foco
+        return () => clearTimeout(timer); 
       } else if (lastFocus) {
-        // Se o campo perdeu o foco, exibe o ícone imediatamente
+        
         setShowContent(true);
       } else {
-        setShowContent(false); // Caso contrário, não mostra o ícone
+        setShowContent(false); 
       }
     } else {
-      setShowContent(false); // Caso haja erro ou o campo esteja vazio, esconde o ícone
+      setShowContent(false); 
     }
   }, [isOnFocus, lastFocus, validationError, isEmpty]);
 

@@ -1,6 +1,4 @@
 import { useContext, useEffect, useState, useRef } from "react";
-import { useReactToPrint } from "react-to-print";
-
 import Curriculum from "../StepsGlobalComponents/Curriculum";
 import Title from "../StepsGlobalComponents/Title";
 import TopMarker from "../StepsGlobalComponents/TopMarker";
@@ -63,7 +61,7 @@ export default function FinalizationCV() {
         } else if (languageCurriculum === 'Italiano') {
             setLanguageFrom('it');
         }
-    }, [languageCurriculum]); // Dependência apenas de languageCurriculum
+    }, [languageCurriculum]); 
     
     useEffect(() => {
         if (values?.currentPage === 1) {
@@ -126,7 +124,7 @@ export default function FinalizationCV() {
         }
         };
     
-        // translateText();
+        translateText();
     }, [languageFrom]);
     
 

@@ -28,13 +28,7 @@ export default function PresentationCV() {
         { title: false, category: false, year: false, description: false },
     ]);
 
-    // Recuperar o objetivo e os projetos do localStorage
     useEffect(() => {
-
-        // const storedProjects = JSON.parse(localStorage.getItem('projects'));
-        // if (storedProjects && Array.isArray(storedProjects)) {
-        //     setProjects(storedProjects);
-        // }
         if(values?.biggestPageReached < 2){
             setBiggestPageReached(2)
         }
@@ -130,7 +124,12 @@ export default function PresentationCV() {
                                 label={'Objetivo'}
                                 width={'w-7/12'}
                                 value={objective !== 'texto do objetivo.' ? objective : ''}
-                                onChange={(e) => setObjective(e.target.value)}
+                                onChange={(e) => {
+                                    setObjective(e.target.value)
+                                    if(objective.length >= 120){
+                                        setGeneralError('Cuidado você esta chegando perto do limite máximo de caracteres')
+                                    }
+                                }}
                                 placeholder={'ex: Conseguir uma posição como assistente administrativo, contribuindo com minhas habilidades de gestão e atendimento para a empresa.'}
                             />
                             <div className="bg-TitleGray p-5 text-white rounded-2xl w-5/12 flex flex-col gap-y-3">
@@ -193,7 +192,12 @@ export default function PresentationCV() {
                                     id={`description-${selectedProject}`}
                                     isLast={true}
                                     label="Descrição"
-                                    onChange={(e) => handleProjectChange(selectedProject, 'description', e.target.value)}
+                                    onChange={(e) => {
+                                        handleProjectChange(selectedProject, 'description', e.target.value)
+                                        if(projects[selectedProject]?.description.length >= 120){
+                                            setGeneralError('Cuidado você esta chegando perto do limite máximo de caracteres')
+                                        }
+                                    }}
                                     value={projects[selectedProject].description === 'descreva seu projeto aqui' ? '' : projects[selectedProject].description}
                                     error={projectErrors[selectedProject]?.description}
                                     placeholder={'ex: Este documento tem como objetivo, organizar e padronizar os processos administrativos, garantindo eficiência e conformidade nas operações diárias.'}

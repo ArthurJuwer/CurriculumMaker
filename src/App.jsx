@@ -1,14 +1,22 @@
 import { Link } from "react-router-dom";
 import AppStepNavigator from "./components/App/AppStepNavigator";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { CurriculumContext } from "./context/CurriculumContext";
 
 export default function App() {
   const [linkToGo, setLinkToGo] = useState('/steps/models') 
+  const { values, setValues } = useContext(CurriculumContext);
+  const [generalError, setGeneralError] = useState(values?.generalError)
 
   useEffect(()=>{
     if(localStorage.getItem('curriculumValues') !== null){
       setLinkToGo('/steps/selectMethod')
     }
+    setGeneralError('')
+    setValues((prev)=>({
+      ...prev,
+      generalError
+    }))
   },[])
 
   const steps = [

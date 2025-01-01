@@ -6,7 +6,6 @@ import { useContext } from "react";
 export default function Curriculum({ isLast, twoPages }) {
     const { values } = useContext(CurriculumContext);    
     let curriculumModel;
-    console.log(values)
     switch (values?.model) {
         case "1":
             curriculumModel = <CurriculumModel1 isLast={isLast} twoPages={twoPages} />;

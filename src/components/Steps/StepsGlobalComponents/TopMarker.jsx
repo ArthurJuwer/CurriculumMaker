@@ -1,6 +1,6 @@
 import ButtonBack from "./ButtonBack";
 import ButtonNav from "./ButtonNav";
-import ButtonSteps from "./BUttonSteps";
+import ButtonSteps from "./ButtonSteps";
 
 export default function TopMarker({stepsAtual}){
     return(

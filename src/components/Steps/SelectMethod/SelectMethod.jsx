@@ -75,7 +75,7 @@ export default function SelectMethod(){
             </div>
         {isModalOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                <div className="bg-white p-8 rounded-xl w-4/12 flex flex-col gap-y-8 relative">
+                <div className="bg-white p-8 rounded-xl lg:w-4/12 w-11/12 flex flex-col gap-y-8 relative">
                 <div className="flex justify-between items-center ">
                     <h2 className="text-xl font-bold">Deseja Resetar Seu Currículo?</h2>
                     <button

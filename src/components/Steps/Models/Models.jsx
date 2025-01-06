@@ -104,7 +104,7 @@ export default function Models() {
 
   return (
     <div className="h-dvh w-full bg-DefaultGray flex flex-col 2xl:py-16 lg:py-14 py-16 items-center 2xl:gap-y-8 gap-y-5">
-      <h1 className="text-StrongGray text-center font-bold 2xl:text-4xl xl:text-3xl text-2xl lg:w-1/3 w-11/12 mt-5 lg:mt-0">
+      <h1 className="text-StrongGray text-center font-bold 2xl:text-4xl xl:text-3xl text-2xl lg:w-1/3 w-11/12 mt-2 lg:mt-0">
         Escolha entre estes currículos de alta aprovação
       </h1>
       <div className="p-2 bg-WeakLightGray lg:w-auto w-10/12 2xl:flex 2xl:flex-row 2xl:static flex justify-center 2xl:gap-x-5 gap-x-4 lg:absolute lg:flex-col lg:gap-y-3 lg:right-10 lg:z-20">
@@ -124,7 +124,7 @@ export default function Models() {
         <ButtonBack />
       </div>
 
-      <div className="relative flex justify-center items-center gap-x-12 w-full h-screen">
+      <div className="relative flex justify-center items-center gap-x-12 w-full h-dvh">
         {!isMd && (
           <>
             <ChevronLeft

@@ -25,10 +25,15 @@ export default {
         subtitle1920: '20px',
         p1920: '12px',
 
-        title1920Model: '1.5rem',  
+        title1920Model: '1.6rem',  
         subtitle1920Model: '1rem',
         titleDescript1920Model: '0.6rem',
         p1920Model: '0.7rem',
+
+        title1920ModelMD: '1.1rem',  
+        subtitle1920ModelMD: '0.85rem',
+        titleDescript1920ModelMD: '0.5rem',
+        p1920ModelMD: '0.5rem',
       }
     },
   },

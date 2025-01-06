@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function ModelsThemes2({ valuesCurriculum }) {
   return (
-    <div className="h-full w-3/12 border-2 border-WeakGray p-9 group relative z-0">
+    <div className="h-full w-full border-2 border-WeakGray p-9 group relative z-0">
       <div className="hidden group-hover:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
         <Link to={`/steps/headerCV?model=2&color=${valuesCurriculum?.color}`}>
           <button
@@ -18,13 +18,13 @@ export default function ModelsThemes2({ valuesCurriculum }) {
         <div>
               
               <h1
-                className="uppercase text-StrongGray text-title1920Model font-bold pb-1 text-center"
+                className="uppercase text-StrongGray lg:text-title1920Model text-title1920ModelMD font-bold pb-1 text-center"
                 style={{ color: `#${valuesCurriculum?.color}` }}
               >
                 {valuesCurriculum?.name}
               </h1>
               <ol
-                className="text-p1920Model flex flex-wrap gap-y-2 gap-x-2 justify-center"
+                className="lg:text-p1920Model text-p1920ModelMD flex flex-wrap gap-y-2 gap-x-2 justify-center"
                 style={{ fontSize: valuesCurriculum?.textCorp }}
               >
                 <div className="flex gap-x-1">
@@ -42,13 +42,13 @@ export default function ModelsThemes2({ valuesCurriculum }) {
               {valuesCurriculum?.objective && (
                 <div>
                   <h1
-                    className="uppercase text-StrongGray text-subtitle1920Model font-bold mb-2 border-b-2"
+                    className="uppercase text-StrongGray lg:text-subtitle1920Model text-subtitle1920ModelMD font-bold mb-2 border-b-2"
                     style={{ borderColor: `#${valuesCurriculum?.color}` }}
                   >
                     Objetivo
                   </h1>
                   <p
-                    className="text-p1920Model text-TitleGray"
+                    className="lg:text-p1920Model text-p1920ModelMD text-TitleGray"
                     style={{ fontSize: valuesCurriculum?.textCorp }}
                   >
                     {valuesCurriculum?.objective}
@@ -59,7 +59,7 @@ export default function ModelsThemes2({ valuesCurriculum }) {
               {valuesCurriculum?.projects?.length > 0 && (
                 <div>
                   <h1
-                    className="uppercase text-StrongGray text-subtitle1920Model font-bold mb-2 border-b-2"
+                    className="uppercase text-StrongGray lg:text-subtitle1920Model text-subtitle1920ModelMD font-bold mb-2 border-b-2"
                     style={{ borderColor: `#${valuesCurriculum?.color}` }}
                   >
                     Experiências
@@ -69,19 +69,19 @@ export default function ModelsThemes2({ valuesCurriculum }) {
                       <div key={`project-${index}`}>
                         <div className="flex gap-x-2 items-center">
                           <p
-                            className="text-p1920Model"
+                            className="lg:text-p1920Model text-p1920ModelMD"
                             >
                               {item?.year} - 
                             </p>
                             <p
-                            className="text-TitleGray text-p1920Model"
+                            className="text-TitleGray lg:text-p1920Model text-p1920ModelMD"
                             >
                             {item?.title} | {item?.category}
                             </p>
                         </div>
                         
                         <p
-                          className="text-WeakGray text-p1920Model"
+                          className="text-WeakGray lg:text-p1920Model text-p1920ModelMD"
                         >
                           {item?.description}
                         </p>
@@ -94,7 +94,7 @@ export default function ModelsThemes2({ valuesCurriculum }) {
               {valuesCurriculum?.formations && (
                 <div>
                   <h1
-                    className={`${valuesCurriculum?.formations.length <= 0 && valuesCurriculum?.biggestPageReached >= 4 ? 'hidden' : ''} uppercase text-StrongGray text-subtitle1920Model font-bold mb-2 border-b-2`}
+                    className={`${valuesCurriculum?.formations.length <= 0 && valuesCurriculum?.biggestPageReached >= 4 ? 'hidden' : ''} uppercase text-StrongGray lg:text-subtitle1920Model text-subtitle1920ModelMD font-bold mb-2 border-b-2`}
                     style={{ borderColor: `#${valuesCurriculum?.color}`}}
                   >
                     Formação
@@ -103,14 +103,14 @@ export default function ModelsThemes2({ valuesCurriculum }) {
                     <ul key={`formation-${index}`} className="pb-2">
                       <div className="flex items-center gap-x-4">
                         <li
-                          className="text-TitleGray text-p1920Model flex items-center"
+                          className="text-TitleGray lg:text-p1920Model text-p1920ModelMD flex items-center"
                         >
                           • {item?.school}
                         </li>
                       </div>
 
                       <li
-                        className="text-TitleGray text-p1920Model"
+                        className="text-TitleGray lg:text-p1920Model text-p1920ModelMD"
                       >
                         • {item?.title} | {item?.yearEntry} - {item?.yearLeave}
                       </li>
@@ -122,7 +122,7 @@ export default function ModelsThemes2({ valuesCurriculum }) {
               {valuesCurriculum?.languages && (
                 <div>
                   <h1
-                    className="uppercase text-StrongGray text-subtitle1920Model font-bold mb-2 border-b-2 border-black"
+                    className="uppercase text-StrongGray lg:text-subtitle1920Model text-subtitle1920ModelMD font-bold mb-2 border-b-2 border-black"
                     style={{ borderColor: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textSubTitle }}
                   >
                     Idiomas
@@ -132,7 +132,7 @@ export default function ModelsThemes2({ valuesCurriculum }) {
                       <li
                         style={{ fontSize: valuesCurriculum?.textCorp }}
                         key={index}
-                        className="text-TitleGray text-p1920Model"
+                        className="text-TitleGray lg:text-p1920Model text-p1920ModelMD"
                       >
                         • {item?.language} ({item?.level})
                       </li>
@@ -144,7 +144,7 @@ export default function ModelsThemes2({ valuesCurriculum }) {
               {valuesCurriculum?.certifications && (
                 <div>
                   <h1
-                    className={`${valuesCurriculum?.certifications.length <= 0 && valuesCurriculum?.biggestPageReached >= 4 ? 'hidden' : ''} uppercase text-StrongGray text-subtitle1920Model font-bold mb-2 border-b-2 border-black`}
+                    className={`${valuesCurriculum?.certifications.length <= 0 && valuesCurriculum?.biggestPageReached >= 4 ? 'hidden' : ''} uppercase text-StrongGray lg:text-subtitle1920Model text-subtitle1920ModelMD font-bold mb-2 border-b-2 border-black`}
                     style={{ borderColor: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textSubTitle }}
                   >
                     Certificações
@@ -154,7 +154,7 @@ export default function ModelsThemes2({ valuesCurriculum }) {
                       <li
                         style={{ fontSize: valuesCurriculum?.textCorp }}
                         key={index}
-                        className="text-TitleGray text-p1920Model"
+                        className="text-TitleGray lg:text-p1920Model text-p1920ModelMD"
                       >
                         {item?.name} <br />
                         Carga horária {item?.workload}. (Conclusão {item?.conclusion})

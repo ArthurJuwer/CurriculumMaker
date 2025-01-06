@@ -30,6 +30,12 @@ export default {
         titleDescript1920Model: '0.6rem',
         p1920Model: '0.7rem',
 
+        title1920ModelXL: '1.3rem',  
+        subtitle1920ModelXL: '0.9rem',
+        titleDescript1920ModelXL: '0.55rem',
+        p1920ModelXL: '0.5rem',
+        
+        
         title1920ModelMD: '1.1rem',  
         subtitle1920ModelMD: '0.85rem',
         titleDescript1920ModelMD: '0.5rem',

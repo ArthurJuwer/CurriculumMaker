@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function ModelsThemes2({ valuesCurriculum }) {
   return (
-    <div className="h-full w-full border-2 border-WeakGray p-9 group relative z-0">
+    <div className="h-full w-full border-2 border-WeakGray 2xl:p-9 p-7 group relative z-0">
       <div className="hidden group-hover:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
         <Link to={`/steps/headerCV?model=2&color=${valuesCurriculum?.color}`}>
           <button
@@ -14,17 +14,16 @@ export default function ModelsThemes2({ valuesCurriculum }) {
         </Link>
       </div>
       <div className="group-hover:opacity-75 flex flex-col gap-y-3">
-        {/* Informações Pessoais */}
         <div>
               
               <h1
-                className="uppercase text-StrongGray lg:text-title1920Model text-title1920ModelMD font-bold pb-1 text-center"
+                className="uppercase text-StrongGray 2xl:text-title1920Model lg:text-title1920ModelXL text-title1920ModelMD font-bold pb-1 text-center"
                 style={{ color: `#${valuesCurriculum?.color}` }}
               >
                 {valuesCurriculum?.name}
               </h1>
               <ol
-                className="lg:text-p1920Model text-p1920ModelMD flex flex-wrap gap-y-2 gap-x-2 justify-center"
+                className="2xl:text-p1920Model lg:text-p1920ModelXL text-p1920ModelMD flex flex-wrap gap-y-2 gap-x-2 justify-center"
                 style={{ fontSize: valuesCurriculum?.textCorp }}
               >
                 <div className="flex gap-x-1">
@@ -42,13 +41,13 @@ export default function ModelsThemes2({ valuesCurriculum }) {
               {valuesCurriculum?.objective && (
                 <div>
                   <h1
-                    className="uppercase text-StrongGray lg:text-subtitle1920Model text-subtitle1920ModelMD font-bold mb-2 border-b-2"
+                    className="uppercase text-StrongGray 2xl:text-subtitle1920Model lg:text-subtitle1920ModelXL text-subtitle1920ModelMD font-bold mb-2 border-b-2"
                     style={{ borderColor: `#${valuesCurriculum?.color}` }}
                   >
                     Objetivo
                   </h1>
                   <p
-                    className="lg:text-p1920Model text-p1920ModelMD text-TitleGray"
+                    className="2xl:text-p1920Model lg:text-p1920ModelXL text-p1920ModelMD text-TitleGray"
                     style={{ fontSize: valuesCurriculum?.textCorp }}
                   >
                     {valuesCurriculum?.objective}
@@ -59,7 +58,7 @@ export default function ModelsThemes2({ valuesCurriculum }) {
               {valuesCurriculum?.projects?.length > 0 && (
                 <div>
                   <h1
-                    className="uppercase text-StrongGray lg:text-subtitle1920Model text-subtitle1920ModelMD font-bold mb-2 border-b-2"
+                    className="uppercase text-StrongGray 2xl:text-subtitle1920Model lg:text-subtitle1920ModelXL text-subtitle1920ModelMD font-bold mb-2 border-b-2"
                     style={{ borderColor: `#${valuesCurriculum?.color}` }}
                   >
                     Experiências
@@ -69,19 +68,19 @@ export default function ModelsThemes2({ valuesCurriculum }) {
                       <div key={`project-${index}`}>
                         <div className="flex gap-x-2 items-center">
                           <p
-                            className="lg:text-p1920Model text-p1920ModelMD"
+                            className="2xl:text-p1920Model lg:text-p1920ModelXL text-p1920ModelMD"
                             >
                               {item?.year} - 
                             </p>
                             <p
-                            className="text-TitleGray lg:text-p1920Model text-p1920ModelMD"
+                            className="text-TitleGray 2xl:text-p1920Model lg:text-p1920ModelXL text-p1920ModelMD"
                             >
                             {item?.title} | {item?.category}
                             </p>
                         </div>
                         
                         <p
-                          className="text-WeakGray lg:text-p1920Model text-p1920ModelMD"
+                          className="text-WeakGray 2xl:text-p1920Model lg:text-p1920ModelXL text-p1920ModelMD"
                         >
                           {item?.description}
                         </p>
@@ -94,7 +93,7 @@ export default function ModelsThemes2({ valuesCurriculum }) {
               {valuesCurriculum?.formations && (
                 <div>
                   <h1
-                    className={`${valuesCurriculum?.formations.length <= 0 && valuesCurriculum?.biggestPageReached >= 4 ? 'hidden' : ''} uppercase text-StrongGray lg:text-subtitle1920Model text-subtitle1920ModelMD font-bold mb-2 border-b-2`}
+                    className={`${valuesCurriculum?.formations.length <= 0 && valuesCurriculum?.biggestPageReached >= 4 ? 'hidden' : ''} uppercase text-StrongGray 2xl:text-subtitle1920Model lg:text-subtitle1920ModelXL text-subtitle1920ModelMD font-bold mb-2 border-b-2`}
                     style={{ borderColor: `#${valuesCurriculum?.color}`}}
                   >
                     Formação
@@ -103,14 +102,14 @@ export default function ModelsThemes2({ valuesCurriculum }) {
                     <ul key={`formation-${index}`} className="pb-2">
                       <div className="flex items-center gap-x-4">
                         <li
-                          className="text-TitleGray lg:text-p1920Model text-p1920ModelMD flex items-center"
+                          className="text-TitleGray 2xl:text-p1920Model lg:text-p1920ModelXL text-p1920ModelMD flex items-center"
                         >
                           • {item?.school}
                         </li>
                       </div>
 
                       <li
-                        className="text-TitleGray lg:text-p1920Model text-p1920ModelMD"
+                        className="text-TitleGray 2xl:text-p1920Model lg:text-p1920ModelXL text-p1920ModelMD"
                       >
                         • {item?.title} | {item?.yearEntry} - {item?.yearLeave}
                       </li>
@@ -122,7 +121,7 @@ export default function ModelsThemes2({ valuesCurriculum }) {
               {valuesCurriculum?.languages && (
                 <div>
                   <h1
-                    className="uppercase text-StrongGray lg:text-subtitle1920Model text-subtitle1920ModelMD font-bold mb-2 border-b-2 border-black"
+                    className="uppercase text-StrongGray 2xl:text-subtitle1920Model lg:text-subtitle1920ModelXL text-subtitle1920ModelMD font-bold mb-2 border-b-2 border-black"
                     style={{ borderColor: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textSubTitle }}
                   >
                     Idiomas
@@ -132,7 +131,7 @@ export default function ModelsThemes2({ valuesCurriculum }) {
                       <li
                         style={{ fontSize: valuesCurriculum?.textCorp }}
                         key={index}
-                        className="text-TitleGray lg:text-p1920Model text-p1920ModelMD"
+                        className="text-TitleGray 2xl:text-p1920Model lg:text-p1920ModelXL text-p1920ModelMD"
                       >
                         • {item?.language} ({item?.level})
                       </li>
@@ -144,7 +143,7 @@ export default function ModelsThemes2({ valuesCurriculum }) {
               {valuesCurriculum?.certifications && (
                 <div>
                   <h1
-                    className={`${valuesCurriculum?.certifications.length <= 0 && valuesCurriculum?.biggestPageReached >= 4 ? 'hidden' : ''} uppercase text-StrongGray lg:text-subtitle1920Model text-subtitle1920ModelMD font-bold mb-2 border-b-2 border-black`}
+                    className={`${valuesCurriculum?.certifications.length <= 0 && valuesCurriculum?.biggestPageReached >= 4 ? 'hidden' : ''} uppercase text-StrongGray 2xl:text-subtitle1920Model lg:text-subtitle1920ModelXL text-subtitle1920ModelMD font-bold mb-2 border-b-2 border-black`}
                     style={{ borderColor: `#${valuesCurriculum?.color}`, fontSize: valuesCurriculum?.textSubTitle }}
                   >
                     Certificações
@@ -154,7 +153,7 @@ export default function ModelsThemes2({ valuesCurriculum }) {
                       <li
                         style={{ fontSize: valuesCurriculum?.textCorp }}
                         key={index}
-                        className="text-TitleGray lg:text-p1920Model text-p1920ModelMD"
+                        className="text-TitleGray 2xl:text-p1920Model lg:text-p1920ModelXL text-p1920ModelMD"
                       >
                         {item?.name} <br />
                         Carga horária {item?.workload}. (Conclusão {item?.conclusion})

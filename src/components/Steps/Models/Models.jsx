@@ -103,11 +103,11 @@ export default function Models() {
   };
 
   return (
-    <div className="h-dvh w-full bg-DefaultGray flex flex-col py-16 items-center gap-y-8">
+    <div className="h-dvh w-full bg-DefaultGray flex flex-col 2xl:py-16 lg:py-14 py-16 items-center 2xl:gap-y-8 gap-y-5">
       <h1 className="text-StrongGray text-center font-bold 2xl:text-4xl xl:text-3xl text-2xl lg:w-1/3 w-11/12 mt-5 lg:mt-0">
         Escolha entre estes currículos de alta aprovação
       </h1>
-      <div className="p-2 bg-WeakLightGray lg:w-auto w-10/12 flex justify-center xl:gap-x-5 gap-x-4">
+      <div className="p-2 bg-WeakLightGray lg:w-auto w-10/12 2xl:flex 2xl:flex-row 2xl:static flex justify-center 2xl:gap-x-5 gap-x-4 lg:absolute lg:flex-col lg:gap-y-3 lg:right-10 lg:z-20">
         {colors.map((handleColor, index) => (
           <ModelsColors
             key={index}
@@ -140,7 +140,7 @@ export default function Models() {
 
         <div
           className={`${
-            atualPageSlide === 1 ? (isMd ? "w-1/4" : "w-10/12") : "hidden"
+            atualPageSlide === 1 ? (isMd ? "w-1/4 " : "w-10/12") : "hidden"
           } flex h-full justify-center items-center`}
         >
           <ModelsThemes1 key={1} valuesCurriculum={valuesModel} />

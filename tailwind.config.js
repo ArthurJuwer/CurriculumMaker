@@ -3,7 +3,6 @@ export default {
   content: ["./src/**/*.{html,js,ts,jsx,tsx}"],
   theme: {
     extend: {
-    
       colors: {
         DefaultGray: '#D9D9D9',
         TitleGray: '#3B3C3F', 

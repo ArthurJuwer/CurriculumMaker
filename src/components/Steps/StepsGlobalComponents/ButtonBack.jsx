@@ -110,7 +110,7 @@ export default function ButtonBack() {
     return (
         <>
             <button
-                className="h-12 py-2 w-24 pl-4 bg-TitleGray text-white flex items-center justify-center rounded-3xl relative"
+                className="lg:h-12 py-2 lg:w-24 pl-4 h-10 w-[5.5rem] bg-TitleGray text-white flex items-center justify-center rounded-3xl relative"
                 onClick={handleBackClick}
             >
                 <ChevronLeft className="absolute left-1" />

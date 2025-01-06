@@ -47,10 +47,10 @@ export default function SelectMethod(){
     
 
     return(
-        <div className="w-full h-screen bg-DefaultGray flex flex-col justify-center items-center gap-y-40">
-            <div className="flex flex-col justify-center items-center text-center gap-y-28">
-                <h1 className="font-bold text-5xl tracking-wide text-StrongGray w-5/12">Carregar Dados Salvos Recentemente</h1> 
-                <div className="w-7/12 flex items-center justify-center gap-x-12">
+        <div className="w-full h-dvh bg-DefaultGray flex flex-col justify-center items-center 2xl:gap-y-40 xl:gap-y-24 gap-y-16">
+            <div className="flex flex-col justify-center items-center text-center 2xl:gap-y-28 xl:gap-y-12 gap-y-8">
+                <h1 className="font-bold 2xl:text-5xl xl:text-4xl lg:text-3xl text-2xl lg:tracking-wide tracking-normal text-StrongGray lg:w-5/12 w-8/12">Carregar Dados Salvos Recentemente</h1> 
+                <div className="2xl:w-7/12 xl:w-9/12 lg:w-10/12 w-11/12 flex items-center justify-center lg:gap-x-12 gap-x-6">
                     {methodOptions.map((item, index)=>(
                         <SelectMethodOptions 
                         key={index}
@@ -62,11 +62,11 @@ export default function SelectMethod(){
                         />
                     ))}
                 </div>         
-                <div className="absolute top-14 left-20">
+                <div className="absolute lg:top-14 lg:left-20 top-5 left-5">
                     <ButtonBack />
                 </div>
                 <button 
-                    className="bg-DefaultOrange p-4 w-96 rounded-xl text-white shadow-2xl font-bold"
+                    className="bg-DefaultOrange xl:p-4 xl:w-96 lg:w-80 w-11/12 p-3 rounded-xl text-white shadow-2xl font-bold"
                     onClick={handleNextPage}
                 >
                     Continuar

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function ModelsThemes2({ valuesCurriculum }) {
   return (
-    <div className="h-full w-full border-2 border-WeakGray 2xl:p-9 p-7 group relative z-0">
+    <div className="w-full border-2 border-WeakGray 2xl:p-9 p-7 group relative z-0">
       <div className="hidden group-hover:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
         <Link to={`/steps/headerCV?model=2&color=${valuesCurriculum?.color}`}>
           <button

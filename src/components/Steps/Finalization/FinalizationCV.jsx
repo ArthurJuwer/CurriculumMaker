@@ -177,7 +177,7 @@ export default function FinalizationCV() {
 
     return (
         <div className="h-screen w-full bg-DefaultGray">
-            <TopMarker stepsAtual={0} />
+            <TopMarker stepsAtual={'0'} />
             <div className="2xl:px-32 px-16 py-14 h-[calc(100vh-7rem)] flex justify-between">
                 <div className="flex flex-col gap-y-4">
                     <Title title={"Alterações Rápidas"} />

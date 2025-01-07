@@ -124,7 +124,7 @@ export default function Models() {
         <ButtonBack />
       </div>
 
-      <div className="relative flex justify-center items-center gap-x-12 w-full h-dvh">
+      <div className="relative flex justify-center items-center gap-x-12 w-full">
         {!isMd && (
           <>
             <ChevronLeft
@@ -141,7 +141,7 @@ export default function Models() {
         <div
           className={`${
             atualPageSlide === 1 ? (isMd ? "w-1/4 " : "w-10/12") : "hidden"
-          } flex h-full justify-center items-center`}
+          } flex justify-center items-center`}
         >
           <ModelsThemes1 key={1} valuesCurriculum={valuesModel} />
         </div>
@@ -149,7 +149,7 @@ export default function Models() {
         <div
           className={`${
             (isMd || atualPageSlide === 2) ? (isMd ? "w-1/4" : "w-10/12") : "hidden"
-          } h-full justify-center items-center`}
+          } justify-center items-center`}
         >
           <ModelsThemes2 key={2} valuesCurriculum={valuesModel} />
         </div>

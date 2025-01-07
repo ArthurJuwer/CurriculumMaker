@@ -216,11 +216,11 @@ export default function FormationCV() {
         { label: 'Ano Saída', placeholder: 'ex: 2024', category: 'yearLeave', year: true, yearNoRange: true},
     ];
     return (
-        <div className="h-screen w-full bg-DefaultGray">
+        <div className="h-dvh w-full bg-DefaultGray">
             <TopMarker stepsAtual={1} />
-            <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
-                <div className="flex flex-col gap-y-8 w-8/12 h-full">
-                    <Score />
+            <div className="2xl:px-32 2xl:py-14 px-16 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-4.5rem)] h-[calc(100dvh-4rem)] flex justify-between 2xl:gap-x-32 gap-x-5">
+            <div className="flex flex-col 2xl:gap-y-8 gap-y-3 2xl:w-8/12 w-8/12 h-full overflow-y-auto">
+            <Score />
                     <div className="flex flex-col gap-y-8 overflow-y-auto overflow-x-visible 
                         [&::-webkit-scrollbar]:w-2
                         [&::-webkit-scrollbar-track]:bg-gray-transparent
@@ -234,8 +234,8 @@ export default function FormationCV() {
                             title="Formação e Competências"
                             description="Esta seção destaca sua formação acadêmica, idiomas e certificações similares ao cargo desejado."
                         />
-                        <div className="flex">
-                            <div className="flex flex-col gap-y-4 w-8/12 -mt-6">
+                        <div className="flex flex-col 2xl:flex-row">
+                            <div className="flex flex-col gap-y-4 2xl:w-8/12 -mt-6">
                                 <FormationSubTitle subtitle={'Formação'} />
                                 {formations?.map((formation, idx) => (
                                     <div key={idx} className="border border-BorderInputGray rounded-xl px-2 py-7 flex flex-wrap w-full gap-x-4 gap-y-6 relative">
@@ -246,7 +246,7 @@ export default function FormationCV() {
                                             id={item?.category}
                                             label={item?.label}
                                             value={formation[item?.category] === 'escola' || formation[item?.category] === 'titulo' || formation[item?.category] === 'ano entrada' || formation[item?.category] === 'ano saida' ? '' : formation[item?.category]}  // Verifica valores padrões e substitui por ''
-                                            width={inputsFormation.indexOf(item) % 2 === 0 ? 'w-[calc(65%)]' : 'w-[calc(35%-1rem)]'}
+                                            width={inputsFormation.indexOf(item) % 2 === 0 ? 'w-[calc(60%)]' : 'w-[calc(40%-1rem)]'}
                                             onChange={(e) => {
                                                 handleFormationChange(e, idx, item?.category)
                                                 setInvalidFormations('')
@@ -279,11 +279,11 @@ export default function FormationCV() {
                                     </button>
                                 </div>
                             </div>
-                            <div className="w-4/12 px-4 -mb-14 mt-10">
+                            <div className="2xl:w-4/12 2xl:px-4 2xl:-mb-14 mt-10">
                                 <div className="h-full relative">
-                                    <h1 className="text-2xl font-bold text-TitleGray absolute -top-4 left-[23%] bg-DefaultGray px-2">Certificações</h1>
-                                    <div className="border border-BorderInputGray h-full w-full rounded-2xl p-4 pt-6 flex flex-col justify-between items-end gap-y-2">
-                                        <div className="w-full flex flex-col gap-y-2">
+                                    <h1 className="text-2xl font-bold text-TitleGray absolute -top-4 2xl:left-[23%] left-4 bg-DefaultGray px-2">Certificações</h1>
+                                    <div className="border border-BorderInputGray h-full w-full rounded-2xl p-4 2xl:pt-6 pt-12 flex flex-col justify-between items-end gap-y-2">
+                                        <div className="w-full flex 2xl:flex-col gap-y-2 gap-x-5">
                                             {certifications?.map((item, index) => (
                                                 <FormationCertifications
                                                     key={index}
@@ -310,7 +310,7 @@ export default function FormationCV() {
                                         key={index}
                                         id={index}
                                         label="Idioma"
-                                        width="w-[calc(33.3%-1rem)]"
+                                        width="w-[calc(50%-1rem)]"
                                         value={{ language: item.language != 'Língua' ? item.language : '', level: item.level }} // Passa idioma e nível
                                         isSelect={true}
                                         onChange={(newLanguage, newLevel) => handleLanguagesChange(newLanguage, newLevel, index)} // Passa ambos os valores

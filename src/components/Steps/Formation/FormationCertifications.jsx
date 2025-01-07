@@ -2,7 +2,7 @@ import { Award, Trash } from "lucide-react";
 
 export default function FormationCertifications({ title, onDelete, id }) {
     return (
-        <div className="w-full bg-[#EA8C1A] p-2 border-2 border-black relative">
+        <div className="2xl:w-full w-1/2 bg-[#EA8C1A] p-2 border-2 border-black relative">
             <div className="bg-[#DBD0C1] border-2 border-black p-5 relative">
                 <div className="flex items-center gap-x-2">
                     <Award className="w-2/12 h-auto" />

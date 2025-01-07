@@ -107,17 +107,17 @@ export default function PresentationCV() {
     };
 
     return (
-        <div className="h-screen w-full bg-DefaultGray">
+        <div className="h-dvh w-full bg-DefaultGray">
             <TopMarker stepsAtual={'2'} />
-            <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
-                <div className="flex flex-col gap-y-8 w-8/12 h-full">
+            <div className="2xl:px-32 2xl:py-14 px-16 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-5rem)] h-[calc(100dvh-4rem)] flex justify-between 2xl:gap-x-32 gap-x-5">
+                <div className="flex flex-col 2xl:gap-y-8 gap-y-3 w-8/12 h-full overflow-y-auto">
                     <Score />
                     <div className="h-full flex flex-col gap-y-8">
                         <Title
                             title={'Apresentação Pessoal'}
                             description={'Essa seção permite mostrar suas metas profissionais e sua trajetória de experiências relevantes.'}
                         />
-                        <div className="w-full flex gap-x-5">
+                        <div className="max-h-full w-full flex justify-between 2xl:gap-x-5 gap-x-3">
                             <TextArea
                                 key={0}
                                 id={0}
@@ -132,9 +132,9 @@ export default function PresentationCV() {
                                 }}
                                 placeholder={'ex: Conseguir uma posição como assistente administrativo, contribuindo com minhas habilidades de gestão e atendimento para a empresa.'}
                             />
-                            <div className="bg-TitleGray p-5 text-white rounded-2xl w-5/12 flex flex-col gap-y-3">
-                                <h1 className="text-xl font-medium">Experimente estas dicas:</h1>
-                                <ul className="list-disc pl-5 text-sm flex flex-col gap-y-3 font-normal">
+                            <div className="bg-TitleGray 2xl:p-5 py-2 px-5 text-white rounded-2xl h-full w-5/12 flex flex-col 2xl:gap-y-3 gap-y-2">
+                                <h1 className="2xl:text-xl font-medium">Experimente estas dicas:</h1>
+                                <ul className="list-disc pl-5 2xl:text-sm text-xs flex flex-col gap-y-3 font-normal">
                                     <li>Evite detalhes excessivos e vá direto ao ponto.</li>
                                     <li>Seja realista quanto às suas metas profissionais.</li>
                                     <li>Seja claro sobre sua área de interesse.</li>

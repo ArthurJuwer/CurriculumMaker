@@ -103,7 +103,7 @@ export default function Models() {
   };
 
   return (
-    <div className="h-dvh w-full bg-DefaultGray flex flex-col 2xl:py-16 lg:py-14 py-16 items-center 2xl:gap-y-8 gap-y-5">
+    <div className="min-h-dvh w-full bg-DefaultGray flex flex-col 2xl:py-16 lg:py-14 py-16 items-center 2xl:gap-y-8 gap-y-5">
       <h1 className="text-StrongGray text-center font-bold 2xl:text-4xl xl:text-3xl text-2xl lg:w-1/3 w-11/12 mt-2 lg:mt-0">
         Escolha entre estes currículos de alta aprovação
       </h1>

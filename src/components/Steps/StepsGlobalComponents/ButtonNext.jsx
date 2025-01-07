@@ -1,7 +1,7 @@
 export default function ButtonNext({ onClick }) {
     return (
         <button 
-            className="w-full p-4 rounded-xl bg-DefaultOrange text-white"
+            className="w-full 2xl:p-4 p-3 rounded-xl bg-DefaultOrange text-white"
             onClick={onClick}
         >
             Proxima Etapa

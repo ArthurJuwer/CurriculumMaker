@@ -114,7 +114,7 @@ export default function ButtonNav() {
                                     onClick={() => handleNavigation(item.link)} // Navegar apenas se os campos forem válidos
                                 >
                                     <div
-                                        className={`size-12 rounded-full flex items-center justify-center text-2xl text-white cursor-pointer ${
+                                        className={`2xl:size-12 size-11 rounded-full flex items-center justify-center 2xl:text-2xl xl:text-xl text-white cursor-pointer ${
                                             isCurrentStep ? "bg-StrongGray" : "bg-TitleGray"
                                         }`}
                                         onMouseEnter={() => handleMouseEnter(item.step)}
@@ -125,7 +125,7 @@ export default function ButtonNav() {
                                 </div>
                             ) : (
                                 <div
-                                    className="size-12 bg-BorderInputGray rounded-full flex items-center justify-center text-2xl text-white cursor-not-allowed"
+                                    className="2xl:size-12 size-11 bg-BorderInputGray rounded-full flex items-center justify-center 2xl:text-2xl xl:text-xl text-white cursor-not-allowed"
                                     onMouseEnter={() => handleMouseEnter(item.step)}
                                     onMouseLeave={handleMouseLeave}
                                 >

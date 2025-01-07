@@ -167,7 +167,7 @@ export default function Input({
                 className={`border w-full 
                     ${isEmpty ? 'border-BorderInputGray' : validationError || yearNoRangeIsBig || conclusion ? 'border-red-600 outline-red-600' : `${isSelect ? 'border-green-700' : 'border-BorderInputGray'} outline-green-700`}
                     ${onlyNumbers ? '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' : ''}
-                    bg-transparent p-4 rounded-xl z-10
+                    bg-transparent 2xl:pl-4 p-4 pl-3  rounded-xl z-10
                 `}
                 onChange={handleChange}
                 value={isSelect ? languageValue : value}
@@ -180,15 +180,13 @@ export default function Input({
                         e.target.value = e.target.value.slice(0, 4);  
                         handleChange(e);  
                     }
-                }}
-                onWheel={(e) => e.preventDefault()} // nao esta funcionando
-                
+                }}                
             />
 
             {showContent && !isSelect && !yearNoRangeIsBig && !conclusion && (
                 
-                <div className="absolute top-1/2 right-4 transform -translate-y-1/2 size-8 rounded-full bg-green-700 flex justify-center items-center">
-                    <Check className="text-white size-6 mt-0.5 -rotate-2 "/>
+                <div className="absolute top-1/2 right-4 transform -translate-y-1/2 2xl:size-8 size-7 rounded-full bg-green-700 flex justify-center items-center">
+                    <Check className="text-white 2xl:size-6 size-5 mt-0.5 -rotate-2 "/>
                 </div>
             )}
             {validationError && (
@@ -199,8 +197,8 @@ export default function Input({
                         year ? "Ano inválido." :
                         isLast ? "O link informado deve começar com \"https://www.linkedin.com/in/\"." : ""}
                     </p>
-                    <div className="absolute top-1/2 right-4 transform -translate-y-1/2 size-8 rounded-full bg-red-600 flex justify-center items-center">
-                        <X className="text-white size-6 "/>
+                    <div className="absolute top-1/2 right-4 transform -translate-y-1/2 2xl:size-8 size-7 rounded-full bg-red-600 flex justify-center items-center">
+                        <X className="text-white 2xl:size-6 size-5 "/>
                     </div>
                 </>
             )}

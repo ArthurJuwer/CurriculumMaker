@@ -61,12 +61,13 @@ export default function CurriculumModel1({ isLast, twoPages }) {
 
       {currentPage === 1 && (
         <div
-          className={`page-1 h-full ${isLast ? "w-full" : "w-4/12 border-2 border-WeakGray"} flex flex-col flex-wrap relative`}
+          // FOI REMOVIDO O TAMANHO H-FULL OLHAR O HEADER COMO SE FAZ
+          className={`page-1 ${isLast ? "w-full" : "2xl:w-4/12 w-5/12 border-2 border-WeakGray"} flex flex-col flex-wrap relative`}
           ref={borderRef}
         >
 
         <div
-            className={`bg-TitleGray px-12 py-1 absolute left-1/2 -translate-x-1/2 -top-12 rounded-xl flex gap-x-12 text-xl`}
+            className={`bg-TitleGray 2xl:px-12 px-6 py-1 absolute left-1/2 -translate-x-1/2 2xl:-top-12 -top-5 rounded-xl flex gap-x-12 text-xl`}
         >
             <button
                 onClick={() => setCurrentPage(1)}

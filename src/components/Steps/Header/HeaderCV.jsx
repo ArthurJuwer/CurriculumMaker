@@ -97,17 +97,17 @@ export default function HeaderCV() {
     };
 
     return (
-        <div className="h-screen w-full bg-DefaultGray">
+        <div className="h-dvh w-full bg-DefaultGray">
             <TopMarker stepsAtual={3} />
-            <div className="px-32 py-14 h-[calc(100vh-7rem)] flex justify-between gap-x-32">
-                <div className="flex flex-col gap-y-8 w-8/12 h-full">
+            <div className="2xl:px-32 2xl:py-14 px-16 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-4.5rem)] h-[calc(100dvh-4rem)] flex justify-between 2xl:gap-x-32 gap-x-5">
+                <div className="flex flex-col 2xl:gap-y-8 gap-y-3 2xl:w-8/12 w-8/12 h-full overflow-y-auto">
                     <Score />
-                    <div className="h-full flex flex-col gap-y-8">
+                    <div className="h-full flex flex-col 2xl:gap-y-8 gap-y-4">
                         <Title
                             title='Cabeçalho'
                             description='Eles permitem que os empregadores vejam como podem entrar em contato com você.'
                         />
-                        <div className="pt-5 w-full flex flex-wrap gap-x-4 gap-y-10 relative">
+                        <div className="2xl:pt-5 pt-4 w-full flex flex-wrap 2xl:gap-x-4 gap-x-3 2xl:gap-y-10 gap-y-7 relative">
                             {inputsArray.map(({ label, placeholder, key, email, number }, index) => (
                                 <Input
                                     key={index}

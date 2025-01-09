@@ -8,11 +8,13 @@ import Title from "../StepsGlobalComponents/Title";
 import TopMarker from "../StepsGlobalComponents/TopMarker";
 import ErrorMessage from "../StepsGlobalComponents/ErrorMessage";
 import Curriculum from "../StepsGlobalComponents/Curriculum";
+import { ArrowLeft, ReceiptText } from "lucide-react";
 
 export default function HeaderCV() {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const navigate = useNavigate();
+    const [mobileOpenCurriculum, setMobileOpenCurriculum] = useState(false)
 
     const { setValues, values: contextValues } = useContext(CurriculumContext);
 
@@ -44,13 +46,13 @@ export default function HeaderCV() {
 
             }));
         }
-    }, []); // [] garante que isso só execute na montagem
+    }, []); 
     
     useEffect(() => {
-        // Atualize o contexto com o estado mais recente do formulário
+
         setValues((prev) => ({
             ...prev,
-            ...formState, // Atualiza apenas os valores relevantes
+            ...formState, 
         }));
         
     }, [formState]);
@@ -97,12 +99,12 @@ export default function HeaderCV() {
     };
 
     return (
-        <div className="h-dvh w-full bg-DefaultGray">
+        <div className="min-h-dvh w-full bg-DefaultGray">
             <TopMarker stepsAtual={3} />
-            <div className="2xl:px-32 2xl:py-14 px-16 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-4.5rem)] h-[calc(100dvh-4rem)] flex justify-between 2xl:gap-x-32 gap-x-5">
-                <div className="flex flex-col 2xl:gap-y-8 gap-y-3 2xl:w-8/12 w-8/12 h-full overflow-y-auto">
+            <div className={`${mobileOpenCurriculum ? 'flex flex-col' : ''} 2xl:px-32 2xl:py-14 xl:px-16 px-4 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-4.5rem)] flex justify-between 2xl:gap-x-32 xl:gap-x-5`}>
+                <div className="flex flex-col 2xl:gap-y-8 gap-y-3 xl:w-8/12 w-full h-full overflow-y-auto">
                     <Score />
-                    <div className="h-full flex flex-col 2xl:gap-y-8 gap-y-4">
+                    <div className={`${mobileOpenCurriculum ? 'hidden' : 'block'} h-full flex flex-col 2xl:gap-y-8 gap-y-4`}>
                         <Title
                             title='Cabeçalho'
                             description='Eles permitem que os empregadores vejam como podem entrar em contato com você.'
@@ -125,9 +127,30 @@ export default function HeaderCV() {
                             ))}
                         </div>
                         <ButtonNext onClick={handleSubmit} />
+                        <div className="flex justify-center">
+                            <button 
+                                className="xl:hidden rounded-3xl  w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
+                                onClick={ ()=> setMobileOpenCurriculum(true)}
+                            >
+                                    <ReceiptText strokeWidth={1.5} />
+                                    Ver Currículo
+                            </button>
+                        </div>
+                        
                     </div>
                 </div>
-                <Curriculum />
+                <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} 2xl:w-4/12 xl:w-5/12 xl:block min-h-[70dvh] h-[70dvh] w-full `}>   
+                    <Curriculum key={1} />
+                </div>
+                <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} flex justify-center`}>
+                    <button 
+                        className="xl:hidden rounded-3xl w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
+                        onClick={ ()=> setMobileOpenCurriculum(false)}
+                    >
+                            <ArrowLeft />
+                            Voltar
+                    </button>
+                </div>                 
             </div>
             <ErrorMessage message={formState.generalError} onClose={() => handleChange('generalError', '')} />
         </div>

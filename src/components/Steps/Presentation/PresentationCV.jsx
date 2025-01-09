@@ -105,12 +105,13 @@ export default function PresentationCV() {
 
         navigate('/steps/FormationCV');
     };
+    const [mobileOpenCurriculum, setMobileOpenCurriculum] = useState(false)
+
 
     return (
-        <div className="h-dvh w-full bg-DefaultGray">
+        <div className="min-h-dvh w-full bg-DefaultGray">
             <TopMarker stepsAtual={'2'} />
-            <div className="2xl:px-32 2xl:py-14 px-16 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-5rem)] h-[calc(100dvh-4rem)] flex justify-between 2xl:gap-x-32 gap-x-5">
-                <div className="flex flex-col 2xl:gap-y-8 gap-y-3 w-8/12 h-full overflow-y-auto">
+            <div className={`${mobileOpenCurriculum ? 'flex flex-col' : ''} 2xl:px-32 2xl:py-14 xl:px-16 px-4 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-4.5rem)] flex justify-between 2xl:gap-x-32 xl:gap-x-5`}>                <div className="flex flex-col 2xl:gap-y-8 gap-y-3 w-8/12 h-full overflow-y-auto">
                     <Score />
                     <div className="h-full flex flex-col gap-y-8">
                         <Title
@@ -210,7 +211,10 @@ export default function PresentationCV() {
                         </div>
                     </div>
                 </div>
-                <Curriculum valuesCurriculum={values} />
+                <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} 2xl:w-4/12 xl:w-5/12 xl:block h-[70dvh] w-full `}>   
+                    <Curriculum key={2} />
+                </div>
+                
             </div>
             <ErrorMessage message={generalError} onClose={() => setGeneralError('')}/>
         </div>

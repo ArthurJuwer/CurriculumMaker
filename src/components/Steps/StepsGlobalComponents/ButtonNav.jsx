@@ -100,7 +100,7 @@ export default function ButtonNav() {
 
     return (
         <>
-        <div className="flex items-center justify-center absolute left-1/2 transform -translate-x-1/2">
+        <div className="xl:flex hidden items-center justify-center absolute left-1/2 transform -translate-x-1/2">
             {steps.map((item, index) => {
                 const isStepActive = item.step <= biggestPageReached;
                 const isCurrentStep = location.pathname === item.link;

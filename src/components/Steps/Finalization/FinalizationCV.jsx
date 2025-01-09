@@ -210,7 +210,7 @@ export default function FinalizationCV() {
                     </div>
                 </div>
 
-                <div className="h-full w-4/12 border-2 border-WeakGray">
+                <div className="h-full w-[30%]">
                     <div ref={curriculumRef} className="flex items-center justify-center h-full w-full">
                         {values ? (
                             <Curriculum valuesCurriculum={values} isLast={true} twoPages={values?.elementsMoved > 0 ? true : false} />

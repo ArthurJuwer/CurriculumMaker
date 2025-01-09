@@ -151,10 +151,10 @@ if (newScore < 0) {
         !
         <div
           className={`invisible group-hover:visible opacity-0 group-hover:opacity-100 absolute ${
-            isLast ? "right-[-260%] top-28" : "right-full top-1/2"
-          } transform -translate-y-1/2 mr-3 bg-white text-black p-4 rounded-md shadow-lg text-sm transition-opacity duration-300 w-max whitespace-nowrap`}
+            isLast ? "right-[-260%] top-28" : "right-8 xl:top-1/2 top-28"
+          } transform -translate-y-1/2 mr-3 bg-white text-black p-4 rounded-md shadow-lg text-sm transition-opacity duration-300 w-max whitespace-nowrap z-50`}
         >
-          <div className="flex justify-between 2xl:gap-x-8 gap-x-4">
+          <div className="flex flex-col xl:flex-row  justify-between 2xl:gap-x-8 gap-x-4 ">
             <ul className="list-disc pl-5 space-y-2">
               <li
                 className={`border-b border-gray-300 pb-1 ${

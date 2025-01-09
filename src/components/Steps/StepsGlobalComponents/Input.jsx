@@ -156,7 +156,7 @@ export default function Input({
         <div className={`relative ${width} ${isLast ? 'last:w-full' : ''}`}>
             <label
                 htmlFor={`input-${id}`}
-                className="absolute bottom-12 left-4 bg-DefaultGray px-2 font-semibold text-TitleGray uppercase z-0"
+                className="absolute xl:text-base text-sm bottom-12 left-4 bg-DefaultGray px-2 font-semibold text-TitleGray uppercase z-0"
             >
                 {label}
             </label>
@@ -191,7 +191,7 @@ export default function Input({
             )}
             {validationError && (
                 <>
-                    <p className="absolute -bottom-6 right-50 text-sm text-red-600">
+                    <p className="absolute -bottom-6 right-50 xl:text-sm text-[0.55rem] text-red-600 z-40">
                         {email ? "O e-mail informado não corresponde ao esperado." :
                         number ? "O número informado não corresponde ao esperado." :
                         year ? "Ano inválido." :

@@ -10,6 +10,7 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf'; 
 import ErrorMessage from "../StepsGlobalComponents/ErrorMessage";
 import ModelsColors from "../Models/ModelsColors";
+import { ArrowLeft, ReceiptText } from "lucide-react";
 
 export default function FinalizationCV() {
     const { values, setValues } = useContext(CurriculumContext);
@@ -25,6 +26,7 @@ export default function FinalizationCV() {
     const [nameCurriculum, setNameCurriculum] = useState(values?.nameCurriculum || "");
     const [imgData1, setImgData1] = useState(null); 
     const [imgData2, setImgData2] = useState(null); 
+    const [mobileOpenCurriculum, setMobileOpenCurriculum] = useState(false)
 
     const curriculumRef = useRef(); 
     useEffect(()=>{
@@ -124,7 +126,7 @@ export default function FinalizationCV() {
         }
         };
     
-        translateText();
+        // translateText();
     }, [languageFrom]);
     
 
@@ -176,10 +178,13 @@ export default function FinalizationCV() {
     };
 
     return (
-        <div className="h-screen w-full bg-DefaultGray">
+        <div className="min-h-dvh w-full bg-DefaultGray">
             <TopMarker stepsAtual={'0'} />
-            <div className="2xl:px-32 px-16 py-14 h-[calc(100vh-7rem)] flex justify-between">
-                <div className="flex flex-col gap-y-4">
+            <div className="2xl:px-32 xl:px-16 px-4 2xl:py-14 py-6 flex xl:flex-row flex-col gap-y-2 justify-between">
+                <div className="xl:hidden block">
+                    <Score isLast={true}/>
+                </div>
+                <div className={`${mobileOpenCurriculum ? 'hidden' : 'flex'} flex flex-col xl:gap-y-4 gap-y-2`}>
                     <Title title={"Alterações Rápidas"} />
                     <div className="flex flex-col gap-y-4">
                         <div className="flex flex-col gap-y-4">
@@ -210,17 +215,24 @@ export default function FinalizationCV() {
                     </div>
                 </div>
 
-                <div className="h-full w-[30%]">
-                    <div ref={curriculumRef} className="flex items-center justify-center h-full w-full">
-                        {values ? (
-                            <Curriculum valuesCurriculum={values} isLast={true} twoPages={values?.elementsMoved > 0 ? true : false} />
-                        ) : (
-                            <p>Loading...</p>
-                        )}
+                <div className="h-full xl:w-[30%]">
+                    <div ref={curriculumRef} className="flex flex-col xl:flex-row items-center justify-center h-full w-full">
+                        <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} xl:w-full xl:block min-h-[70dvh] w-full `}>   
+                            <Curriculum key={3} />
+                        </div>
+                        <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} flex justify-center`}>
+                            <button 
+                                className="xl:hidden rounded-3xl w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
+                                onClick={ ()=> setMobileOpenCurriculum(false)}
+                            >
+                                    <ArrowLeft />
+                                    Voltar
+                            </button>
+                        </div> 
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-y-4">
+                <div className={`${mobileOpenCurriculum ? 'hidden' : 'flex'} flex flex-col xl:gap-y-4 gap-y-2`}>
                     <Title title={"Opções Pra Baixar"} />
                     <div className="flex flex-col gap-y-4">
                         <FinalizationInput
@@ -231,14 +243,25 @@ export default function FinalizationCV() {
                             placeholder={"ex: meu-curriculo"}
                             onChange={(e) => setNameCurriculum(e.target.value)}
                         />
+                        <div className="flex items-center justify-center -mt-4">
+                            <button 
+                                className="xl:hidden rounded-3xl mt-4 w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
+                                onClick={ ()=> setMobileOpenCurriculum(true)}
+                            >
+                                    <ReceiptText strokeWidth={1.5} />
+                                    Ver Currículo
+                            </button>
+                        </div>
+                        
                         <button
                             className="w-full p-4 rounded-xl bg-DefaultOrange text-white uppercase text-sm tracking-wider font-medium"
                             onClick={gerarPDF} 
                         >
                             Gerar PDF
                         </button>
+                        
 
-                        <div className="">
+                        <div className="xl:block hidden">
                             <Score isLast={true}/>
                         </div>
                     </div>

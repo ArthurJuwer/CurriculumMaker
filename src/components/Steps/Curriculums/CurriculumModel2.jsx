@@ -53,7 +53,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
 
       {currentPage === 1 && (
         <div
-          className={`page-1 h-full ${isLast ? "w-full" : "w-4/12 border-2 border-WeakGray"} flex flex-col flex-wrap relative`}
+          className={`page-1 h-full w-full border-2 border-WeakGray flex flex-col flex-wrap relative`}
           ref={borderRef}
         >
 
@@ -243,8 +243,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
       {isNewPage && currentPage === 2 && (
           <div
             ref={borderRef}
-            className={`page-2 h-full ${isLast ? "w-full" : "w-4/12 border-2 border-WeakGray"} flex flex-col flex-wrap relative`}
-            // MUDANÇA p-10 para p-5 e div de baixo p-5
+            className={`page-2 h-full w-full border-2 border-WeakGray flex flex-col flex-wrap relative`}
           >
             <div
             className={`bg-TitleGray px-12 py-1 absolute left-1/2 -translate-x-1/2 -top-12 rounded-xl flex gap-x-12 text-xl`}

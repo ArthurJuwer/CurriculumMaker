@@ -180,7 +180,7 @@ export default function FinalizationCV() {
     return (
         <div className="min-h-dvh w-full bg-DefaultGray">
             <TopMarker stepsAtual={'0'} />
-            <div className="2xl:px-32 xl:px-16 px-4 2xl:py-14 py-6 flex xl:flex-row flex-col gap-y-2 justify-between">
+            <div className="2xl:px-32 xl:px-16 px-4 2xl:py-14 py-6 flex xl:flex-row flex-col max-h-[100dvh] h-full gap-y-2 justify-between overflow-x-hidden">
                 <div className="xl:hidden block">
                     <Score isLast={true}/>
                 </div>
@@ -215,10 +215,10 @@ export default function FinalizationCV() {
                     </div>
                 </div>
 
-                <div className="h-full xl:w-[30%]">
-                    <div ref={curriculumRef} className="flex flex-col xl:flex-row items-center justify-center h-full w-full">
-                        <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} xl:w-full xl:block min-h-[70dvh] w-full `}>   
-                            <Curriculum key={3} />
+                <div className="min-h-full h-90dvh xl:w-[33%] border-2 border-BorderInputGray">
+                    <div ref={curriculumRef} className="flex flex-col xl:flex-row items-center justify-center h-full w-full ">
+                        <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'}  xl:w-full xl:block min-h-[70dvh] h-full w-full `}>   
+                            <Curriculum key={3} isLast={true} />
                         </div>
                         <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} flex justify-center`}>
                             <button 

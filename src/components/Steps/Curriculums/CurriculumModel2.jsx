@@ -53,8 +53,8 @@ export default function CurriculumModel1({ isLast, twoPages }) {
 
       {currentPage === 1 && (
         <div
-          className={`page-1 h-full w-full border-2 border-WeakGray flex flex-col flex-wrap relative`}
-          ref={borderRef}
+        className={`page-1 ${!isLast ? "border-2 border-BorderInputGray" : "" } h-full flex flex-col flex-wrap relative`}
+        ref={borderRef}
         >
 
         <div

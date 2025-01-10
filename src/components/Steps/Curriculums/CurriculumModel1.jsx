@@ -62,7 +62,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
       {currentPage === 1 && (
         <div
           // FOI REMOVIDO O TAMANHO H-FULL OLHAR O HEADER COMO SE FAZ
-          className={`page-1 border-2 border-WeakGray h-full flex flex-col flex-wrap relative`}
+          className={`page-1 ${!isLast ? "border-2 border-BorderInputGray" : "" } h-full flex flex-col flex-wrap relative`}
           ref={borderRef}
         >
 

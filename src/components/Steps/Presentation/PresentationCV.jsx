@@ -107,7 +107,6 @@ export default function PresentationCV() {
     };
     const [mobileOpenCurriculum, setMobileOpenCurriculum] = useState(false)
 
-
     return (
         <div className="min-h-dvh w-full bg-DefaultGray">
             <TopMarker stepsAtual={'2'} />
@@ -221,7 +220,7 @@ export default function PresentationCV() {
                         </div>
                     </div>
                 </div>
-                <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} 2xl:w-4/12 xl:w-5/12 xl:block h-[70dvh] w-full `}>   
+                <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} 2xl:w-4/12 xl:w-5/12 xl:block min-h-[70dvh] w-full `}>   
                     <Curriculum key={2} />
                 </div>
                 <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} flex justify-center`}>

@@ -1,4 +1,4 @@
-import { Plus, Trash } from "lucide-react"; // Importar o ícone da lixeira
+import { ArrowLeft, Plus, ReceiptText, Trash } from "lucide-react"; // Importar o ícone da lixeira
 import Curriculum from "../StepsGlobalComponents/Curriculum";
 import Input from "../StepsGlobalComponents/Input";
 import Score from "../StepsGlobalComponents/Score";
@@ -49,7 +49,6 @@ export default function FormationCV() {
             biggestPageReached,
         }));
         
-        // Salvar no localStorage sempre que houver mudança
         localStorage.setItem('formations', JSON.stringify(formations));
         localStorage.setItem('languages', JSON.stringify(languages));
         localStorage.setItem('certifications', JSON.stringify(certifications));
@@ -215,13 +214,16 @@ export default function FormationCV() {
         { label: 'Título', placeholder: 'ex: Graduação Administração', category: 'title'},
         { label: 'Ano Saída', placeholder: 'ex: 2024', category: 'yearLeave', year: true, yearNoRange: true},
     ];
+
+    const [mobileOpenCurriculum, setMobileOpenCurriculum] = useState(false)
+
     return (
-        <div className="h-dvh w-full bg-DefaultGray">
+        <div className="min-h-dvh 2xl:h-dvh w-full bg-DefaultGray">
             <TopMarker stepsAtual={1} />
-            <div className="2xl:px-32 2xl:py-14 px-16 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-4.5rem)] h-[calc(100dvh-4rem)] flex justify-between 2xl:gap-x-32 gap-x-5">
-            <div className="flex flex-col 2xl:gap-y-8 gap-y-3 2xl:w-8/12 w-8/12 h-full overflow-y-auto">
+            <div className={`${mobileOpenCurriculum ? 'flex-col' : 'flex'} 2xl:px-32 2xl:py-14 xl:px-16 px-4 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-4.5rem)] flex justify-between 2xl:gap-x-32 gap-x-5`}>
+            <div className={`flex flex-col 2xl:gap-y-8 gap-y-3 xl:w-8/12 h-full xl:overflow-y-auto`}>
             <Score />
-                    <div className="flex flex-col gap-y-8 overflow-y-auto overflow-x-visible 
+                    <div className={`${mobileOpenCurriculum ? 'hidden' : 'flex'}  flex flex-col gap-y-8 xl:overflow-y-auto xl:overflow-x-hidden 
                         [&::-webkit-scrollbar]:w-2
                         [&::-webkit-scrollbar-track]:bg-gray-transparent
                         [&::-webkit-scrollbar-track]:rounded-full
@@ -229,7 +231,7 @@ export default function FormationCV() {
                         [&::-webkit-scrollbar-thumb]:bg-TitleGray
                         dark:[&::-webkit-scrollbar-track]:bg-TitleGray
                         dark:[&::-webkit-scrollbar-thumb]:bg-TitleGray 
-                    ">
+                    `}>
                         <Title
                             title="Formação e Competências"
                             description="Esta seção destaca sua formação acadêmica, idiomas e certificações similares ao cargo desejado."
@@ -262,8 +264,8 @@ export default function FormationCV() {
                                             
                                         </div>
                                         <button
-                                            onClick={() => deleteFormation(idx)}  // Excluir a formação
-                                            className="absolute -top-4 -right-2 p-2 bg-red-500 rounded-full text-white"
+                                            onClick={() => deleteFormation(idx)}  
+                                            className="absolute -top-4 xl:-right-2 right-0 p-2 bg-red-500 rounded-full text-white"
                                         >
                                             <Trash className="w-6 h-6" />
                                         </button>
@@ -282,14 +284,14 @@ export default function FormationCV() {
                             <div className="2xl:w-4/12 2xl:px-4 2xl:-mb-14 mt-10">
                                 <div className="h-full relative">
                                     <h1 className="text-2xl font-bold text-TitleGray absolute -top-4 2xl:left-[23%] left-4 bg-DefaultGray px-2">Certificações</h1>
-                                    <div className="border border-BorderInputGray h-full w-full rounded-2xl p-4 2xl:pt-6 pt-12 flex flex-col justify-between items-end gap-y-2">
+                                    <div className="border border-BorderInputGray h-full w-full rounded-2xl p-4 pt-6 flex flex-col justify-between items-end gap-y-2">
                                         <div className="w-full flex 2xl:flex-col gap-y-2 gap-x-5">
                                             {certifications?.map((item, index) => (
                                                 <FormationCertifications
                                                     key={index}
                                                     id={index}
                                                     title={item?.name}
-                                                    onDelete={(id) => deleteCertification(id)} // Função para deletar
+                                                    onDelete={(id) => deleteCertification(id)} 
                                                 />
                                             ))}
                                         </div>
@@ -310,7 +312,7 @@ export default function FormationCV() {
                                         key={index}
                                         id={index}
                                         label="Idioma"
-                                        width="w-[calc(50%-1rem)]"
+                                        width="xl:w-[calc(50%-1rem)] w-[calc(100%-4.5rem)]"
                                         value={{ language: item.language != 'Língua' ? item.language : '', level: item.level }} // Passa idioma e nível
                                         isSelect={true}
                                         onChange={(newLanguage, newLevel) => handleLanguagesChange(newLanguage, newLevel, index)} // Passa ambos os valores
@@ -319,24 +321,45 @@ export default function FormationCV() {
                                     />
                                 ))}
                                 <button
-                                    className="bg-TitleGray h-14 w-14 rounded-xl text-white flex justify-center items-center"
+                                    className="bg-TitleGray size-14 rounded-xl text-white flex justify-center items-center"
                                     onClick={addLanguage}
                                 >
-                                    <Plus className="h-8 w-8" />
+                                    <Plus className="size-8" />
                                 </button>
                             </div>
-                            <div className="w-full pr-1">
+                            <div className="w-full xl:pr-1">
                                 <ButtonNext onClick={handleSubmit} />
                             </div>
+                            <div className="flex justify-center">
+                            <button 
+                                className="xl:hidden rounded-3xl mt-4 w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
+                                onClick={ ()=> setMobileOpenCurriculum(true)}
+                            >
+                                    <ReceiptText strokeWidth={1.5} />
+                                    Ver Currículo
+                            </button>
+                        </div>
                         </div>
                     </div>
                 </div>
-                <Curriculum valuesCurriculum={values} />
+                <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} 2xl:w-4/12 xl:w-5/12 xl:block min-h-[70dvh] w-full `}>   
+                    <Curriculum key={3} />
+                </div>
+                <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} flex justify-center`}>
+                    <button 
+                        className="xl:hidden rounded-3xl w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
+                        onClick={ ()=> setMobileOpenCurriculum(false)}
+                    >
+                            <ArrowLeft />
+                            Voltar
+                    </button>
+                </div>  
+                
             </div>
 
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-8 rounded-xl w-4/12 flex flex-col gap-y-8 relative">
+                    <div className="bg-white p-8 rounded-xl 2xl:w-4/12 xl:w-6/12 w-11/12 flex flex-col gap-y-8 relative">
                         <h2 className="text-xl font-bold">Adicionar Certificação</h2>
                         <div className="flex flex-col gap-y-8">
                             <Input

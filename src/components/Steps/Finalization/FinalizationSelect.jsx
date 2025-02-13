@@ -7,7 +7,7 @@ export default function FinalizationSelect({label, id, onChange, value, options,
             <div className="relative">
                 <select
                     id={id}
-                    className="appearance-none border w-full border-BorderInputGray bg-transparent p-4 pr-10 rounded-xl"
+                    className="appearance-none border w-full border-BorderInputGray bg-transparent 2xl:p-4 p-3 pr-10 rounded-xl"
                     onChange={onChange}
                     value={value}
                     defaultValue={defaultValue}

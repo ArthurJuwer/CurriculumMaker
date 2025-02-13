@@ -5,7 +5,7 @@ export default function FinalizationInput({label, id, onChange, value, placehold
             <input 
                 type="text" 
                 id={id} 
-                className="border w-full border-BorderInputGray bg-transparent p-4 rounded-xl"
+                className="border w-full border-BorderInputGray bg-transparent 2xl:p-4 p-3 rounded-xl"
                 onChange={onChange}
                 value={value}  
                 placeholder={placeholder}  

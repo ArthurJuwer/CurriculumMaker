@@ -180,12 +180,12 @@ export default function FinalizationCV() {
     return (
         <div className="min-h-dvh w-full bg-DefaultGray">
             <TopMarker stepsAtual={'0'} />
-            <div className="2xl:px-32 xl:px-16 px-4 2xl:py-14 py-6 flex xl:flex-row flex-col max-h-[100dvh] h-full gap-y-2 justify-between overflow-x-hidden">
+            <div className="2xl:px-32 xl:px-16 px-4 2xl:py-14 py-6 flex xl:flex-row flex-col max-h-[100dvh] h-full gap-y-2 xl:gap-x-24 2xl:gap-x-40 justify-center overflow-x-hidden">
                 <div className="xl:hidden block">
                     <Score isLast={true}/>
                 </div>
-                <div className={`${mobileOpenCurriculum ? 'hidden' : 'flex'} flex flex-col xl:gap-y-4 gap-y-2`}>
-                    <Title title={"Alterações Rápidas"} />
+                <div className={`${mobileOpenCurriculum ? 'hidden' : 'flex'} flex flex-col 2xl:gap-y-4 gap-y-2 2xl:w-[22%]`}>
+                    <Title title={"Alterações Rápidas"} last={true} />
                     <div className="flex flex-col gap-y-4">
                         <div className="flex flex-col gap-y-4">
                             <h2 className="uppercase text-TitleGray font-semibold">Cor de Destaque</h2>
@@ -215,7 +215,7 @@ export default function FinalizationCV() {
                     </div>
                 </div>
 
-                <div className="min-h-full h-90dvh xl:w-[33%] border-2 border-BorderInputGray">
+                <div className="min-h-full h-90dvh xl:w-[40%] 2xl:w-[33%] border-2 border-BorderInputGray">
                     <div ref={curriculumRef} className="flex flex-col xl:flex-row items-center justify-center h-full w-full ">
                         <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'}  xl:w-full xl:block min-h-[70dvh] h-full w-full `}>   
                             <Curriculum key={3} isLast={true} />
@@ -232,8 +232,8 @@ export default function FinalizationCV() {
                     </div>
                 </div>
 
-                <div className={`${mobileOpenCurriculum ? 'hidden' : 'flex'} flex flex-col xl:gap-y-4 gap-y-2`}>
-                    <Title title={"Opções Pra Baixar"} />
+                <div className={`${mobileOpenCurriculum ? 'hidden' : 'flex'} flex flex-col 2xl:gap-y-4 gap-y-2 2xl:w-[22%]`}>
+                    <Title title={"Opções Pra Baixar"} last={true} />
                     <div className="flex flex-col gap-y-4">
                         <FinalizationInput
                             key={34}

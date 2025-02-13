@@ -231,6 +231,7 @@ export default function FormationCV() {
                         [&::-webkit-scrollbar-thumb]:bg-TitleGray
                         dark:[&::-webkit-scrollbar-track]:bg-TitleGray
                         dark:[&::-webkit-scrollbar-thumb]:bg-TitleGray 
+                        pr-2
                     `}>
                         <Title
                             title="Formação e Competências"
@@ -327,9 +328,7 @@ export default function FormationCV() {
                                     <Plus className="size-8" />
                                 </button>
                             </div>
-                            <div className="w-full xl:pr-1">
                                 <ButtonNext onClick={handleSubmit} />
-                            </div>
                             <div className="flex justify-center">
                             <button 
                                 className="xl:hidden rounded-3xl mt-4 w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"

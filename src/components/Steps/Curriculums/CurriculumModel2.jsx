@@ -243,8 +243,8 @@ export default function CurriculumModel1({ isLast, twoPages }) {
       {isNewPage && currentPage === 2 && (
           <div
             ref={borderRef}
-            className={`page-2 h-full w-full border-2 border-WeakGray flex flex-col flex-wrap relative`}
-          >
+            className={`page-2 ${!isLast ? "border-2 border-BorderInputGray" : "" } h-full flex flex-col flex-wrap relative`}
+            >
             <div
             className={`bg-TitleGray px-12 py-1 absolute left-1/2 -translate-x-1/2 -top-12 rounded-xl flex gap-x-12 text-xl`}
             >

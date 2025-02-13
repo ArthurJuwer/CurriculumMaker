@@ -215,21 +215,21 @@ export default function FinalizationCV() {
                     </div>
                 </div>
 
-                <div className="min-h-full h-90dvh xl:w-[40%] 2xl:w-[33%] border-2 border-BorderInputGray">
+                <div className="xl:mt-8 mt-10 2xl:mt-0 min-h-full 2xl:h-[80dvh] xl:w-[40%] 2xl:w-[33%] border-2 border-BorderInputGray">
                     <div ref={curriculumRef} className="flex flex-col xl:flex-row items-center justify-center h-full w-full ">
                         <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'}  xl:w-full xl:block min-h-[70dvh] h-full w-full `}>   
-                            <Curriculum key={3} isLast={true} />
-                        </div>
-                        <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} flex justify-center`}>
-                            <button 
-                                className="xl:hidden rounded-3xl w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
-                                onClick={ ()=> setMobileOpenCurriculum(false)}
-                            >
-                                    <ArrowLeft />
-                                    Voltar
-                            </button>
+                            <Curriculum key={3} isLast={true}  />
                         </div> 
                     </div>
+                </div>
+                <div className={`${mobileOpenCurriculum ? 'block mt-6' : 'hidden'} flex justify-center`}>
+                    <button 
+                        className="xl:hidden rounded-3xl w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
+                        onClick={ ()=> setMobileOpenCurriculum(false)}
+                    >
+                            <ArrowLeft />
+                            Voltar
+                    </button>
                 </div>
 
                 <div className={`${mobileOpenCurriculum ? 'hidden' : 'flex'} flex flex-col 2xl:gap-y-4 gap-y-2 2xl:w-[22%]`}>

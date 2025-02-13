@@ -67,7 +67,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
         >
 
         <div
-            className={`bg-TitleGray 2xl:px-12 px-6 py-1 absolute left-1/2 -translate-x-1/2 2xl:-top-12 -top-5 rounded-xl flex gap-x-12 text-xl`}
+            className={`bg-TitleGray 2xl:px-12 px-6 py-1 absolute left-1/2 -translate-x-1/2 xl:-top-12 -top-[4.5rem] rounded-xl flex gap-x-12 text-xl`}
         >
             <button
                 onClick={() => setCurrentPage(1)}
@@ -247,26 +247,33 @@ export default function CurriculumModel1({ isLast, twoPages }) {
 
       {/* Renderiza a segunda página, se necessário */}
       {isNewPage && currentPage === 2 && (
-          <div
-            ref={borderRef}
-            className={`page-2 h-full "w-full border-2 border-WeakGray flex flex-col flex-wrap relative`}
-          >
-            <div
-            className={`bg-TitleGray px-12 py-1 absolute left-1/2 -translate-x-1/2 -top-12 rounded-xl flex gap-x-12 text-xl`}
+              <div
+              // FOI REMOVIDO O TAMANHO H-FULL OLHAR O HEADER COMO SE FAZ
+              className={`page-2 ${!isLast ? "border-2 border-BorderInputGray" : "" } h-full flex flex-col flex-wrap relative`}
+              ref={borderRef}
             >
-                <button
-                    onClick={() => setCurrentPage(1)}
-                    className={`text-WeakGray ${currentPage === 1 ? 'text-white' : ''}`}
-                >
-                    1
-                </button>
-                <button
-                onClick={() => setCurrentPage(2)}
-                className={`text-WeakGray ${currentPage === 2 ? 'text-white' : ''}`}
-                >
-                    2
-                </button>
-            </div>
+            <div
+            className={`bg-TitleGray 2xl:px-12 px-6 py-1 absolute left-1/2 -translate-x-1/2 xl:-top-12 -top-5 rounded-xl flex gap-x-12 text-xl`}
+        >
+            <button
+                onClick={() => setCurrentPage(1)}
+                className={`text-WeakGray ${currentPage === 1 ? 'text-white' : ''}`}
+            >
+                1
+            </button>
+            {
+                isNewPage == true || twoPages == true 
+                ?
+                    <button
+                    onClick={() => setCurrentPage(2)}
+                    className={`text-WeakGray ${currentPage === 2 ? 'text-white' : ''}`}
+                    >
+                        2
+                    </button>
+                :
+                    ''
+            }
+        </div>
 
             <div className="flex flex-col flex-wrap gap-y-5 p-10">
 

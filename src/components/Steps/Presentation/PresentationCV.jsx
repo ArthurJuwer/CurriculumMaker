@@ -111,9 +111,9 @@ export default function PresentationCV() {
         <div className="min-h-dvh w-full bg-DefaultGray">
             <TopMarker stepsAtual={'2'} />
             <div className={`${mobileOpenCurriculum ? 'flex flex-col' : ''} 2xl:px-32 2xl:py-14 xl:px-16 px-4 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-4.5rem)] flex justify-between 2xl:gap-x-32 xl:gap-x-5`}>                
-                <div className="flex flex-col 2xl:gap-y-8 gap-y-3 xl:w-8/12 h-full xl:overflow-y-auto">
+                <div className="flex flex-col 2xl:gap-y-8 gap-y-3 xl:w-8/12 h-full">
                     <Score />
-                    <div className={`${mobileOpenCurriculum ? 'hidden' : 'block'} h-full flex flex-col gap-y-8`}>
+                    <div className={`${mobileOpenCurriculum ? 'hidden' : 'block'} h-full flex flex-col gap-y-8 xl:overflow-y-auto`}>
                         <Title
                             title={'Apresentação Pessoal'}
                             description={'Essa seção permite mostrar suas metas profissionais e sua trajetória de experiências relevantes.'}

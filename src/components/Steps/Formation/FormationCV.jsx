@@ -221,7 +221,7 @@ export default function FormationCV() {
         <div className="min-h-dvh 2xl:h-dvh w-full bg-DefaultGray">
             <TopMarker stepsAtual={1} />
             <div className={`${mobileOpenCurriculum ? 'flex-col' : 'flex'} 2xl:px-32 2xl:py-14 xl:px-16 px-4 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-4.5rem)] flex justify-between 2xl:gap-x-32 gap-x-5`}>
-            <div className={`flex flex-col 2xl:gap-y-8 gap-y-3 xl:w-8/12 h-full xl:overflow-y-auto`}>
+            <div className={`flex flex-col 2xl:gap-y-8 gap-y-3 xl:w-8/12 h-full`}>
             <Score />
                     <div className={`${mobileOpenCurriculum ? 'hidden' : 'flex'}  flex flex-col gap-y-8 xl:overflow-y-auto xl:overflow-x-hidden 
                         [&::-webkit-scrollbar]:w-2

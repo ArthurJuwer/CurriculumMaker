@@ -319,8 +319,8 @@ export default function CurriculumModel1({ isLast, twoPages }) {
               {values?.formations && elementsMoved >= 3 && (
                   <div>
                     <h1
-                      className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                      style={{ fontSize: values?.textSubTitle }}
+                      className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2 border-b-2 border-black mb-2"
+                      style={{ borderColor: `#${values?.color}`, fontSize: values?.textSubTitle }}
                     >
                       {titles?.[2]}
                     </h1>
@@ -348,8 +348,8 @@ export default function CurriculumModel1({ isLast, twoPages }) {
               {values?.languages && elementsMoved >= 2 && (
                   <div>
                     <h1
-                      className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                      style={{ fontSize: values?.textSubTitle }}
+                      className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2 border-b-2 border-black mb-2"
+                      style={{ borderColor: `#${values?.color}`, fontSize: values?.textSubTitle }}
                     >
                       {titles?.[3]}
                     </h1>
@@ -370,7 +370,7 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                 <div>
                   <h1
                     className="uppercase text-StrongGray text-subtitle1920 font-bold mb-2 border-b-2 border-black"
-                    style={{ color: `#${values?.color}`, fontSize: values?.textSubTitle }}
+                    style={{ borderColor: `#${values?.color}`, fontSize: values?.textSubTitle }}
                   >
                     {titles?.[4]}
                   </h1>

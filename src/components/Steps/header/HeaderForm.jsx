@@ -2,10 +2,10 @@
 
 import { useContext, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowLeft, ReceiptText } from "lucide-react";
 import { CurriculumContext } from "@/contexts/CurriculumContext";
 import { ROUTES } from "@/lib/routes";
 import Curriculum from "@/components/curriculum/Curriculum";
+import MobileCurriculumPreview from "@/components/curriculum/MobileCurriculumPreview";
 import TopMarker from "@/components/navigation/TopMarker";
 import ButtonNext from "@/components/ui/ButtonNext";
 import ErrorMessage from "@/components/ui/ErrorMessage";
@@ -35,7 +35,6 @@ export default function HeaderForm() {
   const queryColor = searchParams.get("color");
   const queryModel = searchParams.get("model");
 
-  const [mobileOpenCurriculum, setMobileOpenCurriculum] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [formState, setFormState] = useState({
     score: contextValues?.score || "",
@@ -49,6 +48,7 @@ export default function HeaderForm() {
     telefone: contextValues?.telefone || "Telefone",
     email: contextValues?.email || "Email",
     linkedin: contextValues?.linkedin || "",
+    noLinkedin: contextValues?.noLinkedin || false,
     biggestPageReached: contextValues?.biggestPageReached || 1,
   });
 
@@ -76,9 +76,10 @@ export default function HeaderForm() {
   };
 
   const handleSubmit = () => {
-    const allFieldsFilled = INPUTS.every(
-      ({ key, label }) => formState[key]?.trim() && formState[key] !== label
-    );
+    const allFieldsFilled = INPUTS.every(({ key, label }) => {
+      if (key === "linkedin" && formState.noLinkedin) return true;
+      return formState[key]?.trim() && formState[key] !== label;
+    });
     const allFieldsValid = Object.values(validationErrors).every((error) => !error);
 
     if (!allFieldsFilled) {
@@ -100,83 +101,77 @@ export default function HeaderForm() {
   return (
     <div className="min-h-dvh w-full bg-DefaultGray">
       <TopMarker stepsAtual={3} />
-      <div
-        className={`${
-          mobileOpenCurriculum ? "flex flex-col" : ""
-        } 2xl:px-32 2xl:py-14 xl:px-16 px-4 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-4.5rem)] flex justify-between 2xl:gap-x-32 xl:gap-x-5`}
-      >
+      <div className="2xl:px-32 2xl:py-14 xl:px-16 px-4 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-4.5rem)] flex justify-between 2xl:gap-x-32 xl:gap-x-5">
         <div className="flex flex-col 2xl:gap-y-8 gap-y-3 xl:w-8/12 w-full h-full">
           <Score />
           <div
-            className={`${
-              mobileOpenCurriculum ? "hidden" : "block"
-            } h-full flex flex-col 2xl:gap-y-8 gap-y-4 xl:overflow-y-auto
+            className="h-full flex flex-col 2xl:gap-y-8 gap-y-4 xl:overflow-y-auto pb-28 xl:pb-0
               [&::-webkit-scrollbar]:w-2
               [&::-webkit-scrollbar-track]:bg-gray-transparent
               [&::-webkit-scrollbar-track]:rounded-full
               [&::-webkit-scrollbar-thumb]:rounded-full
               [&::-webkit-scrollbar-thumb]:bg-TitleGray
               dark:[&::-webkit-scrollbar-track]:bg-TitleGray
-              dark:[&::-webkit-scrollbar-thumb]:bg-TitleGray pr-2`}
+              dark:[&::-webkit-scrollbar-thumb]:bg-TitleGray pr-2"
           >
             <Title
               title="Cabeçalho"
               description="Eles permitem que os empregadores vejam como podem entrar em contato com você."
             />
             <div className="2xl:pt-5 pt-4 w-full flex flex-wrap 2xl:gap-x-4 gap-x-3 2xl:gap-y-10 gap-y-7 relative">
-              {INPUTS.map(({ label, placeholder, key, email, number }, index) => (
-                <Input
-                  key={index}
-                  id={index}
-                  label={label}
-                  isLast={index === INPUTS.length - 1}
-                  width="w-[calc(50%-0.5rem)]"
-                  onChange={(e) => handleChange(key, e.target.value)}
-                  placeholder={placeholder}
-                  value={
-                    formState[key] !== undefined && formState[key] !== label
-                      ? formState[key]
-                      : ""
-                  }
-                  email={email}
-                  number={number}
-                  onValidationError={(error) => handleValidationError(key, error)}
+              {INPUTS.map(({ label, placeholder, key, email, number }, index) => {
+                const isLinkedin = key === "linkedin";
+                return (
+                  <Input
+                    key={index}
+                    id={index}
+                    label={label}
+                    isLast={index === INPUTS.length - 1}
+                    width={isLinkedin ? "w-full" : "w-[calc(50%-0.5rem)]"}
+                    onChange={(e) => handleChange(key, e.target.value)}
+                    placeholder={placeholder}
+                    value={
+                      isLinkedin && formState.noLinkedin
+                        ? ""
+                        : formState[key] !== undefined && formState[key] !== label
+                        ? formState[key]
+                        : ""
+                    }
+                    email={email}
+                    number={number}
+                    disabled={isLinkedin && formState.noLinkedin}
+                    onValidationError={(error) => handleValidationError(key, error)}
+                  />
+                );
+              })}
+              <label className="w-full flex items-center gap-x-2 -mt-3 select-none cursor-pointer text-sm text-TitleGray">
+                <input
+                  type="checkbox"
+                  className="size-4 accent-DefaultOrange cursor-pointer"
+                  checked={formState.noLinkedin}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    setFormState((prev) => ({
+                      ...prev,
+                      noLinkedin: checked,
+                      linkedin: checked ? "" : prev.linkedin,
+                    }));
+                    if (checked) handleValidationError("linkedin", false);
+                  }}
                 />
-              ))}
+                Não tenho LinkedIn
+              </label>
             </div>
             <ButtonNext onClick={handleSubmit} />
-            <div className="flex justify-center">
-              <button
-                className="xl:hidden rounded-3xl w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
-                onClick={() => setMobileOpenCurriculum(true)}
-              >
-                <ReceiptText strokeWidth={1.5} />
-                Ver Currículo
-              </button>
-            </div>
           </div>
         </div>
-        <div
-          className={`${
-            mobileOpenCurriculum ? "block mt-6" : "hidden"
-          } 2xl:w-4/12 xl:w-5/12 xl:block min-h-[70dvh] w-full`}
-        >
-          <Curriculum />
-        </div>
-        <div
-          className={`${
-            mobileOpenCurriculum ? "block mt-6" : "hidden"
-          } flex justify-center`}
-        >
-          <button
-            className="xl:hidden rounded-3xl w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
-            onClick={() => setMobileOpenCurriculum(false)}
-          >
-            <ArrowLeft />
-            Voltar
-          </button>
+        <div className="hidden xl:block 2xl:w-4/12 xl:w-5/12 min-h-[70dvh]">
+          <Curriculum withPlaceholders />
         </div>
       </div>
+
+      <MobileCurriculumPreview withPlaceholders />
+
       <ErrorMessage
         message={formState.generalError}
         onClose={() => handleChange("generalError", "")}

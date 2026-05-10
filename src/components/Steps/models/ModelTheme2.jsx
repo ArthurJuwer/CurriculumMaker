@@ -3,7 +3,7 @@ import { ROUTES } from "@/lib/routes";
 
 export default function ModelTheme2({ valuesCurriculum }) {
   return (
-    <div className="w-full h-full overflow-hidden border-2 border-WeakGray 2xl:p-9 p-7 group relative z-0">
+    <div className="w-full md:h-full overflow-hidden border-2 border-WeakGray 2xl:p-9 p-7 group relative z-0">
       <div className="hidden group-hover:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
         <Link href={`${ROUTES.header}?model=2&color=${valuesCurriculum?.color}`}>
           <button

@@ -6,7 +6,8 @@
       "PowerShell(Get-Process *)",
       "Bash(npm cache *)",
       "Bash(npm run *)",
-      "PowerShell(Remove-Item *)"
+      "PowerShell(Remove-Item *)",
+      "Bash(dir srccomponentsSteps *)"
     ]
   }
 }

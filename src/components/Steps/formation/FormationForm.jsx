@@ -2,11 +2,11 @@
 
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Plus, ReceiptText, Trash } from "lucide-react";
+import { Plus, Trash } from "lucide-react";
 import { CurriculumContext } from "@/contexts/CurriculumContext";
 import { ROUTES } from "@/lib/routes";
-import { readJSON, writeJSON } from "@/lib/storage";
 import Curriculum from "@/components/curriculum/Curriculum";
+import MobileCurriculumPreview from "@/components/curriculum/MobileCurriculumPreview";
 import TopMarker from "@/components/navigation/TopMarker";
 import ButtonNext from "@/components/ui/ButtonNext";
 import ErrorMessage from "@/components/ui/ErrorMessage";
@@ -51,26 +51,34 @@ const isValidDate = (dateStr) => {
 
 export default function FormationForm() {
   const router = useRouter();
-  const { values, setValues } = useContext(CurriculumContext);
+  const { values, setValues, hydrated: contextHydrated } = useContext(CurriculumContext);
 
   const [generalError, setGeneralError] = useState("");
   const [generalErrorModal, setGeneralErrorModal] = useState(null);
   const [biggestPageReached, setBiggestPageReached] = useState(values?.biggestPageReached);
   const [invalidFormationsConfer, setInvalidFormations] = useState(null);
-  const [formations, setFormations] = useState(() =>
-    readJSON("formations", [DEFAULT_FORMATION])
-  );
-  const [languages, setLanguages] = useState(() => readJSON("languages", [DEFAULT_LANGUAGE]));
-  const [certifications, setCertifications] = useState(() => readJSON("certifications", []));
+  const [formations, setFormations] = useState([DEFAULT_FORMATION]);
+  const [languages, setLanguages] = useState([DEFAULT_LANGUAGE]);
+  const [certifications, setCertifications] = useState([]);
+  const [hydrated, setHydrated] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [certificationInputs, setCertificationInputs] = useState({
     name: "",
     workload: "",
     conclusion: "",
   });
-  const [mobileOpenCurriculum, setMobileOpenCurriculum] = useState(false);
 
   useEffect(() => {
+    if (!contextHydrated || hydrated) return;
+    setFormations(values?.formations || [DEFAULT_FORMATION]);
+    setLanguages(values?.languages || [DEFAULT_LANGUAGE]);
+    setCertifications(values?.certifications || []);
+    setBiggestPageReached(values?.biggestPageReached);
+    setHydrated(true);
+  }, [contextHydrated, values, hydrated]);
+
+  useEffect(() => {
+    if (!hydrated) return;
     if (values?.biggestPageReached < 3) {
       setBiggestPageReached(3);
     }
@@ -82,11 +90,7 @@ export default function FormationForm() {
       certifications,
       biggestPageReached,
     }));
-
-    writeJSON("formations", formations);
-    writeJSON("languages", languages);
-    writeJSON("certifications", certifications);
-  }, [formations, languages, certifications, biggestPageReached, setValues]);
+  }, [formations, languages, certifications, biggestPageReached, setValues, hydrated]);
 
   const handleSubmit = () => {
     const allFieldsFilled =
@@ -200,24 +204,18 @@ export default function FormationForm() {
   return (
     <div className="min-h-dvh 2xl:h-dvh w-full bg-DefaultGray">
       <TopMarker stepsAtual={1} />
-      <div
-        className={`${
-          mobileOpenCurriculum ? "flex-col" : "flex"
-        } 2xl:px-32 2xl:py-14 xl:px-16 px-4 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-4.5rem)] flex justify-between 2xl:gap-x-32 gap-x-5`}
-      >
+      <div className="2xl:px-32 2xl:py-14 xl:px-16 px-4 py-6 2xl:h-[calc(100dvh-7rem)] xl:h-[calc(100dvh-4.5rem)] flex justify-between 2xl:gap-x-32 gap-x-5">
         <div className="flex flex-col 2xl:gap-y-8 gap-y-3 xl:w-8/12 h-full">
           <Score />
           <div
-            className={`${
-              mobileOpenCurriculum ? "hidden" : "flex"
-            } flex flex-col gap-y-8 xl:overflow-y-auto xl:overflow-x-hidden
+            className="flex flex-col gap-y-8 xl:overflow-y-auto xl:overflow-x-hidden pb-28 xl:pb-0
               [&::-webkit-scrollbar]:w-2
               [&::-webkit-scrollbar-track]:bg-gray-transparent
               [&::-webkit-scrollbar-track]:rounded-full
               [&::-webkit-scrollbar-thumb]:rounded-full
               [&::-webkit-scrollbar-thumb]:bg-TitleGray
               dark:[&::-webkit-scrollbar-track]:bg-TitleGray
-              dark:[&::-webkit-scrollbar-thumb]:bg-TitleGray pr-2`}
+              dark:[&::-webkit-scrollbar-thumb]:bg-TitleGray pr-2"
           >
             <Title
               title="Formação e Competências"
@@ -334,39 +332,15 @@ export default function FormationForm() {
                 </button>
               </div>
               <ButtonNext onClick={handleSubmit} />
-              <div className="flex justify-center">
-                <button
-                  className="xl:hidden rounded-3xl mt-4 w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
-                  onClick={() => setMobileOpenCurriculum(true)}
-                >
-                  <ReceiptText strokeWidth={1.5} />
-                  Ver Currículo
-                </button>
-              </div>
             </div>
           </div>
         </div>
-        <div
-          className={`${
-            mobileOpenCurriculum ? "block mt-6" : "hidden"
-          } 2xl:w-4/12 xl:w-5/12 xl:block min-h-[70dvh] w-full`}
-        >
-          <Curriculum />
-        </div>
-        <div
-          className={`${
-            mobileOpenCurriculum ? "block mt-6" : "hidden"
-          } flex justify-center`}
-        >
-          <button
-            className="xl:hidden rounded-3xl w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
-            onClick={() => setMobileOpenCurriculum(false)}
-          >
-            <ArrowLeft />
-            Voltar
-          </button>
+        <div className="hidden xl:block 2xl:w-4/12 xl:w-5/12 min-h-[70dvh]">
+          <Curriculum withPlaceholders />
         </div>
       </div>
+
+      <MobileCurriculumPreview withPlaceholders />
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">

@@ -132,15 +132,15 @@ export default function ModelsView() {
           <div
             ref={sliderRef}
             onScroll={handleSliderScroll}
-            className="w-full flex-1 min-h-0 flex overflow-x-auto overflow-y-hidden snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            className="w-full flex-1 min-h-0 flex overflow-x-auto overflow-y-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
           >
-            <div className="snap-center shrink-0 w-full h-full flex justify-center items-stretch">
-              <div className="w-10/12 h-full">
+            <div className="snap-center shrink-0 w-full flex justify-center items-start">
+              <div className="w-10/12">
                 <ModelTheme1 valuesCurriculum={valuesModel} />
               </div>
             </div>
-            <div className="snap-center shrink-0 w-full h-full flex justify-center items-stretch">
-              <div className="w-10/12 h-full">
+            <div className="snap-center shrink-0 w-full flex justify-center items-start">
+              <div className="w-10/12">
                 <ModelTheme2 valuesCurriculum={valuesModel} />
               </div>
             </div>

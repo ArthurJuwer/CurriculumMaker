@@ -1,7 +1,8 @@
 "use client";
 
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { CurriculumContext } from "@/contexts/CurriculumContext";
+import { getEffectiveValues } from "./placeholderData";
 
 const DEFAULT_TITLES = [
   "Objetivo",
@@ -13,7 +14,7 @@ const DEFAULT_TITLES = [
   "Conclusão",
 ];
 
-export default function CurriculumModel1({ isLast, twoPages }) {
+export default function CurriculumModel1({ isLast, twoPages, withPlaceholders }) {
   const [isNewPage, setIsNewPage] = useState(false);
   const curriculumRef = useRef(null);
   const borderRef = useRef(null);
@@ -22,6 +23,11 @@ export default function CurriculumModel1({ isLast, twoPages }) {
   const [secondPage, setSecondPage] = useState(false);
   const { values, setValues } = useContext(CurriculumContext);
   const [titles, setTitles] = useState(values?.titles || DEFAULT_TITLES);
+
+  const effectiveValues = useMemo(
+    () => getEffectiveValues(values, withPlaceholders),
+    [values, withPlaceholders]
+  );
 
   useEffect(() => {
     if (curriculumRef.current && borderRef.current) {
@@ -83,70 +89,70 @@ export default function CurriculumModel1({ isLast, twoPages }) {
             <div>
               <h1
                 className="uppercase text-StrongGray text-title1920 font-bold pb-1"
-                style={{ fontSize: values?.textTitle || "19pt" }}
+                style={{ fontSize: effectiveValues?.textTitle || "19pt" }}
               >
-                {values?.name}
+                {effectiveValues?.name}
               </h1>
               <ol
                 className="text-p1920 flex flex-wrap gap-y-2 gap-x-2"
-                style={{ color: `#${values?.color}`, fontSize: values?.textCorp }}
+                style={{ color: `#${effectiveValues?.color}`, fontSize: effectiveValues?.textCorp }}
               >
                 <div className="flex gap-x-1">
-                  <li>{values?.bairro} |</li>
-                  <li>{values?.cidade},</li>
-                  <li>{values?.estado} |</li>
-                  <li>{values?.telefone} |</li>
+                  <li>{effectiveValues?.bairro} |</li>
+                  <li>{effectiveValues?.cidade},</li>
+                  <li>{effectiveValues?.estado} |</li>
+                  <li>{effectiveValues?.telefone} |</li>
                 </div>
-                <li>{values?.email}</li>
-                <li>{values?.linkedin}</li>
+                <li>{effectiveValues?.email}</li>
+                <li>{effectiveValues?.linkedin}</li>
               </ol>
             </div>
 
             <div className="flex flex-col gap-y-2">
-              {values?.biggestPageReached >= 2 &&
-                values?.objective &&
+              {effectiveValues?.biggestPageReached >= 2 &&
+                effectiveValues?.objective &&
                 !(elementsMoved >= 5) && (
                   <div>
                     <h1
                       className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                      style={{ fontSize: values?.textSubTitle }}
+                      style={{ fontSize: effectiveValues?.textSubTitle }}
                     >
                       {titles?.[0]}
                     </h1>
                     <p
                       className="text-p1920 text-TitleGray"
-                      style={{ fontSize: values?.textCorp }}
+                      style={{ fontSize: effectiveValues?.textCorp }}
                     >
-                      {values?.objective}
+                      {effectiveValues?.objective}
                     </p>
                   </div>
                 )}
 
-              {values?.projects?.length > 0 && !(elementsMoved >= 4) && (
+              {effectiveValues?.projects?.length > 0 && !(elementsMoved >= 4) && (
                 <div>
                   <h1
                     className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                    style={{ fontSize: values?.textSubTitle }}
+                    style={{ fontSize: effectiveValues?.textSubTitle }}
                   >
                     {titles?.[1]}
                   </h1>
                   <div className="flex flex-col gap-y-2">
-                    {values?.projects?.map((item, index) => (
+                    {effectiveValues?.projects?.map((item, index) => (
                       <div key={`project-${index}`}>
                         <p
-                          style={{ color: `#${values?.color}`, fontSize: values?.textCorp }}
+                          style={{ color: `#${effectiveValues?.color}`, fontSize: effectiveValues?.textCorp }}
                           className="text-p1920"
                         >
                           {item?.year}
                         </p>
                         <p
-                          style={{ fontSize: values?.textCorp }}
+                          style={{ fontSize: effectiveValues?.textCorp }}
                           className="text-TitleGray text-p1920"
                         >
                           {item?.title} | {item?.category}
                         </p>
                         <p
-                          style={{ fontSize: values?.textCorp }}
+                          style={{ fontSize: effectiveValues?.textCorp }}
                           className="text-WeakGray text-p1920"
                         >
                           {item?.description}
@@ -157,30 +163,30 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                 </div>
               )}
 
-              {values?.formations && !(elementsMoved >= 3) && (
+              {effectiveValues?.formations && !(elementsMoved >= 3) && (
                 <div>
                   <h1
                     className={`${
-                      values?.formations.length <= 0 && values?.biggestPageReached >= 4
+                      effectiveValues?.formations.length <= 0 && effectiveValues?.biggestPageReached >= 4
                         ? "hidden"
                         : ""
                     } uppercase text-StrongGray text-subtitle1920 font-bold pb-2`}
-                    style={{ fontSize: values?.textSubTitle }}
+                    style={{ fontSize: effectiveValues?.textSubTitle }}
                   >
                     {titles?.[2]}
                   </h1>
-                  {values?.formations?.map((item, index) => (
+                  {effectiveValues?.formations?.map((item, index) => (
                     <ul key={`formation-${index}`} className="pb-2">
                       <div className="flex items-center gap-x-4">
                         <li
-                          style={{ fontSize: values?.textCorp }}
+                          style={{ fontSize: effectiveValues?.textCorp }}
                           className="text-TitleGray text-p1920 flex items-center"
                         >
                           • {item?.school}
                         </li>
                       </div>
                       <li
-                        style={{ fontSize: values?.textCorp }}
+                        style={{ fontSize: effectiveValues?.textCorp }}
                         className="text-TitleGray text-p1920"
                       >
                         • {item?.title} | {item?.yearEntry} - {item?.yearLeave}
@@ -190,18 +196,18 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                 </div>
               )}
 
-              {values?.languages && !(elementsMoved >= 2) && (
+              {effectiveValues?.languages && !(elementsMoved >= 2) && (
                 <div>
                   <h1
                     className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                    style={{ fontSize: values?.textSubTitle }}
+                    style={{ fontSize: effectiveValues?.textSubTitle }}
                   >
                     {titles?.[3]}
                   </h1>
                   <ul className="pb-2">
-                    {values?.languages?.map((item, index) => (
+                    {effectiveValues?.languages?.map((item, index) => (
                       <li
-                        style={{ fontSize: values?.textCorp }}
+                        style={{ fontSize: effectiveValues?.textCorp }}
                         key={index}
                         className="text-TitleGray text-p1920"
                       >
@@ -212,22 +218,22 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                 </div>
               )}
 
-              {values?.certifications && !(elementsMoved >= 1) && (
+              {effectiveValues?.certifications && !(elementsMoved >= 1) && (
                 <div>
                   <h1
                     className={`${
-                      values?.certifications.length <= 0 && values?.biggestPageReached >= 4
+                      effectiveValues?.certifications.length <= 0 && effectiveValues?.biggestPageReached >= 4
                         ? "hidden"
                         : ""
                     } uppercase text-StrongGray text-subtitle1920 font-bold pb-2`}
-                    style={{ fontSize: values?.textSubTitle }}
+                    style={{ fontSize: effectiveValues?.textSubTitle }}
                   >
                     {titles?.[4]}
                   </h1>
                   <ul className="pb-2 list-disc pl-4">
-                    {values?.certifications?.map((item, index) => (
+                    {effectiveValues?.certifications?.map((item, index) => (
                       <li
-                        style={{ fontSize: values?.textCorp }}
+                        style={{ fontSize: effectiveValues?.textCorp }}
                         key={index}
                         className="text-TitleGray text-p1920"
                       >
@@ -268,47 +274,47 @@ export default function CurriculumModel1({ isLast, twoPages }) {
           </div>
 
           <div className="flex flex-col flex-wrap gap-y-5 p-10">
-            {values?.objective && elementsMoved >= 5 && (
+            {effectiveValues?.objective && elementsMoved >= 5 && (
               <div>
                 <h1
                   className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                  style={{ fontSize: values?.textSubTitle }}
+                  style={{ fontSize: effectiveValues?.textSubTitle }}
                 >
                   {titles?.[0]}
                 </h1>
                 <p
                   className="text-p1920 text-TitleGray"
-                  style={{ fontSize: values?.textCorp }}
+                  style={{ fontSize: effectiveValues?.textCorp }}
                 >
-                  {values?.objective}
+                  {effectiveValues?.objective}
                 </p>
               </div>
             )}
-            {values?.projects?.length > 0 && elementsMoved >= 4 && (
+            {effectiveValues?.projects?.length > 0 && elementsMoved >= 4 && (
               <div>
                 <h1
                   className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                  style={{ fontSize: values?.textSubTitle }}
+                  style={{ fontSize: effectiveValues?.textSubTitle }}
                 >
                   {titles?.[1]}
                 </h1>
                 <div className="flex flex-col gap-y-2">
-                  {values?.projects?.map((item, index) => (
+                  {effectiveValues?.projects?.map((item, index) => (
                     <div key={`project-${index}`}>
                       <p
-                        style={{ color: `#${values?.color}`, fontSize: values?.textCorp }}
+                        style={{ color: `#${effectiveValues?.color}`, fontSize: effectiveValues?.textCorp }}
                         className="text-p1920"
                       >
                         {item?.year}
                       </p>
                       <p
-                        style={{ fontSize: values?.textCorp }}
+                        style={{ fontSize: effectiveValues?.textCorp }}
                         className="text-TitleGray text-p1920"
                       >
                         {item?.title} | {item?.category}
                       </p>
                       <p
-                        style={{ fontSize: values?.textCorp }}
+                        style={{ fontSize: effectiveValues?.textCorp }}
                         className="text-WeakGray text-p1920"
                       >
                         {item?.description}
@@ -318,26 +324,26 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                 </div>
               </div>
             )}
-            {values?.formations && elementsMoved >= 3 && (
+            {effectiveValues?.formations && elementsMoved >= 3 && (
               <div>
                 <h1
                   className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                  style={{ fontSize: values?.textSubTitle }}
+                  style={{ fontSize: effectiveValues?.textSubTitle }}
                 >
                   {titles?.[2]}
                 </h1>
-                {values?.formations?.map((item, index) => (
+                {effectiveValues?.formations?.map((item, index) => (
                   <ul key={`formation-${index}`} className="pb-2">
                     <div className="flex items-center gap-x-4">
                       <li
-                        style={{ fontSize: values?.textCorp }}
+                        style={{ fontSize: effectiveValues?.textCorp }}
                         className="text-TitleGray text-p1920 flex items-center"
                       >
                         • {item?.school}
                       </li>
                     </div>
                     <li
-                      style={{ fontSize: values?.textCorp }}
+                      style={{ fontSize: effectiveValues?.textCorp }}
                       className="text-TitleGray text-p1920"
                     >
                       • {item?.title} | {item?.yearEntry} - {item?.yearLeave}
@@ -346,18 +352,18 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                 ))}
               </div>
             )}
-            {values?.languages && elementsMoved >= 2 && (
+            {effectiveValues?.languages && elementsMoved >= 2 && (
               <div>
                 <h1
                   className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                  style={{ fontSize: values?.textSubTitle }}
+                  style={{ fontSize: effectiveValues?.textSubTitle }}
                 >
                   {titles?.[3]}
                 </h1>
                 <ul className="pb-2">
-                  {values?.languages?.map((item, index) => (
+                  {effectiveValues?.languages?.map((item, index) => (
                     <li
-                      style={{ fontSize: values?.textCorp }}
+                      style={{ fontSize: effectiveValues?.textCorp }}
                       key={index}
                       className="text-TitleGray text-p1920"
                     >
@@ -367,18 +373,18 @@ export default function CurriculumModel1({ isLast, twoPages }) {
                 </ul>
               </div>
             )}
-            {values?.certifications && elementsMoved >= 1 && (
+            {effectiveValues?.certifications && elementsMoved >= 1 && (
               <div>
                 <h1
                   className="uppercase text-StrongGray text-subtitle1920 font-bold pb-2"
-                  style={{ fontSize: values?.textSubTitle }}
+                  style={{ fontSize: effectiveValues?.textSubTitle }}
                 >
                   {titles?.[4]}
                 </h1>
                 <ul className="pb-2 list-disc pl-4">
-                  {values?.certifications?.map((item, index) => (
+                  {effectiveValues?.certifications?.map((item, index) => (
                     <li
-                      style={{ fontSize: values?.textCorp }}
+                      style={{ fontSize: effectiveValues?.textCorp }}
                       key={index}
                       className="text-TitleGray text-p1920"
                     >

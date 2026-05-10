@@ -1,25 +1,24 @@
-export const VALID_EMAIL_DOMAINS_SHORT = ["gmail.com", "yahoo.com", "outlook.com"];
-
 export const isValidEmail = (value) => {
   if (!value) return false;
-  return (
-    VALID_EMAIL_DOMAINS_SHORT.some((domain) => value.includes(domain)) &&
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-  );
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 };
 
-export const isValidPhone = (value) => /^[0-9]{10,15}$/.test(value || "");
+export const isValidPhone = (value) => {
+  const digits = (value || "").replace(/\D/g, "");
+  return digits.length >= 10 && digits.length <= 15;
+};
 
 export const isValidLinkedin = (value) =>
   Boolean(value?.startsWith("https://www.linkedin.com/in/"));
 
 export const validateStep1 = (values) => {
+  const linkedinOk = values?.noLinkedin === true || isValidLinkedin(values?.linkedin);
   return Boolean(
     values?.name &&
       values?.bairro &&
       values?.cidade &&
       values?.estado &&
-      isValidLinkedin(values?.linkedin) &&
+      linkedinOk &&
       isValidEmail(values?.email) &&
       isValidPhone(values?.telefone)
   );

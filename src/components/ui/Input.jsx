@@ -2,19 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { Check, Trash, X } from "lucide-react";
+import { isValidEmail, isValidPhone } from "@/lib/validation";
 
-const VALID_EMAIL_DOMAINS = [
-  "@gmail.com",
-  "@hotmail.com",
-  "@yahoo.com",
-  "@outlook.com",
-  "@icloud.com",
-  "@aol.com",
-  "@live.com",
-  "@msn.com",
-  "@zoho.com",
-  "@protonmail.com",
-];
+const formatPhone = (value) => {
+  const digits = value.replace(/\D/g, "").slice(0, 11);
+  if (digits.length === 0) return "";
+  if (digits.length <= 2) return `(${digits}`;
+  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 10)
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
+};
 
 export default function Input({
   id,
@@ -36,6 +34,7 @@ export default function Input({
   validateAllInputs,
   resetValidation,
   onValidationError,
+  disabled,
 }) {
   const [validationError, setValidationError] = useState(false);
   const [languageValue, setLanguageValue] = useState(value?.language || "");
@@ -56,12 +55,9 @@ export default function Input({
     let error = false;
 
     if (type === "email") {
-      const isValidEmail =
-        VALID_EMAIL_DOMAINS.some((domain) => val.includes(domain)) &&
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
-      error = !isValidEmail;
+      error = !isValidEmail(val);
     } else if (type === "number") {
-      error = !/^[0-9]{10,15}$/.test(val);
+      error = !isValidPhone(val);
     } else if (type === "year") {
       const currentYear = new Date().getFullYear();
       const yearValue = parseInt(val, 10);
@@ -79,6 +75,12 @@ export default function Input({
   };
 
   useEffect(() => {
+    if (disabled) {
+      setValidationError(false);
+      setIsEmpty(true);
+      onValidationError?.(false);
+      return;
+    }
     if (validateAllInputs) {
       const type = email
         ? "email"
@@ -91,7 +93,7 @@ export default function Input({
         : null;
       validateInput(value, type);
     }
-  }, [validateAllInputs, value]);
+  }, [validateAllInputs, value, disabled]);
 
   useEffect(() => {
     if (resetValidation) {
@@ -110,6 +112,10 @@ export default function Input({
       : isLast
       ? "linkedIn"
       : null;
+
+    if (number && e.target.tagName === "INPUT") {
+      e.target.value = formatPhone(e.target.value);
+    }
 
     validateInput(e.target.value, inputType);
 
@@ -152,7 +158,7 @@ export default function Input({
     }
   }, [isOnFocus, lastFocus, validationError, isEmpty]);
 
-  const onlyNumbers = number || year;
+  const onlyNumbers = year;
 
   return (
     <div className={`relative ${width} ${isLast ? "last:w-full" : ""}`}>
@@ -164,8 +170,10 @@ export default function Input({
       </label>
 
       <input
-        type={onlyNumbers ? "number" : "text"}
+        type={onlyNumbers ? "number" : number ? "tel" : "text"}
+        inputMode={number ? "tel" : undefined}
         id={`input-${id}`}
+        disabled={disabled}
         className={`border w-full
           ${
             isEmpty
@@ -179,10 +187,17 @@ export default function Input({
               ? "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               : ""
           }
+          ${disabled ? "opacity-50 cursor-not-allowed" : ""}
           bg-transparent 2xl:pl-4 p-4 pl-3 rounded-xl z-10
         `}
         onChange={handleChange}
-        value={isSelect ? languageValue : value}
+        value={
+          isSelect
+            ? languageValue
+            : number
+            ? formatPhone(value || "")
+            : value
+        }
         placeholder={placeholder}
         aria-invalid={validationError ? "true" : "false"}
         onFocus={handleFocus}
@@ -220,7 +235,7 @@ export default function Input({
         </>
       )}
 
-      {isLast && (
+      {isLast && !disabled && (
         <a
           className="absolute -bottom-5 right-0 text-sm text-DefaultOrange underline"
           target="_blank"

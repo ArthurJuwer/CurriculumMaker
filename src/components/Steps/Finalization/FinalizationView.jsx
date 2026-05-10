@@ -1,9 +1,9 @@
 "use client";
 
 import { useContext, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ReceiptText } from "lucide-react";
 import { CurriculumContext } from "@/contexts/CurriculumContext";
 import Curriculum from "@/components/curriculum/Curriculum";
+import MobileCurriculumPreview from "@/components/curriculum/MobileCurriculumPreview";
 import TopMarker from "@/components/navigation/TopMarker";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import Title from "@/components/ui/Title";
@@ -35,7 +35,6 @@ export default function FinalizationView() {
   const [nameCurriculum, setNameCurriculum] = useState(values?.nameCurriculum || "");
   const [imgData1, setImgData1] = useState(null);
   const [imgData2, setImgData2] = useState(null);
-  const [mobileOpenCurriculum, setMobileOpenCurriculum] = useState(false);
   const [generalError, setGeneralError] = useState(null);
 
   const curriculumRef = useRef();
@@ -141,15 +140,11 @@ export default function FinalizationView() {
   return (
     <div className="min-h-dvh w-full bg-DefaultGray">
       <TopMarker stepsAtual="0" />
-      <div className="2xl:px-32 xl:px-16 px-4 2xl:py-14 py-6 flex xl:flex-row flex-col max-h-[100dvh] h-full gap-y-2 xl:gap-x-24 2xl:gap-x-40 justify-center overflow-x-hidden">
+      <div className="2xl:px-32 xl:px-16 px-4 2xl:py-14 py-6 flex xl:flex-row flex-col max-h-[100dvh] h-full gap-y-2 xl:gap-x-24 2xl:gap-x-40 justify-center overflow-x-hidden xl:pb-0 pb-28">
         <div className="xl:hidden block">
           <Score isLast />
         </div>
-        <div
-          className={`${
-            mobileOpenCurriculum ? "hidden" : "flex"
-          } flex flex-col 2xl:gap-y-4 gap-y-2 2xl:w-[22%]`}
-        >
+        <div className="flex flex-col 2xl:gap-y-4 gap-y-2 2xl:w-[22%]">
           <Title title="Alterações Rápidas" last />
           <div className="flex flex-col gap-y-4">
             <div className="flex flex-col gap-y-4">
@@ -180,38 +175,22 @@ export default function FinalizationView() {
           </div>
         </div>
 
-        <div className="xl:mt-8 mt-10 2xl:mt-0 min-h-full 2xl:h-[80dvh] xl:w-[40%] 2xl:w-[33%] border-2 border-BorderInputGray">
+        {/* Curriculum capture target — visible on desktop, off-screen on mobile (kept for html2canvas / PDF) */}
+        <div
+          aria-hidden="true"
+          className="border-2 border-BorderInputGray xl:relative xl:opacity-100 xl:pointer-events-auto xl:w-[40%] 2xl:w-[33%] xl:mt-8 2xl:mt-0 xl:min-h-full 2xl:h-[80dvh] fixed -left-[200vw] top-0 w-[440px] h-[620px] opacity-0 pointer-events-none"
+        >
           <div
             ref={curriculumRef}
             className="flex flex-col xl:flex-row items-center justify-center h-full w-full"
           >
-            <div
-              className={`${
-                mobileOpenCurriculum ? "block mt-6" : "hidden"
-              } xl:w-full xl:block min-h-[70dvh] h-full w-full`}
-            >
+            <div className="block xl:w-full min-h-[70dvh] h-full w-full">
               <Curriculum isLast />
             </div>
           </div>
         </div>
 
-        <div
-          className={`${mobileOpenCurriculum ? "block mt-6" : "hidden"} flex justify-center`}
-        >
-          <button
-            className="xl:hidden rounded-3xl w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
-            onClick={() => setMobileOpenCurriculum(false)}
-          >
-            <ArrowLeft />
-            Voltar
-          </button>
-        </div>
-
-        <div
-          className={`${
-            mobileOpenCurriculum ? "hidden" : "flex"
-          } flex flex-col 2xl:gap-y-4 gap-y-2 2xl:w-[22%]`}
-        >
+        <div className="flex flex-col 2xl:gap-y-4 gap-y-2 2xl:w-[22%]">
           <Title title="Opções Pra Baixar" last />
           <div className="flex flex-col gap-y-4">
             <FinalizationInput
@@ -221,15 +200,6 @@ export default function FinalizationView() {
               placeholder="ex: meu-curriculo"
               onChange={(e) => setNameCurriculum(e.target.value)}
             />
-            <div className="flex items-center justify-center -mt-4">
-              <button
-                className="xl:hidden rounded-3xl mt-4 w-36 h-12 bg-TitleGray text-white text-sm flex items-center justify-center gap-x-2"
-                onClick={() => setMobileOpenCurriculum(true)}
-              >
-                <ReceiptText strokeWidth={1.5} />
-                Ver Currículo
-              </button>
-            </div>
 
             <button
               className="w-full p-4 rounded-xl bg-DefaultOrange text-white uppercase text-sm tracking-wider font-medium"
@@ -244,6 +214,9 @@ export default function FinalizationView() {
           </div>
         </div>
       </div>
+
+      <MobileCurriculumPreview isFinal />
+
       <ErrorMessage message={generalError} onClose={() => setGeneralError("")} />
     </div>
   );

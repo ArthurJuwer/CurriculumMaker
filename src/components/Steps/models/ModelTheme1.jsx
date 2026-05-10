@@ -3,7 +3,7 @@ import { ROUTES } from "@/lib/routes";
 
 export default function ModelTheme1({ valuesCurriculum }) {
   return (
-    <div className="w-full md:h-full overflow-hidden border-2 border-WeakGray 2xl:p-9 p-7 group relative z-0">
+    <div className="w-full md:h-full overflow-hidden border-2 border-WeakGray 2xl:p-9 lg:p-7 p-6 group relative z-0">
       <div className="hidden group-hover:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
         <Link href={`${ROUTES.header}?model=1&color=${valuesCurriculum?.color}`}>
           <button
@@ -14,7 +14,7 @@ export default function ModelTheme1({ valuesCurriculum }) {
           </button>
         </Link>
       </div>
-      <div className="group-hover:opacity-75 flex flex-col gap-y-3">
+      <div className="group-hover:opacity-75 flex flex-col lg:gap-y-3 gap-y-1.5">
         <div>
           <h1 className="uppercase text-StrongGray 2xl:text-title1920Model xl:text-title1920ModelXL text-title1920ModelMD font-bold pb-1">
             {valuesCurriculum?.name}
@@ -34,7 +34,7 @@ export default function ModelTheme1({ valuesCurriculum }) {
           </ol>
         </div>
 
-        <div className="flex flex-col gap-y-2">
+        <div className="flex flex-col lg:gap-y-2 gap-y-1">
           {valuesCurriculum?.objective && (
             <div>
               <h1 className="uppercase text-StrongGray 2xl:text-subtitle1920Model xl:text-subtitle1920ModelXL text-subtitle1920ModelMD font-bold pb-1">

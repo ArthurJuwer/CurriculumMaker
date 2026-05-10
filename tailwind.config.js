@@ -38,10 +38,10 @@ module.exports = {
         titleDescript1920ModelXL: "0.55rem",
         p1920ModelXL: "0.5rem",
 
-        title1920ModelMD: "1.1rem",
-        subtitle1920ModelMD: "0.85rem",
-        titleDescript1920ModelMD: "0.5rem",
-        p1920ModelMD: "0.5rem",
+        title1920ModelMD: "0.85rem",
+        subtitle1920ModelMD: "0.65rem",
+        titleDescript1920ModelMD: "0.4rem",
+        p1920ModelMD: "0.42rem",
       },
       keyframes: {
         toastIn: {

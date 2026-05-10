@@ -8,7 +8,7 @@ import TopMarker from "@/components/navigation/TopMarker";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import Title from "@/components/ui/Title";
 import Score from "@/components/score/Score";
-import ColorSwatch from "@/components/steps/models/ColorSwatch";
+import ColorSwatch from "@/components/Steps/models/ColorSwatch";
 import FinalizationInput from "./FinalizationInput";
 import FinalizationSelect from "./FinalizationSelect";
 

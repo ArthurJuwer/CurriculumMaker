@@ -1,4 +1,4 @@
-import ModelsView from "@/components/steps/models/ModelsView";
+import ModelsView from "@/components/Steps/models/ModelsView";
 
 export default function ModelsPage() {
   return <ModelsView />;

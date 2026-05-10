@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Stop-Process *)",
+      "Bash(npm install *)",
+      "PowerShell(Get-Process *)",
+      "Bash(npm cache *)",
+      "Bash(npm run *)",
+      "PowerShell(Remove-Item *)"
+    ]
+  }
+}

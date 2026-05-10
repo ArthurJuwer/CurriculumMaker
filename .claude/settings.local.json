@@ -7,7 +7,8 @@
       "Bash(npm cache *)",
       "Bash(npm run *)",
       "PowerShell(Remove-Item *)",
-      "Bash(dir srccomponentsSteps *)"
+      "Bash(dir srccomponentsSteps *)",
+      "Bash(npx next *)"
     ]
   }
 }

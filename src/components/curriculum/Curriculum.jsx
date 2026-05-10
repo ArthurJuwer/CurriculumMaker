@@ -1,30 +1,21 @@
 "use client";
 
-import { useContext } from "react";
+import { memo, useContext } from "react";
 import { CurriculumContext } from "@/contexts/CurriculumContext";
 import CurriculumModel1 from "./CurriculumModel1";
 import CurriculumModel2 from "./CurriculumModel2";
 
-export default function Curriculum({ isLast, twoPages, withPlaceholders }) {
-  const { values } = useContext(CurriculumContext);
+function Curriculum({ isLast, twoPages, withPlaceholders }) {
+  const { values, setValues } = useContext(CurriculumContext);
+  const props = { values, setValues, isLast, twoPages, withPlaceholders };
 
   switch (values?.model) {
     case "2":
-      return (
-        <CurriculumModel2
-          isLast={isLast}
-          twoPages={twoPages}
-          withPlaceholders={withPlaceholders}
-        />
-      );
+      return <CurriculumModel2 {...props} />;
     case "1":
     default:
-      return (
-        <CurriculumModel1
-          isLast={isLast}
-          twoPages={twoPages}
-          withPlaceholders={withPlaceholders}
-        />
-      );
+      return <CurriculumModel1 {...props} />;
   }
 }
+
+export default memo(Curriculum);

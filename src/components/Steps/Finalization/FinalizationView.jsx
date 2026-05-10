@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useRef, useState } from "react";
+import { createElement, useContext, useEffect, useState } from "react";
 import { CurriculumContext } from "@/contexts/CurriculumContext";
 import Curriculum from "@/components/curriculum/Curriculum";
 import MobileCurriculumPreview from "@/components/curriculum/MobileCurriculumPreview";
@@ -33,11 +33,8 @@ export default function FinalizationView() {
   const [textCorp, setTextCorp] = useState(values?.textCorp || "12px");
   const [sizeFile, setSizeFile] = useState("PDF");
   const [nameCurriculum, setNameCurriculum] = useState(values?.nameCurriculum || "");
-  const [imgData1, setImgData1] = useState(null);
-  const [imgData2, setImgData2] = useState(null);
   const [generalError, setGeneralError] = useState(null);
-
-  const curriculumRef = useRef();
+  const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
     setValues((prev) => ({ ...prev, elementsMoved: 0 }));
@@ -69,28 +66,13 @@ export default function FinalizationView() {
     setValues,
   ]);
 
-  useEffect(() => {
-    if (!curriculumRef.current) return;
-    let cancelled = false;
-    import("html2canvas").then(({ default: html2canvas }) => {
-      html2canvas(curriculumRef.current, { scale: 3 }).then((canvas) => {
-        if (cancelled) return;
-        const data = canvas.toDataURL("image/png");
-        if (values?.currentPage === 1) setImgData1(data);
-        else if (values?.currentPage === 2) setImgData2(data);
-      });
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [values?.currentPage]);
-
   const labelsLeftSelects = [
     { label: "Modelo", options: ["1", "2"], defaultValue: `${model}`, setVariable: setModel },
     {
       label: "Idioma do Currículo",
       options: ["Português", "Inglês", "Italiano"],
       setVariable: setLanguageCurriculum,
+      disabled: true,
     },
     {
       label: "Fonte Títulos",
@@ -117,30 +99,37 @@ export default function FinalizationView() {
       setGeneralError("O arquivo precisa ter um nome.");
       return;
     }
+    if (isGenerating) return;
+    setIsGenerating(true);
+    try {
+      const [{ pdf }, { default: CurriculumPdfDocument }] = await Promise.all([
+        import("@react-pdf/renderer"),
+        import("@/components/curriculum/pdf/CurriculumPdfDocument"),
+      ]);
 
-    const { jsPDF } = await import("jspdf");
-    const doc = new jsPDF();
-    const pdfWidth = 210;
-    const pdfHeight = 287;
+      const blob = await pdf(
+        createElement(CurriculumPdfDocument, { values })
+      ).toBlob();
 
-    doc.addImage(imgData1, "PNG", 0, 0, pdfWidth, pdfHeight);
-    if (values?.elementsMoved > 0 || values?.secondPage === true) {
-      if (imgData2 == null) {
-        setGeneralError("Visualize a segunda pagina. Confira se está tudo certo.");
-      } else {
-        doc.addPage();
-        doc.addImage(imgData2, "PNG", 0, 0, pdfWidth, pdfHeight);
-        doc.save(`${nameCurriculum}.pdf`);
-      }
-    } else {
-      doc.save(`${nameCurriculum}.pdf`);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${nameCurriculum}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setGeneralError("Erro ao gerar o PDF. Tente novamente.");
+    } finally {
+      setIsGenerating(false);
     }
   };
 
   return (
-    <div className="min-h-dvh w-full bg-DefaultGray">
+    <div className="xl:h-dvh xl:overflow-hidden min-h-dvh w-full bg-DefaultGray">
       <TopMarker stepsAtual="0" />
-      <div className="2xl:px-32 xl:px-16 px-4 2xl:py-14 py-6 flex xl:flex-row flex-col max-h-[100dvh] h-full gap-y-2 xl:gap-x-24 2xl:gap-x-40 justify-center overflow-x-hidden xl:pb-0 pb-28">
+      <div className="2xl:px-32 xl:px-16 px-4 2xl:py-8 xl:py-6 py-6 flex xl:flex-row flex-col xl:h-[calc(100dvh-5rem)] 2xl:h-[calc(100dvh-7rem)] gap-y-2 xl:gap-x-24 2xl:gap-x-40 justify-center overflow-x-hidden xl:pb-6 pb-28">
         <div className="xl:hidden block">
           <Score isLast />
         </div>
@@ -169,29 +158,26 @@ export default function FinalizationView() {
                 label={item.label}
                 options={item.options}
                 defaultValue={item.defaultValue}
+                disabled={item.disabled}
                 onChange={(e) => item.setVariable(e.target.value)}
               />
             ))}
           </div>
         </div>
 
-        {/* Curriculum capture target — visible on desktop, off-screen on mobile (kept for html2canvas / PDF) */}
-        <div
-          aria-hidden="true"
-          className="border-2 border-BorderInputGray xl:relative xl:opacity-100 xl:pointer-events-auto xl:w-[40%] 2xl:w-[33%] xl:mt-8 2xl:mt-0 xl:min-h-full 2xl:h-[80dvh] fixed -left-[200vw] top-0 w-[440px] h-[620px] opacity-0 pointer-events-none"
-        >
-          <div
-            ref={curriculumRef}
-            className="flex flex-col xl:flex-row items-center justify-center h-full w-full"
-          >
-            <div className="block xl:w-full min-h-[70dvh] h-full w-full">
+        <div className="hidden xl:block border-2 border-BorderInputGray xl:w-[40%] 2xl:w-[33%] xl:mt-8 2xl:mt-0 xl:min-h-full 2xl:h-[80dvh] xl:h-auto">
+          <div className="flex flex-col xl:flex-row items-center justify-center h-full w-full">
+            <div className="block xl:w-full xl:min-h-0 h-full w-full">
               <Curriculum isLast />
             </div>
           </div>
         </div>
 
         <div className="flex flex-col 2xl:gap-y-4 gap-y-2 2xl:w-[22%]">
-          <Title title="Opções Pra Baixar" last />
+          <div className="mt-2 -mb-2">
+            <Title title="Opções Pra Baixar" last />
+          </div>
+          
           <div className="flex flex-col gap-y-4">
             <FinalizationInput
               id="name-curriculum"
@@ -202,10 +188,11 @@ export default function FinalizationView() {
             />
 
             <button
-              className="w-full p-4 rounded-xl bg-DefaultOrange text-white uppercase text-sm tracking-wider font-medium"
+              className="w-full p-4 rounded-xl bg-DefaultOrange text-white uppercase text-sm tracking-wider font-medium disabled:opacity-60 disabled:cursor-not-allowed"
               onClick={gerarPDF}
+              disabled={isGenerating}
             >
-              Gerar PDF
+              {isGenerating ? "Gerando..." : "Gerar PDF"}
             </button>
 
             <div className="xl:block hidden">

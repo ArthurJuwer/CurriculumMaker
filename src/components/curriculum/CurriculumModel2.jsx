@@ -1,8 +1,9 @@
 "use client";
 
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { CurriculumContext } from "@/contexts/CurriculumContext";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { getEffectiveValues } from "./placeholderData";
+import PageNumerator from "./PageNumerator";
+import { useStableValue } from "./useStableValue";
 
 const DEFAULT_TITLES = [
   "Objetivo",
@@ -14,19 +15,20 @@ const DEFAULT_TITLES = [
   "Conclusão",
 ];
 
-export default function CurriculumModel2({ isLast, twoPages, withPlaceholders }) {
+function CurriculumModel2({ values, setValues, isLast, twoPages, withPlaceholders }) {
   const [isNewPage, setIsNewPage] = useState(false);
   const curriculumRef = useRef(null);
   const borderRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [secondPage, setSecondPage] = useState(false);
   const [elementsMoved, setElementsMoved] = useState(0);
-  const { values, setValues } = useContext(CurriculumContext);
   const [titles, setTitles] = useState(values?.titles || DEFAULT_TITLES);
 
-  const effectiveValues = useMemo(
-    () => getEffectiveValues(values, withPlaceholders),
-    [values, withPlaceholders]
+  const effectiveValues = useStableValue(
+    useMemo(
+      () => getEffectiveValues(values, withPlaceholders),
+      [values, withPlaceholders]
+    )
   );
 
   useEffect(() => {
@@ -60,22 +62,11 @@ export default function CurriculumModel2({ isLast, twoPages, withPlaceholders })
           } h-full flex flex-col flex-wrap relative`}
           ref={borderRef}
         >
-          <div className="bg-TitleGray px-12 py-1 absolute left-1/2 -translate-x-1/2 -top-12 rounded-xl flex gap-x-12 text-xl">
-            <button
-              onClick={() => setCurrentPage(1)}
-              className={`text-WeakGray ${currentPage === 1 ? "text-white" : ""}`}
-            >
-              1
-            </button>
-            {(isNewPage || twoPages) && (
-              <button
-                onClick={() => setCurrentPage(2)}
-                className={`text-WeakGray ${currentPage === 2 ? "text-white" : ""}`}
-              >
-                2
-              </button>
-            )}
-          </div>
+          <PageNumerator
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            hasSecondPage={isNewPage || twoPages}
+          />
 
           <div className="flex flex-col flex-wrap gap-y-5 p-10" ref={curriculumRef}>
             <div>
@@ -262,20 +253,11 @@ export default function CurriculumModel2({ isLast, twoPages, withPlaceholders })
             !isLast ? "border-2 border-BorderInputGray" : ""
           } h-full flex flex-col flex-wrap relative`}
         >
-          <div className="bg-TitleGray px-12 py-1 absolute left-1/2 -translate-x-1/2 -top-12 rounded-xl flex gap-x-12 text-xl">
-            <button
-              onClick={() => setCurrentPage(1)}
-              className={`text-WeakGray ${currentPage === 1 ? "text-white" : ""}`}
-            >
-              1
-            </button>
-            <button
-              onClick={() => setCurrentPage(2)}
-              className={`text-WeakGray ${currentPage === 2 ? "text-white" : ""}`}
-            >
-              2
-            </button>
-          </div>
+          <PageNumerator
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            hasSecondPage={isNewPage || twoPages}
+          />
 
           <div className="flex flex-col flex-wrap gap-y-5 p-10">
             {effectiveValues?.objective && elementsMoved >= 5 && (
@@ -414,3 +396,13 @@ export default function CurriculumModel2({ isLast, twoPages, withPlaceholders })
     </>
   );
 }
+
+export default memo(CurriculumModel2, (prev, next) => {
+  return (
+    prev.isLast === next.isLast &&
+    prev.twoPages === next.twoPages &&
+    prev.withPlaceholders === next.withPlaceholders &&
+    prev.setValues === next.setValues &&
+    JSON.stringify(prev.values) === JSON.stringify(next.values)
+  );
+});

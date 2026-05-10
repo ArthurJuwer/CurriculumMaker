@@ -64,7 +64,7 @@ export default function SelectMethodView() {
             />
           ))}
         </div>
-        <div className="absolute lg:top-14 lg:left-20 top-5 left-5">
+        <div className="absolute lg:top-[34px] lg:left-20 top-[19px] left-4">
           <ButtonBack />
         </div>
         <button

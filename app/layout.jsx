@@ -15,6 +15,9 @@ export const metadata = {
   icons: {
     icon: "/cvMakerLogo.webp",
   },
+  other: {
+    "format-detection": "telephone=no, email=no, address=no, date=no",
+  },
 };
 
 export default function RootLayout({ children }) {

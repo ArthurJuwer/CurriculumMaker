@@ -76,6 +76,10 @@ export function getEffectiveValues(values, withPlaceholders) {
     if (!isFilled(merged[key], key)) merged[key] = PLACEHOLDERS[key];
   }
 
+  if (merged.noLinkedin) {
+    merged.linkedin = "";
+  }
+
   const realProjects = merged.projects?.filter(isRealProject);
   if (!realProjects || realProjects.length === 0) {
     merged.projects = PLACEHOLDERS.projects;

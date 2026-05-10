@@ -59,7 +59,7 @@ export default function TextArea({
           value !== undefined && value !== ""
             ? "border-BorderInputGray outline-green-700"
             : "border-BorderInputGray"
-        } bg-transparent p-4 rounded-xl z-10 resize-none`}
+        } bg-transparent p-4 rounded-xl z-10 resize-none text-sm lg:text-base`}
         onChange={onChange}
         value={value}
         placeholder={placeholder}

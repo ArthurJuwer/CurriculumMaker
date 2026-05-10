@@ -22,7 +22,7 @@ export default function ButtonNav() {
     const step3Invalid = !validateStep3(values);
 
     if ((step1Invalid || step2Invalid || step3Invalid) && biggestPageReached >= 4) {
-      setGeneralError("Preencha Todos os campos");
+      setGeneralError("Preencha todos os campos obrigatórios para continuar.");
       return false;
     }
     return true;

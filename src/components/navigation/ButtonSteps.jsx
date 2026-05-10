@@ -31,9 +31,9 @@ export default function ButtonSteps({ steps }) {
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="2xl:h-12 xl:h-11 h-10 w-auto xl:px-6 px-4 bg-TitleGray text-white flex items-center gap-x-3 justify-center rounded-3xl text-sm relative"
+        className="xl:h-11 h-[34px] w-auto xl:px-6 px-3 bg-TitleGray text-white flex items-center xl:gap-x-3 gap-x-2 justify-center rounded-3xl xl:text-sm text-xs relative"
       >
-        <span className="xl:text-2xl text-xl font-semibold">{steps}</span> Etapas Restantes
+        <span className="xl:text-2xl text-base font-semibold">{steps}</span> Etapas Restantes
       </button>
       {isOpen && (
         <div className="xl:hidden absolute right-0 top-full mt-2 bg-white text-TitleGray rounded-md shadow-lg p-3 text-sm z-50 w-max">

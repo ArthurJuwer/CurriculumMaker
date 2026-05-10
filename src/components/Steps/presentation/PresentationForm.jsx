@@ -108,11 +108,11 @@ export default function PresentationForm() {
     const isObjectiveEmpty = objective === "texto do objetivo." || objective === "";
 
     if (isObjectiveEmpty) {
-      setGeneralError("Preencha todos os campos.");
+      setGeneralError("Preencha todos os campos obrigatórios para continuar.");
       return;
     }
     if (hasProjectErrors) {
-      setGeneralError("Arrume os erros.");
+      setGeneralError("Verifique os campos destacados antes de prosseguir.");
       return;
     }
 
@@ -150,7 +150,7 @@ export default function PresentationForm() {
                   setObjective(e.target.value);
                   if (objective.length >= 120) {
                     setGeneralError(
-                      "Cuidado você esta chegando perto do limite máximo de caracteres"
+                      "Atenção: você está se aproximando do limite máximo de caracteres."
                     );
                   }
                 }}

@@ -1,15 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Eye, FileText, X } from "lucide-react";
 import Curriculum from "./Curriculum";
+
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+const A4_WIDTH = 595;
+const A4_HEIGHT = 842;
 
 export default function MobileCurriculumPreview({ withPlaceholders = false, isFinal = false }) {
   const [open, setOpen] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [pageScale, setPageScale] = useState(0);
   const dragStartY = useRef(null);
   const sheetRef = useRef(null);
+  const pageContainerRef = useRef(null);
 
   useEffect(() => {
     if (!open) return;
@@ -19,6 +27,19 @@ export default function MobileCurriculumPreview({ withPlaceholders = false, isFi
       document.body.style.overflow = original;
     };
   }, [open]);
+
+  useIsomorphicLayoutEffect(() => {
+    const el = pageContainerRef.current;
+    if (!el) return;
+    const calc = () => {
+      const w = el.offsetWidth;
+      if (w > 0) setPageScale(w / A4_WIDTH);
+    };
+    calc();
+    const observer = new ResizeObserver(calc);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const handleTouchStart = (e) => {
     dragStartY.current = e.touches[0].clientY;
@@ -45,7 +66,7 @@ export default function MobileCurriculumPreview({ withPlaceholders = false, isFi
     ? { isLast: true }
     : { isLast: true, withPlaceholders: true };
 
-  const sheetCurriculumProps = isFinal ? { isLast: true } : { withPlaceholders: true };
+  const sheetCurriculumProps = isFinal ? {} : { withPlaceholders: true };
 
   return (
     <>
@@ -164,15 +185,33 @@ export default function MobileCurriculumPreview({ withPlaceholders = false, isFi
         </div>
         <div
           className="flex-1 overflow-y-auto overscroll-contain px-4 py-5 bg-gradient-to-b from-DefaultGray/30 to-transparent
-            [&_.text-title1920]:!text-xl
-            [&_.text-subtitle1920]:!text-lg
-            [&_.text-p1920]:!text-[11px]
             [&::-webkit-scrollbar]:w-1.5
             [&::-webkit-scrollbar-track]:bg-transparent
             [&::-webkit-scrollbar-thumb]:rounded-full
             [&::-webkit-scrollbar-thumb]:bg-NormalGray/50"
         >
-          <Curriculum {...sheetCurriculumProps} />
+          <div
+            ref={pageContainerRef}
+            className="relative w-full mx-auto overflow-hidden bg-white shadow-md"
+            style={{
+              aspectRatio: `${A4_WIDTH} / ${A4_HEIGHT}`,
+              maxWidth: `${A4_WIDTH}px`,
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: `${A4_WIDTH}px`,
+                height: `${A4_HEIGHT}px`,
+                transform: `scale(${pageScale})`,
+                transformOrigin: "top left",
+              }}
+            >
+              <Curriculum {...sheetCurriculumProps} />
+            </div>
+          </div>
         </div>
       </div>
     </>

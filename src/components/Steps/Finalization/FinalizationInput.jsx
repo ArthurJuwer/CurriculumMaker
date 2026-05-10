@@ -7,7 +7,7 @@ export default function FinalizationInput({ label, id, onChange, value, placehol
       <input
         type="text"
         id={id}
-        className="border w-full border-BorderInputGray bg-transparent 2xl:p-4 p-3 rounded-xl"
+        className="border w-full border-BorderInputGray bg-transparent 2xl:p-4 p-3 rounded-xl text-sm lg:text-base"
         onChange={onChange}
         value={value}
         placeholder={placeholder}

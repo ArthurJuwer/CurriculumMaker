@@ -96,7 +96,7 @@ export default function FinalizationView() {
 
   const gerarPDF = async () => {
     if (!nameCurriculum) {
-      setGeneralError("O arquivo precisa ter um nome.");
+      setGeneralError("Informe um nome para o arquivo antes de baixar o currículo.");
       return;
     }
     if (isGenerating) return;
@@ -120,7 +120,7 @@ export default function FinalizationView() {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     } catch (err) {
-      setGeneralError("Erro ao gerar o PDF. Tente novamente.");
+      setGeneralError("Não foi possível gerar o PDF. Tente novamente em instantes.");
     } finally {
       setIsGenerating(false);
     }
@@ -165,10 +165,10 @@ export default function FinalizationView() {
           </div>
         </div>
 
-        <div className="hidden xl:block border-2 border-BorderInputGray xl:w-[40%] 2xl:w-[33%] xl:mt-8 2xl:mt-0 xl:min-h-full 2xl:h-[80dvh] xl:h-auto">
+        <div className="hidden xl:block xl:w-[40%] 2xl:w-[33%] xl:mt-8 2xl:mt-0 xl:min-h-full 2xl:h-[80dvh] xl:h-auto">
           <div className="flex flex-col xl:flex-row items-center justify-center h-full w-full">
             <div className="block xl:w-full xl:min-h-0 h-full w-full">
-              <Curriculum isLast />
+              <Curriculum />
             </div>
           </div>
         </div>

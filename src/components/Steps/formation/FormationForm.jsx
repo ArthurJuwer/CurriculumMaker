@@ -116,12 +116,12 @@ export default function FormationForm() {
     setInvalidFormations(invalidFormations.map((_, index) => index));
 
     if (!allFieldsFilled) {
-      setGeneralError("Preencha todos os campos");
+      setGeneralError("Preencha todos os campos obrigatórios para continuar.");
       return;
     }
     if (invalidFormations.length > 0) {
       setGeneralError(
-        `Corrija os seguintes campos: Ano de entrada maior que ano de saída em ${invalidFormations.length} formação(ões).`
+        `Verifique as datas: o ano de entrada não pode ser maior que o ano de saída (${invalidFormations.length} formação(ões)).`
       );
       return;
     }
@@ -142,7 +142,7 @@ export default function FormationForm() {
     const { name, workload, conclusion } = certificationInputs;
 
     if (!name || !workload || !conclusion) {
-      setGeneralErrorModal("Preencha todos os campos.");
+      setGeneralErrorModal("Preencha todos os campos obrigatórios para continuar.");
       return;
     }
 
@@ -178,11 +178,11 @@ export default function FormationForm() {
 
     if (field === "conclusion") {
       if (value && !DATE_REGEX.test(value)) {
-        setGeneralErrorModal("Data inválida. Use o formato DD/MM/YYYY.");
+        setGeneralErrorModal("Data inválida. Utilize o formato DD/MM/AAAA.");
         return;
       }
       if (value && !isValidDate(value)) {
-        setGeneralErrorModal("Data inválida. Verifique o valor inserido.");
+        setGeneralErrorModal("Data inválida. Verifique o valor informado.");
         return;
       }
       setGeneralErrorModal("");
@@ -259,7 +259,7 @@ export default function FormationForm() {
                     </div>
                     <button
                       onClick={() => deleteFormation(idx)}
-                      className="absolute -top-4 xl:-right-2 right-0 p-2 bg-red-500 rounded-full text-white"
+                      className="absolute -top-4 xl:-right-2 right-0 p-2 bg-red-500 rounded-full text-white z-40"
                     >
                       <Trash className="w-6 h-6" />
                     </button>

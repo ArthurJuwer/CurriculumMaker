@@ -127,15 +127,15 @@ export default function Score({ isLast }) {
     <div
       className={`flex items-center justify-between ${
         isLast === true ? "border-none" : "border-b-4"
-      } ${borderClass} 2xl:pb-4 pb-3`}
+      } ${borderClass} 2xl:pb-4 pb-2.5`}
     >
-      <div className="flex items-center gap-x-3">
+      <div className="flex items-center gap-x-2.5">
         <span
-          className={`2xl:h-9 h-8 w-16 ${bgClass} text-white flex items-center justify-center rounded-3xl font-semibold`}
+          className={`2xl:h-9 h-7 2xl:w-16 w-14 ${bgClass} text-white flex items-center justify-center rounded-3xl font-semibold 2xl:text-base text-sm`}
         >
           {score}%
         </span>
-        <p className="text-WeakGray text-base font-semibold">Pontuação do Currículo</p>
+        <p className="text-WeakGray 2xl:text-base text-sm font-semibold">Pontuação do Currículo</p>
       </div>
 
       <div ref={containerRef} className="relative">
@@ -144,7 +144,7 @@ export default function Score({ isLast }) {
           aria-label="Ver itens pendentes"
           aria-expanded={isOpen}
           onClick={() => setIsOpen((prev) => !prev)}
-          className="2xl:size-9 size-8 rounded-full bg-TitleGray text-xl text-white flex items-center justify-center"
+          className="2xl:size-9 size-7 rounded-full bg-TitleGray 2xl:text-xl text-lg text-white flex items-center justify-center"
         >
           !
         </button>

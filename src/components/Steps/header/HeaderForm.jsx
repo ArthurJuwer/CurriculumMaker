@@ -83,14 +83,17 @@ export default function HeaderForm() {
     const allFieldsValid = Object.values(validationErrors).every((error) => !error);
 
     if (!allFieldsFilled) {
-      setFormState((prev) => ({ ...prev, generalError: "Preencha todos os campos" }));
+      setFormState((prev) => ({
+        ...prev,
+        generalError: "Preencha todos os campos obrigatórios para continuar.",
+      }));
       return;
     }
 
     if (!allFieldsValid) {
       setFormState((prev) => ({
         ...prev,
-        generalError: "Corrija os erros antes de continuar",
+        generalError: "Verifique os campos destacados antes de prosseguir.",
       }));
       return;
     }

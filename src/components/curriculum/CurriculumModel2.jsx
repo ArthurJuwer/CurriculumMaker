@@ -87,7 +87,7 @@ function CurriculumModel2({ values, setValues, isLast, twoPages, withPlaceholder
                   <li>{effectiveValues?.telefone} |</li>
                 </div>
                 <li>{effectiveValues?.email}</li>
-                <li>{effectiveValues?.linkedin}</li>
+                {effectiveValues?.linkedin && <li>{effectiveValues?.linkedin}</li>}
               </ol>
             </div>
 

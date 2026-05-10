@@ -164,7 +164,7 @@ export default function Input({
     <div className={`relative ${width} ${isLast ? "last:w-full" : ""}`}>
       <label
         htmlFor={`input-${id}`}
-        className="absolute xl:text-base text-sm bottom-12 left-4 bg-DefaultGray px-2 font-semibold text-TitleGray uppercase z-0"
+        className="absolute xl:text-base text-sm bottom-12 left-4 bg-DefaultGray px-2 font-semibold text-TitleGray uppercase z-20"
       >
         {label}
       </label>
@@ -188,7 +188,7 @@ export default function Input({
               : ""
           }
           ${disabled ? "opacity-50 cursor-not-allowed" : ""}
-          bg-transparent 2xl:pl-4 p-4 pl-3 rounded-xl z-10
+          bg-transparent 2xl:pl-4 p-4 pl-3 rounded-xl z-10 text-sm lg:text-base
         `}
         onChange={handleChange}
         value={
@@ -220,13 +220,13 @@ export default function Input({
         <>
           <p className="absolute -bottom-6 right-50 xl:text-sm text-[0.55rem] text-red-600 z-40">
             {email
-              ? "O e-mail informado não corresponde ao esperado."
+              ? "Informe um endereço de e-mail válido."
               : number
-              ? "O número informado não corresponde ao esperado."
+              ? "Informe um número de telefone válido."
               : year
-              ? "Ano inválido."
+              ? "Informe um ano válido."
               : isLast
-              ? 'O link informado deve começar com "https://www.linkedin.com/in/".'
+              ? 'O link deve iniciar com "https://www.linkedin.com/in/".'
               : ""}
           </p>
           <div className="absolute top-1/2 right-4 transform -translate-y-1/2 2xl:size-8 size-7 rounded-full bg-red-600 flex justify-center items-center">

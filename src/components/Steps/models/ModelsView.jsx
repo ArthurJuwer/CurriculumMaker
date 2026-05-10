@@ -97,8 +97,8 @@ export default function ModelsView() {
   };
 
   return (
-    <div className="h-dvh w-full overflow-hidden bg-DefaultGray flex flex-col 2xl:py-16 lg:py-14 py-2 items-center 2xl:gap-y-8 gap-y-1.5">
-      <h1 className="text-StrongGray text-center font-bold 2xl:text-4xl xl:text-3xl text-xl lg:text-2xl lg:w-1/3 w-11/12 mt-8 lg:mt-0">
+    <div className="h-dvh w-full overflow-hidden bg-DefaultGray flex flex-col 2xl:py-16 lg:py-14 py-4 items-center 2xl:gap-y-8 lg:gap-y-3 gap-y-1">
+      <h1 className="text-StrongGray text-center font-bold 2xl:text-4xl xl:text-3xl text-xl lg:text-2xl lg:w-1/3 w-11/12 mt-10 lg:mt-0">
         Escolha entre estes currículos de alta aprovação
       </h1>
       <div className="p-1.5 lg:p-2 bg-WeakLightGray lg:w-auto w-9/12 2xl:flex 2xl:flex-row 2xl:static flex justify-center 2xl:gap-x-5 gap-x-2.5 lg:gap-x-4 lg:absolute lg:flex-col lg:gap-y-3 lg:right-10 lg:z-20">
@@ -128,7 +128,7 @@ export default function ModelsView() {
           </div>
         </div>
       ) : (
-        <div className="w-full flex-1 min-h-0 flex flex-col items-center gap-y-3">
+        <div className="w-full flex-1 min-h-0 flex flex-col items-center gap-y-1.5">
           <div
             ref={sliderRef}
             onScroll={handleSliderScroll}

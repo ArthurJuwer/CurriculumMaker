@@ -101,7 +101,7 @@ export default function ModelsView() {
       <h1 className=" text-StrongGray text-center font-bold 2xl:text-4xl xl:text-3xl text-lg lg:text-2xl lg:w-1/3 w-8/12 mt-10 lg:mt-0">
         Escolha entre estes currículos de alta aprovação
       </h1>
-      <div className="p-1.5 lg:p-2 bg-WeakLightGray lg:w-auto w-9/12 2xl:flex 2xl:flex-row 2xl:static flex justify-center 2xl:gap-x-5 gap-x-2.5 lg:gap-x-4 lg:absolute lg:flex-col lg:gap-y-3 lg:right-10 lg:z-20">
+      <div className="p-1.5 lg:p-2 bg-WeakLightGray lg:w-auto w-9/12 2xl:flex 2xl:flex-row 2xl:static flex justify-center 2xl:gap-x-5 gap-x-2.5 lg:gap-x-4 lg:absolute lg:flex-col lg:gap-y-3 lg:right-10 lg:z-20 lg:rounded-none rounded-2xl">
         {COLORS.map((color, index) => (
           <ColorSwatch
             key={index}
